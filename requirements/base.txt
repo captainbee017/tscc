@@ -1,0 +1,5 @@
+Django
+pytz==2018.3
+django-allauth
+Pillow
+psycopg2

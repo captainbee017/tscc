@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-# Create your models here.
+from django.contrib.auth.models import User
+
 
 QUERY_TYPE = (
     ('Query', 'Query'),
@@ -12,28 +12,34 @@ STATUS_CHOICE = (
     ('Inprogress', 'Inprogress'),
     ('Completed', 'Completed'),
 )
-
 USER_ROLES = (
-    ('Typist', 'Typist'),
-    ('Editor', 'Editor'),
+    ('CSR', 'CSR'),
+    ('Moderator', 'Moderator'),
     ('Superuser','Superuser'),
 )
 
 
+class UserRole(models.Model):
+    """
+    CSR; can only write/create forms(both query and complains
+    Moderator; can both read/write forms
+    Superuser: All permissions
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_role = models.CharField(max_length=20, choices=USER_ROLES, default='CSR')
+
+    def __str__(self):
+        return self.user.first_name
+
+
+
 class CallDetail(models.Model):
-    query_type = models.CharField(max_length=20, choices=QUERY_TYPE, default='Query')
-    call_time = models.CharField(max_length=20, null=True, blank=True)
+    call_type = models.CharField(max_length=20, choices=QUERY_TYPE, default='Query')
     status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
-    author = models.ForeignKey(User, related_name='call_author')
+    submitted_by = models.ForeignKey(User, related_name='call_author', on_delete=models.SET_NULL, null=True)
+    call_time = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=20, blank=True, null=True)
+
 
     def __str__(self):
         return self.query_type
-
-
-class User(AbstractUser):
-    """
-    Typist; can only write/create forms(both query and complains
-    Editor; can both read/write forms
-    Superuser: All permissions
-    """
-    user_role = models.CharField(max_length=20, choices=USER_ROLES, default='Editor')

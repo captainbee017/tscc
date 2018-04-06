@@ -156,9 +156,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_LOGOUT_ON_GET = 'True'
 
-# ACCOUNT_ADAPTER = 'user.account_adapter.NoNewUsersAccountAdapter'
+ACCOUNT_ADAPTER = 'core.account_adapter.LoginRedirectAdapter'
 
 LOGIN_URL = 'login_page'
-# LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = 'dashboard'
 
 SITE_ID = 1

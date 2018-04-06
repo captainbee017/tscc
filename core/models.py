@@ -49,7 +49,7 @@ class CallDetail(models.Model):
     phone_number = models.CharField(max_length=30)
     status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
     call_time = models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(max_length=20, blank=True, null=True)
+    comment = models.TextField(null=True, blank=True)
     modified_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):

@@ -162,3 +162,8 @@ LOGIN_URL = 'login_page'
 # LOGIN_REDIRECT_URL = 'dashboard'
 
 SITE_ID = 1
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

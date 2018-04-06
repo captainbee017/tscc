@@ -30,7 +30,7 @@ class UserRole(models.Model):
     user_role = models.CharField(max_length=20, choices=USER_ROLES, default='CSR')
 
     def __str__(self):
-        return self.user.first_name
+        return self.user
 
 
 class Category(models.Model):

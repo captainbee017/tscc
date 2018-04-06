@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'core',
+    'allauth',
+    'allauth.account',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +134,31 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+
+
+# AUTH_USER_MODEL = 'user.User'
+
+AUTHENTICATION_BACKENDS = (
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# Allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
+
+# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+ACCOUNT_LOGOUT_ON_GET = 'True'
+
+# ACCOUNT_ADAPTER = 'user.account_adapter.NoNewUsersAccountAdapter'
+
+LOGIN_URL = 'login_page'
+# LOGIN_REDIRECT_URL = 'dashboard'
+
+SITE_ID = 1

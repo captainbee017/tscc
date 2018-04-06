@@ -1,0 +1,8 @@
+.primary-text-color, a {
+    color: #009E88;
+}
+
+
+.bg-primary {
+    background-color: #009E88 !important;
+}

@@ -1,10 +1,11 @@
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.contrib.auth.models import User
 
 
 QUERY_TYPE = (
-    ('Query', 'Query'),
-    ('Complain', 'Complain'),
+    (1, 'Query'),
+    (2, 'Complain'),
 )
 
 STATUS_CHOICE = (
@@ -32,14 +33,24 @@ class UserRole(models.Model):
         return self.user.first_name
 
 
-
-class CallDetail(models.Model):
-    call_type = models.CharField(max_length=20, choices=QUERY_TYPE, default='Query')
-    status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
-    submitted_by = models.ForeignKey(User, related_name='call_author', on_delete=models.SET_NULL, null=True)
-    call_time = models.DateTimeField(auto_now_add=True)
-    comment = models.CharField(max_length=20, blank=True, null=True)
-
+class Category(models.Model):
+    name = models.CharField(max_length=10)
+    call_type = models.SmallIntegerField(choices=QUERY_TYPE, default=1)
+    other_properties = JSONField()
 
     def __str__(self):
-        return self.query_type
+        return self.name
+
+
+class CallDetail(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='call_detail')
+    other_properties = JSONField()
+    user = models.ForeignKey(User, related_name='call_author', on_delete=models.SET_NULL, null=True)
+    phone_number = models.CharField(max_length=30)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
+    call_time = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=20, blank=True, null=True)
+    modified_time = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return "{} {}".format(self.category, self.phone_number)

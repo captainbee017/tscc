@@ -16,4 +16,7 @@ urlpatterns = [
     path('dashboard/', UserDashboardView.as_view(), name='dashboard'),
     path('', include(router.urls)),
     path('category-settings/', sv.CategorySettings.as_view(), name='category_settings'),
+    path('new-ticket/', sv.NewTicket.as_view(), name='new_ticket'),
+    path('login/', LoginView.as_view(), name='login_page'),
 ]
+

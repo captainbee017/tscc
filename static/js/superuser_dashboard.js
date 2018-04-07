@@ -2,73 +2,7 @@ var app3 = new Vue({
   el: '#app',
   template: `
   <div class="container">
-      <div class="row">
-
-      <div class="col-sm-4">
-        <span>Query categories</span>
-      <a @click="newCategory(1)" class="float-right btn btn-default btn-sm"> <i class="fa fa-plus-circle">Add new</i></a>
-      </div>
-      <div class="col-sm-4">Complain Categories
-      <a @click="newCategory(2)" class="float-right btn btn-default btn-sm"> <i class="fa fa-plus-circle">Add New</i></a>
-      </div>
-        <div class="col-sm-4"> </div>
-    </div>
-  <div class="row">
-
-      <div class="col-sm-4">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">SN</th>
-                    <th scope="col">Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="c , index in query_categories ">
-                        <td>
-                            {{index+1}}
-                        </td>
-                        <td>
-                        <a @click="detailCategory(c, index)">
-                            {{c.name}} </a>
-                        </td>
-                    </tr>
-                    <tr v-if="query_categories.length === 0">
-                        <td colspan="2">
-                            <div class="alert alert-warning">No categories</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-      </div>
-
-
-      <div class="col-sm-4">
-            <table class="table">
-                <thead>
-                <tr>
-                <th scope="col">SN</th>
-                <th scope="col">Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="c , index in complain_categories ">
-                    <td>
-                        {{index+1}}
-                    </td>
-                    <td>
-                       <a @click="detailCategory(c, index)">
-                        {{c.name}} </a>
-                    </td>
-                </tr>
-                <tr v-if="complain_categories.length == 0">
-                    <td colspan="2">
-                        <div class="alert alert-warning">No categories</div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-      </div>
+       
       <div class="col-sm-4" v-show="show_category_form">
       Category Form for <span v-show="!category.hasOwnProperty('id')">new</span>  <span v-show="category.call_type =='1'"> Query</span>
       <span v-show="category.call_type =='2'"> Complain</span> Type
@@ -160,12 +94,14 @@ var app3 = new Vue({
             }
             self.$http.get('/core/category/', [options]).then(successCallback, errorCallback);
       },
+      manageCallDetails: function(){
+          var self = this;
+          self.$http.get('/core/call-lists/', [])
+      },
       newCategory: function(val){
           var self = this;
           self.show_category_form = true;
           self.category = {'name':'', 'call_type':val,'other_properties':{}}
-
-
       },
       addField : function(){
       var self = this;

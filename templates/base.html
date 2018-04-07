@@ -4,6 +4,13 @@
     <title> TSCC </title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+{#    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" type="text/css" />#}
+    <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" type="text/css" />
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="{% static 'vendor/pnotify/pnotify.custom.min.css' %}" type="text/css" />
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -17,6 +24,13 @@
 <script src="{% static 'js/tether.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
+
+{#<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>#}
+{#<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>#}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+<script src="{% static 'vendor/js/moment.min.js' %}"></script>
+<script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
+<script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
 {% block js %}{% endblock %}
 </body>
 </html>

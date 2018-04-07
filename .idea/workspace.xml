@@ -4,26 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/core/models.py" line="38" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="62ed0d55-8939-4fcf-bb96-ef3e248f5d26" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/migrations/0002_auto_20180406_1832.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/serializer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/viewsets.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ticket/local_settings_sample.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/models.py" afterPath="$PROJECT_DIR$/core/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/templates/csr/dashboard.html" afterPath="$PROJECT_DIR$/core/templates/csr/dashboard.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/templates/login.html" afterPath="$PROJECT_DIR$/core/templates/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/urls.py" afterPath="$PROJECT_DIR$/core/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements/base.txt" afterPath="$PROJECT_DIR$/requirements/base.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements/local.txt" afterPath="$PROJECT_DIR$/requirements/local.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/style.css" afterPath="$PROJECT_DIR$/static/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticket/settings.py" afterPath="$PROJECT_DIR$/ticket/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ticket/urls.py" afterPath="$PROJECT_DIR$/ticket/urls.py" />
-    </list>
+    <list default="true" id="62ed0d55-8939-4fcf-bb96-ef3e248f5d26" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

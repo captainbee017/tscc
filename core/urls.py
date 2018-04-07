@@ -11,6 +11,7 @@ router.register(r'category', CategoryViewSet)
 router.register(r'ticket', TicketViewSet)
 
 
+
 urlpatterns = [
     path('dashboard/', UserDashboardView.as_view(), name='dashboard'),
     path('', include(router.urls)),

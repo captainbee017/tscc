@@ -1,0 +1,22 @@
+{% load staticfiles bootstrap4 %}
+<html>
+<head>
+    <title> TSCC </title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+<h3 class="text-center m-5 primary-text-color">{% block page_title %}{% endblock %}</h3>
+
+{% block maincontainer %}
+
+{% endblock %}
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
+{% block js %}{% endblock %}
+</body>
+</html>

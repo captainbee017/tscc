@@ -14,7 +14,7 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.user_role = self.request.user.userrole.user_role.lower()
-        return super().dispatch(request, **kwargs)
+        return super(UserDashboardView, self).dispatch(request, **kwargs)
 
     def get_template_names(self):
         return '{}/dashboard.html'.format(self.user_role)

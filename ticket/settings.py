@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'bootstrap4',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -149,16 +150,26 @@ ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = True
 
-# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
-# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_LOGOUT_ON_GET = 'True'
-
-ACCOUNT_ADAPTER = 'core.account_adapter.LoginRedirectAdapter'
 
 LOGIN_URL = 'login_page'
 LOGIN_REDIRECT_URL = 'dashboard'
 
 SITE_ID = 1
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ]
+}
+
+
+
+try:
+    from local_settings import *
+except ImportError:
+    print("failed")
+    pass

@@ -2,3 +2,6 @@
 django-debug-toolbar
 ipdb
 ipython
+djangorestframework
+markdown
+django-filter

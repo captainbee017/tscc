@@ -1,1 +1,31 @@
-welcome csr
+{% extends "base.html" %}
+{% load staticfiles bootstrap4 %}
+
+{% block page_title %}CSR Dashboard{% endblock %}
+
+
+{% block maincontainer %}
+
+<div class="row m-40">
+    <div class="offset-md-3 col-md-4 ">
+        <button class="btn bg-primary text-white btn-lg">
+            <a href="" class="text-white">ADD QUERY</a></button>
+    </div>
+    <div class="col-md-4">
+        <button class="btn bg-primary text-white btn-lg">
+            <a href="" class="text-white">ADD COMPLAIN</a></button>
+    </div>
+</div>
+<div class="row m-5">
+       <div class="col-md-3 offset-md-1 b-r">
+           <div class="card-title text-center"><a href="">View Queries</a></div>
+       </div>
+    <div class="col-md-3 b-r">
+        <div class="card-title text-center"><a href="">View Complains</a></div>
+    </div>
+    <div class="col-md-3">
+        <div class="card-title text-center"><a href="{% url 'account_logout' %}">Logout</a></div>
+    </div>
+</div>
+
+{% endblock %}

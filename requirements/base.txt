@@ -3,3 +3,4 @@ pytz==2018.3
 django-allauth
 Pillow
 psycopg2
+django-bootstrap4

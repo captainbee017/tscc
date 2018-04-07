@@ -1,0 +1,27 @@
+{
+  "name": "tscc",
+  "version": "1.0.0",
+  "description": "Ticketing system for call centre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/captainbee017/tscc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/captainbee017/tscc/issues"
+  },
+  "homepage": "https://github.com/captainbee017/tscc#readme",
+  "dependencies": {
+    "vue": "^2.5.16",
+    "vue-resource": "^1.5.0",
+    "highcharts": "^6.0.3",
+    "highcharts-drilldown": "^0.1.2",
+    "pnotify": "^3.2.1"
+  }
+}

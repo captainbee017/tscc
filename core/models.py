@@ -34,7 +34,7 @@ class UserRole(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=64)
     call_type = models.SmallIntegerField(choices=QUERY_TYPE, default=1)
     other_properties = JSONField()
 

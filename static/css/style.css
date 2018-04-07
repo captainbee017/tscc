@@ -6,3 +6,19 @@
 .bg-primary {
     background-color: #009E88 !important;
 }
+
+.m-20 {
+    margin-top:20px !important;
+}
+
+.m-30 {
+    margin-top: 30px !important;
+}
+
+.m-40 {
+    margin-top:40px !important;
+}
+
+.b-r {
+    border-right:1px solid #009E88;
+}

@@ -4,57 +4,28 @@ var app3 = new Vue({
   <div class="grid">
       <div class="row">
 
-          <div class="col-sm-6">
-              <a @click="setQueryType(1)"> <i class="fa fa-plus">Query</i></a>
-              </div>
-              <div class="col-sm-6">
-              <a @click="setQueryType(2)"> <i class="fa fa-plus">Complain</i></a>
-              </div>
-            </div>
-          <div class="col-sm-12" v-show="filtered_categories.length>0">
-              <div v-show="!category"> Select Category </div>
-              <div v-show="category">Selected Category :{{category.name}}
-                     <a @click="changeCategory()">
-                       Change </a>
-              </div>
-            <div class="col-sm-4 category" v-for="c in filtered_categories" v-show="show_categories">
-                <a @click="categoryForm(c)">
-                    {{c.name}} </a>
-            </div>
-          </div>
-
-      <div class="col-sm-12" v-show="category">
-
-        <form>
-            <div class="form-group">
-            <label for="phone_number">Phone</label>
-            <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
-            placeholder="Enter Phone" v-model="phone_number">
-            <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
-          </div>
-
-
-          <div class="form-group" v-for="(k, v) in category.other_properties">
-            <label >{{v}}</label>
-            <input type="text" class="form-control"
-            placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
-          </div>
-
-
-          <div class="form-group">
-            <label for="exampleInputEmail1">Comment</label>
-            <textarea v-model="comment" placeholder="add Comment" rows="3"></textarea>
-          </div>
-
-           <div class="form-group">
-
-            <a  class="btn btn-primary" @click="saveTicket()">Save Ticket</a>
-
-        </div>
-
-          </form>
-
-      </div>
+         <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Date</th>
+      <th scope="col">Datas</th>
+      <th scope="col">Status</th>
+      <th scope="col">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="t , index in tickets">
+      <th scope="row">{{index+1}}</th>
+      <th>{{t.phone_number}}</th>
+      <th >{{t.call_time}}</th>
+      <td>{{t.other_properties}}</td>
+      <td>{{t.status}}</td>
+      <td>{{t.comment}}</td>
+    </tr>
+    </tbody>
+    </table>
 
       </div>
 
@@ -65,6 +36,8 @@ var app3 = new Vue({
   `,
 
   data: {
+    tickets: [],
+    ticket: [],
     categories: [],
     category: '',
     phone_number: '',
@@ -80,48 +53,14 @@ var app3 = new Vue({
             var options = {};
 
             function successCallback(response) {
-                self.categories = response.body;
+                self.tickets = response.body;
             }
 
             function errorCallback() {
                 console.log('failed');
             }
-            self.$http.get('/core/category/', [options]).then(successCallback, errorCallback);
+            self.$http.get('/core/ticket/', [options]).then(successCallback, errorCallback);
       },
-
-      setQueryType: function(val){
-          var self= this;
-
-          self.category = '';
-          self.show_categories = true;
-
-          self.filtered_categories = self.categories.filter(function (el) {
-          return el.call_type == val;
-        });
-
-        },
-
-        categoryForm: function(val){
-            var self = this;
-            self.category = val;
-            self.show_categories = false;
-
-        },
-        changeCategory: function(){
-            var self = this;
-            self.category = '';
-            self.show_categories = true;
-
-        },
-        formHandler: function(key){
-                    var self = this;
-                    console.log(key);
-                    console.log(document.getElementById(key).value);
-                    val = document.getElementById(key).value;
-                    self.other_properties[key] = val;
-                    console.log(self.other_properties);
-
-                },
 
         saveTicket : function (){
         var self = this;
@@ -204,7 +143,7 @@ var app3 = new Vue({
             }
             console.log(ticket);
 
-                self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
+                self.$http.put('/core/ticket/', ticket.id, options).then(successCallback, errorCallback);
 
 
 
@@ -219,24 +158,23 @@ var app3 = new Vue({
 
       var self = this;
       self.loadDatas();
-//      self.setQueryType(1);
 
   },
   watch:{
-    category: function (newVal, oldVal) {
-                var self = this;
-                if (newVal) {
-                    Object.keys(newVal.other_properties).forEach(function(key,index) {
-
-                    self.other_properties[key] = "";
-
-
-                });
-                }else{
-                    self.other_properties = {};
-                }
-
-            },
+//    category: function (newVal, oldVal) {
+//                var self = this;
+//                if (newVal) {
+//                    Object.keys(newVal.other_properties).forEach(function(key,index) {
+//
+//                    self.other_properties[key] = "";
+//
+//
+//                });
+//                }else{
+//                    self.other_properties = {};
+//                }
+//
+//            },
 
   },
 });

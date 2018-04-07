@@ -8,3 +8,7 @@ class NewTicket(TemplateView):
     template_name = "core/new_ticket.html"
 
 
+class Report(TemplateView):
+    template_name = "core/ticket_report.html"
+
+

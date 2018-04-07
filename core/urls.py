@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('category-settings/', sv.CategorySettings.as_view(), name='category_settings'),
     path('new-ticket/', sv.NewTicket.as_view(), name='new_ticket'),
+    path('reports/', sv.Report.as_view(), name='report'),
     path('login/', LoginView.as_view(), name='login_page'),
 ]
 

@@ -27,9 +27,9 @@ var app3 = new Vue({
 
         <form>
             <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" aria-describedby="emailHelp"
-            placeholder="Enter Phone" v-model="phone">
+            <label for="phone_number">Phone</label>
+            <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
+            placeholder="Enter Phone" v-model="phone_number">
             <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
           </div>
 
@@ -46,6 +46,12 @@ var app3 = new Vue({
             <textarea v-model="comment" placeholder="add Comment" rows="3"></textarea>
           </div>
 
+           <div class="form-group">
+
+            <a  class="btn btn-primary" @click="saveTicket()">Save Ticket</a>
+
+        </div>
+
           </form>
 
       </div>
@@ -61,7 +67,7 @@ var app3 = new Vue({
   data: {
     categories: [],
     category: '',
-    phone: '',
+    phone_number: '',
     comment: '',
     filtered_categories: [],
     show_category_form :false,
@@ -115,7 +121,95 @@ var app3 = new Vue({
                     self.other_properties[key] = val;
                     console.log(self.other_properties);
 
+                },
+
+        saveTicket : function (){
+        var self = this;
+        var ticket = {};
+        ticket.category = self.category.id;
+        if(self.phone_number.length <1){
+
+         new PNotify({
+                    title: 'failed',
+                    text: 'Phone No Required',
+                    type: 'error'
+                });
+                        return
+
+      }
+
+            let csrf = $('[name = "csrfmiddlewaretoken"]').val();
+            let options = {
+                headers: {
+                    'X-CSRFToken': csrf
                 }
+            };
+
+            ticket.phone_number = self.phone_number;
+            ticket.comment = self.comment;
+            ticket.other_properties = self.other_properties;
+
+
+            function successCallback(response) {
+                self.category= '',
+                self.phone_number = '',
+                self.comment = '',
+                self.show_category_form  = false,
+                self.show_categories  = false,
+                self.other_properties = {},
+                self.filtered_categories = [];
+                new PNotify({
+                    title: 'Ticket Saved',
+                    text: 'Ticket ' + response.body.phone_number + ' Saved'
+                });
+
+
+            }
+            function successUpdateCallback(response) {
+                new PNotify({
+                    title: 'ticket Updated',
+                    text: 'category ' + response.body.phone_number + ' Updated'
+                });
+//                var category_index = -1;
+//                for(var i=0; i < self.tickets.length; i++){
+//                    if(self.tickets[i].id == response.body.id){
+//                    category_index = i;
+//                    }
+//
+//                }
+//                console.log(category_index);
+//                Vue.set(self.tickets, category_index, response.body);
+
+            }
+
+            function errorCallback(response) {
+            console.log(response);
+
+                if (response.body.error) {
+
+                new PNotify({
+                    title: 'failed',
+                    text: response.body.error,
+                    type: 'error'
+                });
+
+                } else {
+                new PNotify({
+                    title: 'failed',
+                    text: 'Ticket Failed to Save',
+                    type: 'error'
+                });
+
+                }
+            }
+            console.log(ticket);
+
+                self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
+
+
+
+
+      },
 
 
   },

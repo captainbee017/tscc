@@ -15,11 +15,27 @@
     {% block css %}{% endblock %}
 </head>
 <body>
-<h3 class="text-center m-5 primary-text-color">{% block page_title %}{% endblock %}</h3>
+
+<h3 class="text-center m-4 primary-text-color">{% block page_title %}{% endblock %}</h3>
+
+{% if request.user.is_authenticated %}
+{% block user_detail %}
+    <div class="">
+        <hr width="50%">
+        <p class="text-center small primary-text-color">
+            <span class="pr-3">{{ request.user.username }}</span>|
+            <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
+            <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
+        </p>
+        <hr>
+    </div>
+{% endblock %}
+{% endif %}
 
 {% block maincontainer %}
 
 {% endblock %}
+
 
 {% block modal %}
     <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">

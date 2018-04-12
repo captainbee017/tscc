@@ -22,3 +22,13 @@
 .b-r {
     border-right:1px solid #009E88;
 }
+
+.breadcrumb-active {
+    color: #b7b3b3;
+}
+
+.page-header .fa {
+    font-size: 0.6em !important;
+    padding: 5px !important;
+    vertical-align: middle;
+}

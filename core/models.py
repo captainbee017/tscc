@@ -36,10 +36,15 @@ class UserRole(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=64)
     call_type = models.SmallIntegerField(choices=QUERY_TYPE, default=1)
+    parent = models.ForeignKey("self", related_name="sub_categories", null=True, blank=True, on_delete=models.SET_NULL)
     other_properties = JSONField()
 
     def __str__(self):
         return self.name
+
+
+class District(models.Model):
+    name = models.CharField(max_length=50)
 
 
 class CallDetail(models.Model):
@@ -47,6 +52,7 @@ class CallDetail(models.Model):
     other_properties = JSONField()
     user = models.ForeignKey(User, related_name='call_author', on_delete=models.SET_NULL, null=True)
     phone_number = models.CharField(max_length=30)
+    district = models.ForeignKey(District, related_name="calls", on_delete=models.SET_NULL, blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
     call_time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(null=True, blank=True)

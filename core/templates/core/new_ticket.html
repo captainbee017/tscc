@@ -17,23 +17,19 @@
   </head>
   <body>
 
-    {% csrf_token %}
+  {% csrf_token %}
 
-<div class="container" id="app">
-
-</div>
+    <div class="container" id="app"></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-      <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'vendor/js/vue.js' %}"></script>
     <script src="{% static 'vendor/js/moment.min.js' %}"></script>
     <script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
     <script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
     <script src="{% static 'js/new_ticket.js' %}?v=1.7"></script>
-
-
   </body>
 </html>

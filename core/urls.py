@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from django.urls import re_path
 
-from core.views.auth_view import LoginView, UserDashboardView
+from core.views.auth_view import LoginView, UserDashboardView, UserCreateView, UserChangePasswordView, DeactivateCsrView
 from core.viewsets import CategoryViewSet, TicketViewSet
 from core.views import supervisor as sv
 
@@ -22,5 +22,9 @@ urlpatterns = [
     path('new-ticket/', sv.NewTicket.as_view(), name='new_ticket'),
     path('reports/', sv.Report.as_view(), name='report'),
     path('login/', LoginView.as_view(), name='login_page'),
+
+    path('new-user/', UserCreateView.as_view(), name='add_new_user'),
+    path('change-password/<username>/', UserChangePasswordView.as_view(), name='change_password'),
+    path('deactivate/<username>/', DeactivateCsrView.as_view(), name='deactivate_csr'),
 ]
 

@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-{#    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" type="text/css" />#}
-    <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" type="text/css" />
+    {#    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" type="text/css" />#}
+    <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}"
+          type="text/css"/>
 
     <!-- Bootstrap CSS -->
 
-    <link rel="stylesheet" href="{% static 'vendor/pnotify/pnotify.custom.min.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'vendor/pnotify/pnotify.custom.min.css' %}" type="text/css"/>
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -18,6 +19,15 @@
 
 {% block maincontainer %}
 
+{% endblock %}
+
+{% block modal %}
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
@@ -31,6 +41,13 @@
 <script src="{% static 'vendor/js/moment.min.js' %}"></script>
 <script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
 <script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
+<script type="text/javascript">
+    // modal box render
+    $('body').on('click', '[data-toggle="modal"]', function () {
+        $($(this).data("target") + ' .modal-content').load($(this).data("remote"));
+    });
+
+</script>
 {% block js %}{% endblock %}
 </body>
 </html>

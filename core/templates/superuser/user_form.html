@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block page_title %}Dashboard > Add New User{% endblock %}
+
+{% load bootstrap4 %}
+{% block maincontainer %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+
+                <form action="" method="POST">{% csrf_token %}
+                    <div class="card p-4">
+                        <div class="card-title">
+                            <h3>Add new user</h3>
+                        </div>
+                        <div class="card-body">
+                            {% bootstrap_field form.username %}
+                            {% bootstrap_field form.user_role %}
+                            {% bootstrap_field form.password1 %}
+                            {% bootstrap_field form.password2 %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary-color">Create User</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-title p-3">
+                        <h3>All users</h3>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>User Roles</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.userrole.user_role }}</td>
+                                <td>
+                                    <a data-remote="{% url 'change_password' user.username %}" data-target="#myModal" data-toggle="modal" class="btn btn-outline-secondary btn-sm"><i class="fa fa-edit"></i> Change Password</a>
+                                    <a data-remote="{% url 'deactivate_csr' user.username %}" data-target="#myModal" data-toggle="modal" class="btn btn-outline-secondary btn-sm"><i class="fa fa-ban"></i> Deactivate</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

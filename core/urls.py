@@ -15,7 +15,7 @@ router.register(r'ticket', TicketViewSet)
 urlpatterns = [
     path('dashboard/', UserDashboardView.as_view(), name='dashboard'),
     path('', include(router.urls)),
-    path('category-settings/', sv.CategorySettings.as_view(), name='category_settings'),
+    path('category-settings/<ticket_type>/', sv.CategorySettings.as_view(), name='category_settings'),
 
     path('manage-calls/list/', sv.ManageCallDetails.as_view(), name='manage_call_details'),
 

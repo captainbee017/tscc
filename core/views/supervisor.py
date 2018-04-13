@@ -6,6 +6,11 @@ from django.views.generic import TemplateView
 class CategorySettings(TemplateView):
     template_name = "core/category_settings.html"
 
+    def get_context_data(self, *args, **kwargs):
+        data = super(CategorySettings, self).get_context_data(*args, ** kwargs)
+        data['ticket_type'] = self.kwargs['ticket_type']
+        return data
+
 
 class ManageCallDetails(TemplateView):
     template_name = "superuser/manage_call_detail.html"

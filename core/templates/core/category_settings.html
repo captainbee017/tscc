@@ -13,4 +13,11 @@
 
 {% endblock %}
 
-{% block js %}<script src="{% static 'js/category.js' %}?v=1.4"></script>{% endblock %}
+{% block js %}
+<script>
+      var rare_settings =  rare_settings || {};
+      rare_settings.ticket_type = {{ticket_type}};
+      </script>
+<script src="{% static 'js/category.js' %}?v=1.5">
+
+</script>{% endblock %}

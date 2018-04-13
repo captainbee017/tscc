@@ -138,13 +138,14 @@ var app3 = new Vue({
     seen: true,
     categories: [],
     show_category_form :false,
+    call_type: rare_settings.ticket_type,
     category :{'name':'', 'call_type':1,'other_properties':{}},
     property: {'key':'', 'val':''},
   },
   methods:{
       loadDatas: function(){
             var self = this;
-            var options = {};
+            var options = {'call_type': self.call_type};
 
             function successCallback(response) {
                 self.categories = response.body;
@@ -153,7 +154,7 @@ var app3 = new Vue({
             function errorCallback() {
                 console.log('failed');
             }
-            self.$http.get('/core/category/', [options]).then(successCallback, errorCallback);
+            self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
       },
       newCategory: function(val){
           var self = this;

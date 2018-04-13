@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+    <i class="fa fa-chevron-right"></i>
+    <span class="breadcrumb-active">Manage {{ ticket_type }} tickets</span>
+{% endblock %}
+
+{% load bootstrap4 %}
+{% block maincontainer %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Phone Number</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Comment</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>{{ object.phone_number }}</td>
+                    <td>{{ object.date }}</td>
+                    <td>{{ object.status }}</td>
+                    <td>{{ object.comment }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                <td colspan="4">
+                    <div class="alert alert-warning text-center"><i class="fa fa-exclamation-circle"></i> No records to show</div>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a title="Add new {{ ticket_type }} ticket" class="btn btn-primary floating-button text-white"><i class="fa fa-plus-circle"></i></a>
+
+{% endblock %}

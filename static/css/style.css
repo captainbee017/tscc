@@ -32,3 +32,11 @@
     padding: 5px !important;
     vertical-align: middle;
 }
+
+.floating-button {
+    border-radius: 50%;
+    padding: 15px;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+}

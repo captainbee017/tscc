@@ -5,7 +5,7 @@ from core.serializer import CategorySerializer, TickerSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(parent__isnull=True)
     serializer_class = CategorySerializer
 
 

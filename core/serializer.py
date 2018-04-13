@@ -5,9 +5,15 @@ from rest_framework.fields import CurrentUserDefault
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    branch = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = ('id','name', 'call_type', 'other_properties')
+        fields = ('id','name', 'call_type', 'other_properties', 'parent', 'branch')
+
+    def get_branch(self, obj):
+        qs =  obj.sub_categories.all()
+        return CategorySerializer(qs, many=True).data
 
 
 class TickerSerializer(serializers.ModelSerializer):

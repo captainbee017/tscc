@@ -2,76 +2,11 @@ var app3 = new Vue({
   el: '#app',
   template: `
   <div class="container">
-      <div class="row">
-
-      <div class="col-sm-4">
-        <span>Query categories</span>
-      <a @click="newCategory(1)" class="float-right btn btn-default btn-sm"> <i class="fa fa-plus-circle">Add new</i></a>
-      </div>
-      <div class="col-sm-4">Complain Categories
-      <a @click="newCategory(2)" class="float-right btn btn-default btn-sm"> <i class="fa fa-plus-circle">Add New</i></a>
-      </div>
-        <div class="col-sm-4"> </div>
-    </div>
-  <div class="row">
-
-      <div class="col-sm-4">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">SN</th>
-                    <th scope="col">Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="c , index in query_categories ">
-                        <td>
-                            {{index+1}}
-                        </td>
-                        <td>
-                        <a @click="detailCategory(c, index)">
-                            {{c.name}} </a>
-                        </td>
-                    </tr>
-                    <tr v-if="query_categories.length === 0">
-                        <td colspan="2">
-                            <div class="alert alert-warning">No categories</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-      </div>
-
-
-      <div class="col-sm-4">
-            <table class="table">
-                <thead>
-                <tr>
-                <th scope="col">SN</th>
-                <th scope="col">Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="c , index in complain_categories ">
-                    <td>
-                        {{index+1}}
-                    </td>
-                    <td>
-                       <a @click="detailCategory(c, index)">
-                        {{c.name}} </a>
-                    </td>
-                </tr>
-                <tr v-if="complain_categories.length == 0">
-                    <td colspan="2">
-                        <div class="alert alert-warning">No categories</div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-      </div>
-      <div class="col-sm-4" v-show="show_category_form">
-      Category Form for <span v-show="!category.hasOwnProperty('id')">new</span>  <span v-show="category.call_type =='1'"> Query</span>
-      <span v-show="category.call_type =='2'"> Complain</span> Type
+    <div class="row" v-show="show_category_form">
+        <h4>
+          Category Form for <span v-show="!category.hasOwnProperty('id')">new</span>  <span v-show="category.call_type =='1'"> Query</span>
+          <span v-show="category.call_type =='2'"> Complain</span> Type
+       </h4>
 
         <form>
           <div class="form-group">
@@ -96,7 +31,7 @@ var app3 = new Vue({
 
                 <td> {{ k }}     </td>
                 <td>  &nbsp; {{ v }}     </td>
-                    <td>  &nbsp;  <a  class="btn btn-xs btn-primary" @click="deleteField(k)">Delete</a>      </td>
+                    <td>  &nbsp;  <a  class="btn btn-xs btn-warning" @click="deleteField(k)">Delete</a>      </td>
 
             </tr>
             </table>
@@ -111,14 +46,14 @@ var app3 = new Vue({
 
               <div class="col-sm-4">
                 <label for="val">New Field Type</label>
-                <select v-model="property.value">
+                <select class="form-control" v-model="property.value">
                   <option value="text">Text</option>
                   <option value="number">Number</option>
                 </select>
               </div>
 
               <div class="col-sm-4">
-              <a  class="btn btn-xs btn-primary" @click="addField()">Add Field</a>
+              <a  class="btn btn-xs btn-info" @click="addField()">Add Field</a>
               </div>
 
           </div>
@@ -127,12 +62,72 @@ var app3 = new Vue({
 
           <div class="form-group">
 
-            <a  class="btn btn-primary" @click="saveCategory()">Save Category</a>
+            <a  class="btn btn-info" @click="saveCategory()">Save Category</a>
+            <a  class="btn btn-warning" @click="show_category_form=false">Cancel</a>
 
         </div>
         </form>
 
       </div>
+
+      <div class="row">
+
+          <div class="col-sm-12">
+            <span>Query categories</span>
+          <a @click="newCategory(1)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add</a>
+          </div>
+            <div class="col-sm-4" v-for="c , index in query_categories ">
+
+                {{c.name}}
+                <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                <div class="col-sm-12" v-show="c.branch.length>0">
+
+                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+
+                        {{c1.name}}
+                        <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                        <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                        <div class="col-sm-12" v-show="c1.branch.length>0">
+
+                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+
+                            {{c2.name}}
+                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+                <div v-if="query_categories.length === 0">
+                        <div class="alert alert-warning">No categories</div>
+                </div>
+      </div>
+      <div class="clearfix"> </div><br>
+      <div class="row">
+          <div class="col-sm-12">Complain Categories
+          <a @click="newCategory(2)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add</a>
+          </div>
+
+            <div class="col-sm-4 category" v-for="c , index in complain_categories ">
+
+                 {{c.name}}
+                    <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                    <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                    <a @click="detailCategory(c, index)" title="Edit Details" v-show="c.branch.length>0"><i class="fa fa-eye"></i> </a>
+            </div>
+            <div v-if="complain_categories.length === 0">
+                    <div class="alert alert-warning">No categories</div>
+            </div>
+        </div>
+      </div>
+
+
+
   </div>
 </div>
 </div>
@@ -221,6 +216,7 @@ var app3 = new Vue({
 
 
             function successCallback(response) {
+            self.show_category_form = false;
             self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}}
                 new PNotify({
                     title: 'Category Saved',
@@ -281,6 +277,11 @@ var app3 = new Vue({
       detailCategory: function(c, index){
         var self = this;
         self.category = c;
+        self.show_category_form = true;
+      },
+      subCategory: function(c, index){
+        var self = this;
+        self.category = {'name':'', 'call_type':1,'other_properties':{}, parent:c.id},
         self.show_category_form = true;
       },
 

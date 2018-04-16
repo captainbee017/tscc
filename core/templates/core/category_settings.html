@@ -1,8 +1,24 @@
 {% extends "base.html" %}
 
+
+
 {% load static staticfiles %}
 
 {% block page_title %} Superuser Dashboard{% endblock %}
+
+{% block user_detail %}
+    <div class="">
+        <hr width="50%">
+        <p class="text-center small primary-text-color">
+              <a href="{% url 'category_settings' 1 %}" class="pl-3 small">Query Category</a> |
+              <a href="{% url 'category_settings' 2 %}" class="pl-3 small">Complain Category </a> |
+            <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
+              <span class="pr-3">{{ request.user.username }}</span>|
+              <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
+        </p>
+        <hr>
+    </div>
+{% endblock %}
 
 {% block maincontainer %}
 {% csrf_token %}
@@ -18,6 +34,6 @@
       var rare_settings =  rare_settings || {};
       rare_settings.ticket_type = {{ticket_type}};
       </script>
-<script src="{% static 'js/category.js' %}?v=1.5">
+<script src="{% static 'js/category.js' %}?v=1.6">
 
 </script>{% endblock %}

@@ -70,11 +70,11 @@ var app3 = new Vue({
 
       </div>
 
-      <div class="row">
+      <div class="row" v-show="call_type==1">
 
           <div class="col-sm-12">
             <span>Query categories</span>
-          <a @click="newCategory(1)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add</a>
+          <a @click="newCategory(1)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add Top level Query</a>
           </div>
             <div class="col-sm-4" v-for="c , index in query_categories ">
 
@@ -108,9 +108,9 @@ var app3 = new Vue({
                 </div>
       </div>
       <div class="clearfix"> </div><br>
-      <div class="row">
+      <div class="row" v-show="call_type==2">
           <div class="col-sm-12">Complain Categories
-          <a @click="newCategory(2)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add</a>
+          <a @click="newCategory(2)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add Top Level Complain</a>
           </div>
 
             <div class="col-sm-4 category" v-for="c , index in complain_categories ">
@@ -224,7 +224,8 @@ var app3 = new Vue({
                     text: 'category ' + response.body.name + ' Saved'
                 });
 
-                self.categories.push(response.body);
+//                self.categories.push(response.body);
+            self.loadDatas();
 
             }
             function successUpdateCallback(response) {

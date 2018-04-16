@@ -37,6 +37,7 @@ class Category(models.Model):
     name = models.CharField(max_length=64)
     call_type = models.SmallIntegerField(choices=QUERY_TYPE, default=1)
     parent = models.ForeignKey("self", related_name="sub_categories", null=True, blank=True, on_delete=models.SET_NULL)
+    has_district = models.BooleanField(default=True)
     other_properties = JSONField()
 
     def __str__(self):

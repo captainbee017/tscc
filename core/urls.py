@@ -4,7 +4,7 @@ from rest_framework import routers
 from django.urls import re_path
 
 from core.views.auth_view import LoginView, UserDashboardView, UserCreateView, UserChangePasswordView, DeactivateCsrView
-from core.viewsets import CategoryViewSet, TicketViewSet
+from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet
 from core.views import supervisor as sv
 
 router = routers.DefaultRouter()
@@ -14,6 +14,7 @@ router.register(r'ticket', TicketViewSet)
 
 urlpatterns = [
     path('dashboard/', UserDashboardView.as_view(), name='dashboard'),
+    path('category/<pk>/', CategoryDetailViewSet.as_view({'get':'retrieve', 'put':'update'}), name='cat_details'),
     path('', include(router.urls)),
     path('category-settings/<ticket_type>/', sv.CategorySettings.as_view(), name='category_settings'),
 

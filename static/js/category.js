@@ -2,18 +2,18 @@ var app3 = new Vue({
   el: '#app',
   template: `
   <div class="container">
-    <div class="row" v-show="show_category_form">
-        <h4>
-          Category Form for <span v-show="!category.hasOwnProperty('id')">new</span>  <span v-show="category.call_type =='1'"> Query</span>
-          <span v-show="category.call_type =='2'"> Complain</span> Type
-       </h4>
+    <div class="row" v-show="show_category_form== true">
 
         <form>
           <div class="form-group">
-            <label for="exampleInputEmail1">Name</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             placeholder="Enter Name Of Category" v-model="category.name">
             <small id="emailHelp" class="form-text text-muted">Enter Category Name e.g. new Sim.</small>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" class="form-control" id="has_district" aria-describedby="districtHelp"
+            placeholder="Enter Name Of Category" v-model="category.has_district">
+            <small id="districtHelp" class="form-text text-muted">Choose if this form contains district .</small>
           </div>
 
           <div class="form-group">
@@ -98,9 +98,6 @@ var app3 = new Vue({
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
                 <div v-if="query_categories.length === 0">
@@ -117,8 +114,28 @@ var app3 = new Vue({
 
                  {{c.name}}
                     <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                    <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                    <a @click="detailCategory(c, index)" title="Edit Details" v-show="c.branch.length>0"><i class="fa fa-eye"></i> </a>
+                <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                <div class="col-sm-12" v-show="c.branch.length>0">
+
+                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+
+                        {{c1.name}}
+                        <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                        <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                        <div class="col-sm-12" v-show="c1.branch.length>0">
+
+                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+
+                            {{c2.name}}
+                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
             </div>
             <div v-if="complain_categories.length === 0">
                     <div class="alert alert-warning">No categories</div>
@@ -139,7 +156,7 @@ var app3 = new Vue({
     categories: [],
     show_category_form :false,
     call_type: rare_settings.ticket_type,
-    category :{'name':'', 'call_type':1,'other_properties':{}},
+    category :{'name':'', 'call_type':rare_settings.ticket_type,'other_properties':{}, 'has_district':true},
     property: {'key':'', 'val':''},
   },
   methods:{
@@ -159,7 +176,7 @@ var app3 = new Vue({
       newCategory: function(val){
           var self = this;
           self.show_category_form = true;
-          self.category = {'name':'', 'call_type':val,'other_properties':{}}
+          self.category = {'name':'', 'call_type':val,'other_properties':{},  'has_district':true}
 
 
       },
@@ -218,7 +235,7 @@ var app3 = new Vue({
 
             function successCallback(response) {
             self.show_category_form = false;
-            self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}}
+            self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}, 'has_district':true}
                 new PNotify({
                     title: 'Category Saved',
                     text: 'category ' + response.body.name + ' Saved'
@@ -229,20 +246,22 @@ var app3 = new Vue({
 
             }
             function successUpdateCallback(response) {
-            self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}}
+            self.show_category_form = false;
+            self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}, 'has_district':true};
                 new PNotify({
                     title: 'Category Updated',
                     text: 'category ' + response.body.name + ' Saved'
                 });
-                var category_index = -1;
-                for(var i=0; i < self.categories.length; i++){
-                    if(self.categories[i].id == response.body.id){
-                    category_index = i;
-                    }
-
-                }
-                console.log(category_index);
-                Vue.set(self.categories, category_index, response.body);
+//                var category_index = -1;
+//                for(var i=0; i < self.categories.length; i++){
+//                    if(self.categories[i].id == response.body.id){
+//                    category_index = i;
+//                    }
+//
+//                }
+//                console.log(category_index);
+//                Vue.set(self.categories, category_index, response.body);
+                    self.loadDatas();
 
             }
 
@@ -283,7 +302,7 @@ var app3 = new Vue({
       },
       subCategory: function(c, index){
         var self = this;
-        self.category = {'name':'', 'call_type':1,'other_properties':{}, parent:c.id},
+        self.category = {'name':'', 'call_type':self.call_type,'other_properties':{}, parent:c.id, 'has_district':true},
         self.show_category_form = true;
       },
 

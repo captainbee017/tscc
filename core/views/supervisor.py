@@ -19,7 +19,17 @@ class ManageCallDetails(TemplateView):
 class NewTicket(TemplateView):
     template_name = "core/new_ticket.html"
 
+    def get_context_data(self, *args, **kwargs):
+        data = super(NewTicket, self).get_context_data(*args, ** kwargs)
+        data['ticket_type'] = self.kwargs['ticket_type']
+        return data
+
 
 class Report(TemplateView):
     template_name = "core/ticket_report.html"
+
+    def get_context_data(self, *args, **kwargs):
+        data = super(Report, self).get_context_data(*args, ** kwargs)
+        data['ticket_type'] = self.kwargs['ticket_type']
+        return data
 

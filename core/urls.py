@@ -20,8 +20,8 @@ urlpatterns = [
 
     path('manage-calls/list/', sv.ManageCallDetails.as_view(), name='manage_call_details'),
 
-    path('new-ticket/<pk>/', sv.NewTicket.as_view(), name='new_ticket'),
-    path('reports/', sv.Report.as_view(), name='report'),
+    path('new-ticket/<ticket_type>/', sv.NewTicket.as_view(), name='new_ticket'),
+    path('reports/<ticket_type>', sv.Report.as_view(), name='report'),
     path('login/', LoginView.as_view(), name='login_page'),
 
     path('new-user/', UserCreateView.as_view(), name='add_new_user'),

@@ -2,26 +2,32 @@ var app3 = new Vue({
   el: '#app',
   template: `
   <div class="grid">
-      <div class="row">
-
-          <div class="col-sm-6">
-              <a @click="setQueryType(1)"> <i class="fa fa-plus">Query</i></a>
-              </div>
-              <div class="col-sm-6">
-              <a @click="setQueryType(2)"> <i class="fa fa-plus">Complain</i></a>
-              </div>
-            </div>
-          <div class="col-sm-12" v-show="filtered_categories.length>0">
-              <div v-show="!category"> Select Category </div>
-              <div v-show="category">Selected Category :{{category.name}}
-                     <a @click="changeCategory()">
-                       Change </a>
-              </div>
-            <div class="col-sm-4 category" v-for="c in filtered_categories" v-show="show_categories">
-                <a @click="categoryForm(c)">
-                    {{c.name}} </a>
-            </div>
+      <div class="col-sm-12" v-show="categories.length>0">
+          <div v-show="!category"> Select Category </div>
+          <div v-show="category">Selected Category :{{category.name}}
+                 <a @click="changeCategory()">
+                   Change Category </a>
           </div>
+        <div class="col-sm-4 category" v-for="c in categories" v-show="show_categories">
+            <a @click="categoryForm(c)">
+                {{c.name}} </a>
+                <div class="col-sm-12" v-show="c.branch.length>0">
+
+                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+
+                        <a @click="categoryForm(c1)">
+                                    {{c1.name}} </a>
+                        <div class="col-sm-12" v-show="c1.branch.length>0">
+
+                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+
+                            <a @click="categoryForm(c2)"> {{c2.name}} </a>
+
+                            </div>
+                    </div>
+                </div>
+        </div>
+      </div>
 
       <div class="col-sm-12" v-show="category">
 
@@ -40,6 +46,11 @@ var app3 = new Vue({
             placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
           </div>
 
+
+          <div class="form-group" v-show="has_district">
+            <label for="district">District</label>
+            <select></select>
+          </div>
 
           <div class="form-group">
             <label for="exampleInputEmail1">Comment</label>
@@ -65,19 +76,23 @@ var app3 = new Vue({
   `,
 
   data: {
+    call_type: rare_settings.ticket_type,
     categories: [],
     category: '',
     phone_number: '',
     comment: '',
-    filtered_categories: [],
     show_category_form :false,
     show_categories :false,
     other_properties:{},
+    has_district: true,
+    district: '',
+    districts: [],
+
   },
   methods:{
       loadDatas: function(){
             var self = this;
-            var options = {};
+            var options = {'call_type': self.call_type};
 
             function successCallback(response) {
                 self.categories = response.body;
@@ -86,7 +101,7 @@ var app3 = new Vue({
             function errorCallback() {
                 console.log('failed');
             }
-            self.$http.get('/core/category/', [options]).then(successCallback, errorCallback);
+            self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
       },
 
       setQueryType: function(val){
@@ -94,11 +109,6 @@ var app3 = new Vue({
 
           self.category = '';
           self.show_categories = true;
-
-          self.filtered_categories = self.categories.filter(function (el) {
-          return el.call_type == val;
-        });
-
         },
 
         categoryForm: function(val){
@@ -157,7 +167,6 @@ var app3 = new Vue({
                 self.show_category_form  = false,
                 self.show_categories  = false,
                 self.other_properties = {},
-                self.filtered_categories = [];
                 new PNotify({
                     title: 'Ticket Saved',
                     text: 'Ticket ' + response.body.phone_number + ' Saved'
@@ -219,7 +228,7 @@ var app3 = new Vue({
 
       var self = this;
       self.loadDatas();
-//      self.setQueryType(1);
+      self.setQueryType(self.call_type);
 
   },
   watch:{
@@ -232,8 +241,11 @@ var app3 = new Vue({
 
 
                 });
+
+                self.has_district = newVal.has_district;
                 }else{
                     self.other_properties = {};
+                    self.has_district = false;
                 }
 
             },

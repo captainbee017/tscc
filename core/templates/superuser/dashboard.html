@@ -18,8 +18,10 @@
                             </div>
                             <div class="col-md-8">
                                 <h5 class="card-title primary-text-color">Manage tickets</h5>
-                                <a href="{% url 'new_ticket' 1 %}" class="pr-3 small">View Query tickets</a>
-                                <a href="{% url 'new_ticket' 2 %}" class="pl-3 small">View Complain
+                                <a href="{% url 'new_ticket' 1 %}" class="pr-3 small">New Query tickets</a>
+                                <a href="{% url 'report' 1 %}" class="pr-3 small">View Query tickets</a>
+                                <a href="{% url 'new_ticket' 2 %}" class="pl-3 small">New Complain </a>
+                                <a href="{% url 'report' 2 %}" class="pl-3 small">View Complain
                                 tickets</a>
                             </div>
                         </div>

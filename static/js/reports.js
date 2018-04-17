@@ -15,7 +15,7 @@ var app3 = new Vue({
       <th scope="col">Datas</th>
       <th scope="col">Status</th>
       <th scope="col">Comment</th>
-      <th scope="col" colspan="2">Actions</th>
+      <th scope="col" colspan="2" v-show="can_approve">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -32,8 +32,8 @@ var app3 = new Vue({
       </td>
       <td>{{t.status}}</td>
       <td>{{t.comment}}</td>
-      <td><a>Approve</a></td>
-      <td><a>Edit</a></td>
+      <td><a v-show="can_approve" @click="approve(t)">Approve</a></td>
+      <td><a v-show="can_approve" @click="edit(t)">Edit</a></td>
     </tr>
     </tbody>
     </table>
@@ -58,6 +58,7 @@ var app3 = new Vue({
     show_categories :false,
     other_properties:{},
     call_type: rare_settings.ticket_type,
+    can_approve: rare_settings.can_approve,
   },
   methods:{
       loadDatas: function(){
@@ -161,6 +162,13 @@ var app3 = new Vue({
 
 
       },
+      approve : function (t){
+        var self = this;
+        console.log(t);
+      },
+      edit : function (t){
+        var self = this;
+      },
 
 
   },
@@ -170,6 +178,10 @@ var app3 = new Vue({
 
       var self = this;
       self.loadDatas();
+      self.can_approve = false;
+      if(rare_settings.can_approve =="True"){
+        self.can_approve = true;
+      }
 
   },
   watch:{

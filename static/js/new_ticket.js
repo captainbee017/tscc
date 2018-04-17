@@ -3,35 +3,37 @@ Vue.use(VueMultiselect);
 var app3 = new Vue({
   el: '#app',
   template: `
-  <div class="grid">
+  <div class="row">
       <div class="col-sm-12" v-show="categories.length>0">
           <div v-show="!category"> Select Category </div>
           <div v-show="category">Selected Category :{{category.name}}
-                 <a @click="changeCategory()">
+                 <a class="btn btn-xs" @click="changeCategory()">
                    Change Category </a>
           </div>
-        <div class="col-sm-4 category" v-for="c in categories" v-show="show_categories">
-            <a @click="categoryForm(c)">
-                {{c.name}} </a>
-                <div class="col-sm-12" v-show="c.branch.length>0">
+      </div>
+      <div class="col-sm-4">
+          <div class="category" v-for="c in categories">
+              <a @click="categoryForm(c)">{{c.name}} </a>
+                  <div class="" v-show="c.branch.length>0">
 
-                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+                      <div class="" v-for="c1 , index1 in c.branch ">
 
-                        <a @click="categoryForm(c1)">
-                                    {{c1.name}} </a>
-                        <div class="col-sm-12" v-show="c1.branch.length>0">
+                          <a @click="categoryForm(c1)">
+                                      --{{c1.name}} </a>
+                          <div class="row" v-show="c1.branch.length>0">
 
-                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+                              <div class="" v-for="c2 , index2 in c1.branch ">
 
-                            <a @click="categoryForm(c2)"> {{c2.name}} </a>
+                                  <a @click="categoryForm(c2)"> ----{{c2.name}} </a>
 
-                            </div>
-                    </div>
-                </div>
-        </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+          </div>
       </div>
 
-      <div class="col-sm-12" v-show="category">
+      <div class="col-sm-8" v-show="category">
 
         <form>
             <div class="form-group">
@@ -71,13 +73,7 @@ var app3 = new Vue({
         </div>
 
           </form>
-
       </div>
-
-      </div>
-
-
-
   </div>
 
   `,
@@ -182,7 +178,10 @@ var app3 = new Vue({
             ticket.phone_number = self.phone_number;
             ticket.comment = self.comment;
             ticket.other_properties = self.other_properties;
-            ticket.district = self.district;
+            if(self.has_district && self.district!=''){
+
+                ticket.district = self.district.id;
+            }
 
 
             function successCallback(response) {

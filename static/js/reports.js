@@ -4,25 +4,36 @@ var app3 = new Vue({
   <div class="grid">
       <div class="row">
 
-         <table class="table">
+         <table class="table table-stripped">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Phone</th>
+      <th scope="col">Category</th>
       <th scope="col">Date</th>
+      <th scope="col">District</th>
       <th scope="col">Datas</th>
       <th scope="col">Status</th>
       <th scope="col">Comment</th>
+      <th scope="col" colspan="2">Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="t , index in tickets">
       <th scope="row">{{index+1}}</th>
       <th>{{t.phone_number}}</th>
-      <th >{{t.call_time}}</th>
-      <td>{{t.other_properties}}</td>
+      <th>{{t.category_display}}</th>
+      <th >{{t.date_display}}</th>
+      <th >{{t.district_display}}</th>
+      <td>
+        <div v-for="(v,k) in t.other_properties">
+        {{k}} : {{v}}<br>
+        </div>
+      </td>
       <td>{{t.status}}</td>
       <td>{{t.comment}}</td>
+      <td><a>Approve</a></td>
+      <td><a>Edit</a></td>
     </tr>
     </tbody>
     </table>
@@ -46,11 +57,12 @@ var app3 = new Vue({
     show_category_form :false,
     show_categories :false,
     other_properties:{},
+    call_type: rare_settings.ticket_type,
   },
   methods:{
       loadDatas: function(){
             var self = this;
-            var options = {};
+            var options = {'call_type': self.call_type};
 
             function successCallback(response) {
                 self.tickets = response.body;
@@ -59,7 +71,7 @@ var app3 = new Vue({
             function errorCallback() {
                 console.log('failed');
             }
-            self.$http.get('/core/ticket/', [options]).then(successCallback, errorCallback);
+            self.$http.get('/core/ticket/', {params:  options}).then(successCallback, errorCallback);
       },
 
         saveTicket : function (){

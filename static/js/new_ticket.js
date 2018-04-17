@@ -1,3 +1,5 @@
+Vue.use(VueMultiselect);
+
 var app3 = new Vue({
   el: '#app',
   template: `
@@ -46,11 +48,16 @@ var app3 = new Vue({
             placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
           </div>
 
-
           <div class="form-group" v-show="has_district">
             <label for="district">District</label>
-            <select></select>
-          </div>
+            <vselect :options="districts" label="name" :value="''" v-model="district" :allow-empty="true" :loading="loading"
+                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
+                <template slot="noResult">NO Districts Available</template>
+                <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
+                No Districts</div></template>
+            </vselect>
+
+        </div>
 
           <div class="form-group">
             <label for="exampleInputEmail1">Comment</label>
@@ -81,6 +88,7 @@ var app3 = new Vue({
     category: '',
     phone_number: '',
     comment: '',
+    loading: false,
     show_category_form :false,
     show_categories :false,
     other_properties:{},
@@ -102,6 +110,22 @@ var app3 = new Vue({
                 console.log('failed');
             }
             self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
+      },
+      loadDistricts: function(){
+            var self = this;
+            var options = {};
+            self.loading = true;
+
+            function successCallback(response) {
+                self.loading = false;
+                self.districts = response.body;
+            }
+
+            function errorCallback() {
+                self.loading = false;
+                console.log('failed');
+            }
+            self.$http.get('/core/districts/', {params:  options}).then(successCallback, errorCallback);
       },
 
       setQueryType: function(val){
@@ -158,14 +182,16 @@ var app3 = new Vue({
             ticket.phone_number = self.phone_number;
             ticket.comment = self.comment;
             ticket.other_properties = self.other_properties;
+            ticket.district = self.district;
 
 
             function successCallback(response) {
                 self.category= '',
                 self.phone_number = '',
                 self.comment = '',
+                self.district = '',
                 self.show_category_form  = false,
-                self.show_categories  = false,
+                self.show_categories  = true,
                 self.other_properties = {},
                 new PNotify({
                     title: 'Ticket Saved',
@@ -223,11 +249,14 @@ var app3 = new Vue({
 
   },
 
+  components: {'vselect': VueMultiselect.default},
+
 
   created() {
 
       var self = this;
       self.loadDatas();
+      self.loadDistricts();
       self.setQueryType(self.call_type);
 
   },

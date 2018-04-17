@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
 from django.views.generic import TemplateView
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from core.models import CallDetail
 
 
 class CategorySettings(TemplateView):
@@ -41,4 +46,30 @@ class Report(TemplateView):
         data['can_approve'] = can_approve
         data['can_delete'] = can_delete
         return data
+
+@api_view(["GET"])
+def ticket_approve(request):
+    params = request.query_params
+    new_status = params.get("status", False)
+    pk = params.get("pk", False)
+    if new_status:
+        try:
+            CallDetail.objects.filter(pk=pk).update(status=new_status)
+            return Response({"pk":pk}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"error":"bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def ticket_delete(request):
+    params = request.query_params
+    pk = params.get("pk", False)
+    try:
+        CallDetail.objects.filter(pk=pk).delete()
+        return Response({"pk":pk}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 

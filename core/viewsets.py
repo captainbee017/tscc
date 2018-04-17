@@ -36,8 +36,12 @@ class TicketViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         params = self.request.query_params
         call_type = params.get("call_type", False)
+        search_key = params.get("search_key", False)
         if call_type:
             self.queryset = self.queryset.filter(category__call_type=call_type)
+
+        if search_key:
+            self.queryset = self.queryset.filter(phone_number__icontains=search_key)
         return self.queryset
 
 

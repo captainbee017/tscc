@@ -5,7 +5,7 @@ var app3 = new Vue({
     <div class="row">
             <div class="col-sm-12">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for...">
+                  <input type="text" class="form-control" placeholder="Search for..." v-model="search_key" @change="searchTickets()">
                   <span class="input-group-btn">
                     <button class="btn btn-default" type="button">Go!</button>
                   </span>
@@ -60,6 +60,7 @@ var app3 = new Vue({
   `,
 
   data: {
+    search_key:"",
     tickets: [],
     ticket: [],
     categories: [],
@@ -85,6 +86,19 @@ var app3 = new Vue({
 
             function errorCallback() {
                 console.log('failed');
+            }
+            self.$http.get('/core/ticket/', {params:  options}).then(successCallback, errorCallback);
+      },
+    searchTickets: function(){
+            var self = this;
+            var options = {'search_key': self.search_key,'call_type':self.call_type};
+
+            function successCallback(response) {
+                self.tickets = response.body;
+            }
+
+            function errorCallback(errorResponse) {
+                console.log(errorResponse);
             }
             self.$http.get('/core/ticket/', {params:  options}).then(successCallback, errorCallback);
       },

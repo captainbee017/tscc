@@ -4,7 +4,7 @@ from rest_framework import routers
 from django.urls import re_path
 
 from core.views.auth_view import LoginView, UserDashboardView, UserCreateView, UserChangePasswordView, DeactivateCsrView
-from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet, DistrictViewSet
+from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet, DistrictViewSet, TicketDetailViewSet
 from core.views import supervisor as sv
 
 router = routers.DefaultRouter()
@@ -25,6 +25,7 @@ urlpatterns = [
     path('reports/<ticket_type>', sv.Report.as_view(), name='report'),
     path('ticket-approve/', sv.ticket_approve, name='ticket_approve'),
     path('ticket-delete/', sv.ticket_delete, name='ticket_delete'),
+    path('ticketdata/<pk>/', TicketDetailViewSet.as_view({'get':'retrieve'}), name='ticket_delete'),
     path('login/', LoginView.as_view(), name='login_page'),
 
     path('new-user/', UserCreateView.as_view(), name='add_new_user'),

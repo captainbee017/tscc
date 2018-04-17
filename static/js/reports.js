@@ -1,8 +1,8 @@
 var app3 = new Vue({
   el: '#app',
   template: `
-  <div class="grid">
-    <div class="row">
+  <div>
+    <div class="row" v-show="!show_ticket_form">
             <div class="col-sm-12">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Search for..." v-model="search_key" @change="searchTickets()">
@@ -11,8 +11,50 @@ var app3 = new Vue({
                   </span>
                 </div>
               </div>
-      </div>
-      <div class="row">
+  </div>
+  <div class="col-sm-8 col-sm-offset-4" v-show="show_ticket_form">
+        <h4> {{ticket.category_display}} </h4>
+        <form>
+            <div class="form-group">
+            <label for="phone_number">Phone</label>
+            <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
+            placeholder="Enter Phone" v-model="ticket.phone_number">
+            <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
+          </div>
+
+
+          <div class="form-group" v-for="(k, v) in ticket.other_properties">
+            <label >{{v}}</label>
+            <input type="text" class="form-control"
+            placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
+          </div>
+
+          <div class="form-group" v-show="has_district">
+            <label for="district">District</label>
+            <vselect :options="districts" label="name" :value="''" v-model="ticket.district" :allow-empty="true" :loading="loading"
+                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
+                <template slot="noResult">NO Districts Available</template>
+                <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
+                No Districts</div></template>
+            </vselect>
+
+        </div>
+
+          <div class="form-group">
+            <label for="exampleInputEmail1">Comment</label>
+            <textarea v-model="ticket.comment" placeholder="add Comment" rows="3"></textarea>
+          </div>
+
+           <div class="form-group">
+
+            <a  class="btn btn-primary" @click="saveTicket()">Update Ticket</a>
+
+        </div>
+
+          </form>
+  </div>
+
+  <div class="row" v-show="!show_ticket_form">
 
          <table class="table table-stripped">
   <thead>
@@ -63,19 +105,48 @@ var app3 = new Vue({
     search_key:"",
     tickets: [],
     ticket: [],
+    districts: [],
     categories: [],
     category: '',
     phone_number: '',
     comment: '',
     filtered_categories: [],
+    loading :false,
     show_category_form :false,
     show_categories :false,
+    show_ticket_form :false,
     other_properties:{},
+    has_district: false,
     call_type: rare_settings.ticket_type,
     can_approve: rare_settings.can_approve,
     can_delete: rare_settings.can_delete,
   },
   methods:{
+            formHandler: function(key){
+                    var self = this;
+                    console.log(key);
+                    console.log(document.getElementById(key).value);
+                    val = document.getElementById(key).value;
+                    self.other_properties[key] = val;
+                    console.log(self.other_properties);
+
+                },
+    loadDistricts: function(){
+            var self = this;
+            var options = {};
+            self.loading = true;
+
+            function successCallback(response) {
+                self.loading = false;
+                self.districts = response.body;
+            }
+
+            function errorCallback() {
+                self.loading = false;
+                console.log('failed');
+            }
+            self.$http.get('/core/districts/', {params:  options}).then(successCallback, errorCallback);
+      },
     loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};
@@ -105,9 +176,15 @@ var app3 = new Vue({
 
     saveTicket : function (){
         var self = this;
+        let csrf = $('[name = "csrfmiddlewaretoken"]').val();
+            let options = {
+                headers: {
+                    'X-CSRFToken': csrf
+                }
+            };
         var ticket = {};
-        ticket.category = self.category.id;
-        if(self.phone_number.length <1){
+        ticket.category = self.ticket.category.id;
+        if(self.ticket.phone_number.length <1){
 
          new PNotify({
                     title: 'failed',
@@ -117,48 +194,28 @@ var app3 = new Vue({
                         return
 
       }
-
-            let csrf = $('[name = "csrfmiddlewaretoken"]').val();
-            let options = {
-                headers: {
-                    'X-CSRFToken': csrf
-                }
-            };
-
-            ticket.phone_number = self.phone_number;
+            ticket.phone_number = self.ticket.phone_number;
+            ticket.id = self.ticket.id;
+            ticket.district = self.district;
             ticket.comment = self.comment;
             ticket.other_properties = self.other_properties;
 
 
-            function successCallback(response) {
-                self.category= '',
-                self.phone_number = '',
-                self.comment = '',
-                self.show_category_form  = false,
-                self.show_categories  = false,
-                self.other_properties = {},
-                self.filtered_categories = [];
-                new PNotify({
-                    title: 'Ticket Saved',
-                    text: 'Ticket ' + response.body.phone_number + ' Saved'
-                });
 
-
-            }
             function successUpdateCallback(response) {
                 new PNotify({
                     title: 'ticket Updated',
-                    text: 'category ' + response.body.phone_number + ' Updated'
+                    text: 'ticket ' + response.body.phone_number + ' Updated'
                 });
-//                var category_index = -1;
-//                for(var i=0; i < self.tickets.length; i++){
-//                    if(self.tickets[i].id == response.body.id){
-//                    category_index = i;
-//                    }
-//
-//                }
-//                console.log(category_index);
-//                Vue.set(self.tickets, category_index, response.body);
+                var category_index = -1;
+                for(var i=0; i < self.tickets.length; i++){
+                    if(self.tickets[i].id == response.body.id){
+                    category_index = i;
+                    }
+
+                }
+                console.log(category_index);
+                Vue.set(self.tickets, category_index, response.body);
 
             }
 
@@ -184,7 +241,7 @@ var app3 = new Vue({
             }
             console.log(ticket);
 
-                self.$http.put('/core/ticket/', ticket.id, options).then(successCallback, errorCallback);
+                self.$http.put('/core/ticket/'+ ticket.id +'/',ticket, options).then(successUpdateCallback, errorCallback);
 
 
 
@@ -261,6 +318,25 @@ var app3 = new Vue({
       },
       editTicket : function (t){
         var self = this;
+        self.loadDistricts();
+            var options = {};
+
+            function successCallback(response) {
+                self.ticket = response.body;
+                self.show_ticket_form = true;
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get('/core/ticketdata/'+ t.id+'/', {params:  options}).then(successCallback, errorCallback);
+
+
+
+      },
+      canceleditTicket : function (t){
+        var self = this;
+        self.show_ticket_form = false;
       },
       deleteTicket : function (t){
         var self = this;
@@ -290,6 +366,7 @@ var app3 = new Vue({
 
 
   },
+  components: {'vselect': VueMultiselect.default},
 
 
   created() {
@@ -307,20 +384,21 @@ var app3 = new Vue({
 
   },
   watch:{
-//    category: function (newVal, oldVal) {
-//                var self = this;
-//                if (newVal) {
-//                    Object.keys(newVal.other_properties).forEach(function(key,index) {
-//
-//                    self.other_properties[key] = "";
-//
-//
-//                });
-//                }else{
-//                    self.other_properties = {};
-//                }
-//
-//            },
+    ticket: function (newVal, oldVal) {
+                var self = this;
+                if (newVal) {
+                    Object.keys(newVal.category.other_properties).forEach(function(key,index) {
+
+                    self.other_properties[key] = "";
+
+
+                });
+                    self.has_district = newVal.category.has_district;
+                }else{
+                    self.other_properties = {};
+                }
+
+            },
 
   },
 });

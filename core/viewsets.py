@@ -2,7 +2,7 @@ from requests import Response
 from rest_framework import viewsets
 
 from core.models import Category, CallDetail, District
-from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer
+from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -43,6 +43,11 @@ class TicketViewSet(viewsets.ModelViewSet):
         if search_key:
             self.queryset = self.queryset.filter(phone_number__icontains=search_key)
         return self.queryset
+
+class TicketDetailViewSet(viewsets.ModelViewSet):
+    queryset = CallDetail.objects.all()
+    serializer_class = TickerDetailSerializer
+
 
 
 class DistrictViewSet(viewsets.ModelViewSet):

@@ -15,6 +15,11 @@ class CategorySerializer(serializers.ModelSerializer):
         qs =  obj.sub_categories.all()
         return CategorySerializer(qs, many=True).data
 
+class SingleCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id','name', 'other_properties', 'has_district')
+
 
 class TickerSerializer(serializers.ModelSerializer):
     category_display = serializers.SerializerMethodField()
@@ -46,3 +51,16 @@ class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
         fields = ('id', 'name')
+
+class TickerDetailSerializer(serializers.ModelSerializer):
+    category = SingleCategorySerializer()
+    district = DistrictSerializer()
+
+    class Meta:
+        model = CallDetail
+        fields = ('id','category', 'other_properties', 'user',
+                  'phone_number', 'status','call_time','comment', 'district')
+
+
+
+

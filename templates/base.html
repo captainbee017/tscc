@@ -12,6 +12,7 @@
     <!-- Bootstrap CSS -->
 
     <link rel="stylesheet" href="{% static 'vendor/pnotify/pnotify.custom.min.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'vendor/vue-multiselect/vue-multiselect.min.css' %}" type="text/css" />
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -57,6 +58,8 @@
 <script src="{% static 'vendor/js/moment.min.js' %}"></script>
 <script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
 <script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/vue-multiselect/vue-multiselect.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/vue-multiselect/select2.v.component.js' %}?v=1.0"></script>
 <script type="text/javascript">
     // modal box render
     $('body').on('click', '[data-toggle="modal"]', function () {

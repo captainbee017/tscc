@@ -1,39 +1,40 @@
+{% extends "base.html" %}
+
+
+
 {% load static staticfiles %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" type="text/css" />
+{% block page_title %} New Ticket{% endblock %}
 
-    <!-- Bootstrap CSS -->
+{% block user_detail %}
+    <div class="">
+        <hr width="50%">
+        <p class="text-center small primary-text-color">
+              <a href="{% url 'report' 1 %}" class="pl-3 small">Query Ticket</a> |
+              <a href="{% url 'report' 2 %}" class="pl-3 small">Complain Ticket </a> |
+            <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
+              <span class="pr-3">{{ request.user.username }}</span>|
+              <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
+        </p>
+        <hr>
+    </div>
+{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'vendor/pnotify/pnotify.custom.min.css' %}" type="text/css" />
-
-    <title>TicketReport!</title>
-  </head>
-  <body>
-
-    {% csrf_token %}
+{% block maincontainer %}
+{% csrf_token %}
 
 <div class="container" id="app">
 
 </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{% endblock %}
 
-      <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'vendor/js/vue.js' %}"></script>
-    <script src="{% static 'vendor/js/moment.min.js' %}"></script>
-    <script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
-    <script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
-    <script src="{% static 'js/reports.js' %}?v=1.7"></script>
-
-
-  </body>
-</html>
+{% block js %}
+<script>
+  var rare_settings =  rare_settings || {};
+  rare_settings.ticket_type = {{ticket_type}};
+  rare_settings.can_approve = "{{can_approve}}";
+  rare_settings.can_delete = "{{can_delete}}";
+</script>
+<script src="{% static 'js/reports.js' %}?v=1.13"></script>
+{% endblock %}

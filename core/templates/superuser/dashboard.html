@@ -18,9 +18,10 @@
                             </div>
                             <div class="col-md-8">
                                 <h5 class="card-title primary-text-color">Manage tickets</h5>
-                                <a href="{% url 'manage_tickets' 'query' %}" class="pr-3 small">View Query tickets</a>
-                                <a href="{% url 'manage_tickets' 'complain' %}" class="pl-3 small">View Complain
-                                tickets</a>
+                                <a href="{% url 'new_ticket' 1 %}" class="pr-3 small">New Query tickets</a>
+                                <a href="{% url 'report' 1 %}" class="pr-3 small">View Query tickets</a>
+                                <a href="{% url 'new_ticket' 2 %}" class="pl-3 small">New Complain </a>
+                                <a href="{% url 'report' 2 %}" class="pl-3 small">View Complain tickets</a>
                             </div>
                         </div>
                     </div>
@@ -37,8 +38,8 @@
                             </div>
                             <div class="col-md-8">
                                 <h5 class="card-title primary-text-color">Manage ticket categories </h5>
-                                <a href="" class="pr-3 small">Query</a>
-                                <a href="" class="pl-3 small">Complain </a>
+                                <a href="{% url 'category_settings' 1 %}" class="pl-3 small">Query</a>
+                                <a href="{% url 'category_settings' 2 %}" class="pl-3 small">Complain </a>
                             </div>
                         </div>
                     </div>

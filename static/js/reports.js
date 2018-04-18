@@ -1,13 +1,13 @@
 var app3 = new Vue({
   el: '#app',
   template: `
-  <div>
-    <div class="row" v-show="!show_ticket_form">
-            <div class="col-sm-12">
+  <div class="container">
+    <div class="row mb-2" v-show="!show_ticket_form">
+            <div class="col-sm-6 offset-md-2">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Search for..." v-model="search_key" @change="searchTickets()">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
+                    <button class="btn btn-primary" type="button">Go!</button>
                   </span>
                 </div>
               </div>

@@ -32,6 +32,6 @@ urlpatterns = [
     path('change-password/<username>/', UserChangePasswordView.as_view(), name='change_password'),
     path('deactivate/<username>/', DeactivateCsrView.as_view(), name='deactivate_csr'),
 
-    path('manage-tickets/<ticket_type>/', sv.ManageTickets.as_view(), name='manage_tickets'),
+    # path('manage-tickets/<ticket_type>/', sv.ManageTickets.as_view(), name='manage_tickets'),
 ]
 

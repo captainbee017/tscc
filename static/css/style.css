@@ -40,3 +40,11 @@
     bottom: 20px;
     right: 30px;
 }
+
+.bb-1 {
+    border-bottom: 1px solid;
+}
+
+.pl-10 {
+    padding-left: 4em !important;
+}

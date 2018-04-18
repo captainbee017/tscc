@@ -1,153 +1,182 @@
 var app3 = new Vue({
   el: '#app',
   template: `
-  <div class="container">
-    <div class="row" v-show="show_category_form== true">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div v-show="call_type==1">
+                        <div class="card-header">Query Categories</div>
+                        <div class="card-body p-3">
+                            <div class="row pt-3" v-for="c , index in query_categories">
+                                <div class="col-md-6">
+                                    <p>{{ c.name }}</p>
+                                </div>
+                                <div class="col-md-6 pull-right">
+                                    <a @click="subCategory(c, index)" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-plus-circle"></i> Add sub category
+                                    </a>
+                                    <a @click="detailCategory(c, index)" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </div>
+                                <div v-show="c.branch.length>0" class="col-sm-12">
+                                    <div v-for="c1 , index1 in c.branch " class="row">
+                                        <div class="col-md-6 pl-5">
+                                            <i class="fa fa-arrow-circle-right"></i> {{c1.name}}
+                                        </div>
 
-        <form>
-          <div class="form-group">
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Enter Name Of Category" v-model="category.name">
-            <small id="emailHelp" class="form-text text-muted">Enter Category Name e.g. new Sim.</small>
-          </div>
-          <div class="form-group">
-            <input type="checkbox" class="form-control" id="has_district" aria-describedby="districtHelp"
-            placeholder="Enter Name Of Category" v-model="category.has_district">
-            <small id="districtHelp" class="form-text text-muted">Choose if this form contains district .</small>
-          </div>
-
-          <div class="form-group">
-            <h4> Add New Fields </h4>
-            <table v-show="category.other_properties">
-            <thead>
-                <tr>
-                    <td>   Name      </td>
-                    <td>  &nbsp;  Type      </td>
-                    <td> &nbsp;   Action      </td>
-
-                </tr>
-            </thead>
-            <tr v-for="(v, k) in category.other_properties">
-
-                <td> {{ k }}     </td>
-                <td>  &nbsp; {{ v }}     </td>
-                    <td>  &nbsp;  <a  class="btn btn-xs btn-warning" @click="deleteField(k)">Delete</a>      </td>
-
-            </tr>
-            </table>
-          </div>
-
-        <div class="form-group">
-            <div class="row">
-              <div class="col-sm-4">
-                <label for="key">New Field</label>
-                <input type="text" class="form-control" id="key" placeholder="Type" v-model="property.key">
-              </div>
-
-              <div class="col-sm-4">
-                <label for="val">New Field Type</label>
-                <select class="form-control" v-model="property.value">
-                  <option value="text">Text</option>
-                  <option value="number">Number</option>
-                </select>
-              </div>
-
-              <div class="col-sm-4">
-              <a  class="btn btn-xs btn-info" @click="addField()">Add Field</a>
-              </div>
-
-          </div>
-
-          </div><br>
-
-          <div class="form-group">
-
-            <a  class="btn btn-info" @click="saveCategory()">Save Category</a>
-            <a  class="btn btn-warning" @click="show_category_form=false">Cancel</a>
-
-        </div>
-        </form>
-
-      </div>
-
-      <div class="row" v-show="call_type==1">
-
-          <div class="col-sm-12">
-            <span>Query categories</span>
-          <a @click="newCategory(1)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add Top level Query</a>
-          </div>
-            <div class="col-sm-4" v-for="c , index in query_categories ">
-
-                {{c.name}}
-                <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                <div class="col-sm-12" v-show="c.branch.length>0">
-
-                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
-
-                        {{c1.name}}
-                        <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                        <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                        <div class="col-sm-12" v-show="c1.branch.length>0">
-
-                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
-
-                            {{c2.name}}
-                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-
+                                        <div class="col-md-6 float-xs-right">
+                                            <a @click="subCategory(c1, index1)" title="New Sub Category" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-plus-circle"></i> Add sub category
+                                            </a>
+                                            <a @click="detailCategory(c1, index1)" title="Edit Details" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-12 pt-3 pb-3" v-show="c1.branch.length>0">
+                                            <div class="row">
+                                                <div class="col-sm-9 pl-10" v-for="c2 , index2 in c1.branch">
+                                                    <i class="fa fa-arrow-circle-right"></i> {{c2.name}}
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <a @click="detailCategory(c1, index1)" title="Edit Details" class="btn btn-sm btn-secondary">
+                                                        <i class="fa fa-edit"></i> Edit
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+
+                        <!--<div v-for="c , index in query_categories">
+                            {{c.name}}
+                            <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                            <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                            <div class="col-sm-12" v-show="c.branch.length>0">
+                                <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+                                    {{c1.name}}
+                                    <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                                    <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                    <div class="col-sm-12" v-show="c1.branch.length>0">
+                                        <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+                                            {{c2.name}}
+                                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div v-if="query_categories.length === 0">
+                            <div class="alert alert-warning">No categories</div>
+                        </div>
+                    </div>
+
+                    <div v-show="call_type==2">
+                        <div v-for="c , index in complain_categories">
+                            {{c.name}}
+                            <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                            <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                            <div class="col-sm-12" v-show="c.branch.length>0">
+                                <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+                                    {{c1.name}}
+                                    <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                                    <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                    <div class="col-sm-12" v-show="c1.branch.length>0">
+                                        <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+                                            {{c2.name}}
+                                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="complain_categories.length === 0">
+                            <div class="alert alert-warning">No categories</div>
                         </div>
                     </div>
                 </div>
             </div>
-                <div v-if="query_categories.length === 0">
-                        <div class="alert alert-warning">No categories</div>
-                </div>
-      </div>
-      <div class="clearfix"> </div><br>
-      <div class="row" v-show="call_type==2">
-          <div class="col-sm-12">Complain Categories
-          <a @click="newCategory(2)" class="float-right btn btn-info btn-xs"> <i class="fa fa-plus-circle"></i> Add Top Level Complain</a>
-          </div>
-
-            <div class="col-sm-4 category" v-for="c , index in complain_categories ">
-
-                 {{c.name}}
-                    <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                <div class="col-sm-12" v-show="c.branch.length>0">
-
-                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
-
-                        {{c1.name}}
-                        <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                        <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                        <div class="col-sm-12" v-show="c1.branch.length>0">
-
-                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
-
-                            {{c2.name}}
-                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-
-                            </div>
-                        </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        Add category
                     </div>
+                    <div class="card-body p-3">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                placeholder="Enter Name Of Category" v-model="category.name">
+                                <small id="emailHelp" class="form-text text-muted">Enter Category Name e.g. new Sim.</small>
+                            </div>
+                            <div class="form-check">
+                                <label for="" class="text-muted form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="has_district" aria-describedby="districtHelp"
+                                    placeholder="Enter Name Of Category" v-model="category.has_district">
+                                    Choose if this form contains district
+                                </label>
+                            </div>
 
+                            <div class="form-group">
+                                <strong> Additional form fields</strong>
+                                <table class="table">
+                                    <tr>
+                                        <td>New Field</td>
+                                        <td>Field Type</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control" id="key" placeholder="Type" v-model="property.key">
+                                        </td>
+                                        <td>
+                                            <select class="form-control" v-model="property.value">
+                                                <option value="text">Text</option>
+                                                <option value="number">Number</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-info text-white" @click="addField()"><i class="fa fa-plus-circle"></i> Add</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
+                            <div class="form-group">
 
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Type</td>
+                                            <td><i class="fa fa-cogs"></i></td>
+                                        </tr>
+                                    </thead>
+                                    <tr v-for="(v, k) in category.other_properties">
+                                        <td> {{ k }}     </td>
+                                        <td>  &nbsp; {{ v }}     </td>
+                                        <td>  &nbsp;  <a  class="btn btn-sm btn-danger text-white" @click="deleteField(k)">
+                                            <i class="fa fa-trash"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group">
+                                <a  class="btn btn-success text-white" @click="saveCategory()">Save Category</a>
+                                <a  class="btn btn-warning text-white" @click="show_category_form=false">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div v-if="complain_categories.length === 0">
-                    <div class="alert alert-warning">No categories</div>
             </div>
         </div>
-      </div>
-
-
-
-  </div>
-</div>
-</div>
+    </div>
 
   `,
 

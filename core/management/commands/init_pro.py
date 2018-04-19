@@ -16,8 +16,8 @@ class Command(BaseCommand):
 		user, created = User.objects.get_or_create(username="superuser", is_active=True)
 		if not created:
 			print("Superuser already exists")
-			return
 		user.set_password('hellonepal')
+		user.save()
 		UserRole.objects.get_or_create(user=user, user_role='Superuser')
 		print("User Created. Login to explore !!!")
 		print("Username: superuser")

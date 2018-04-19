@@ -76,10 +76,36 @@ var app3 = new Vue({
                     </div>
 
                     <div v-show="call_type==2">
-                        <div v-for="c , index in complain_categories">
-                            {{c.name}}
-                            <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                            <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                        <div class="card-header">Complain Categories</div>
+                        <div class="card-body p-3">
+                            <div class="row pt-3" v-for="c , index in complain_categories">
+                                <div class="col-md-6">
+                                    {{c.name}}                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <a @click="subCategory(c, index)" title="New Sub Category" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-plus-circle"></i> Add sub category
+                                    </a>
+                                    <a @click="detailCategory(c, index)" title="Edit Details" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                </div>
+                                <div class="col-sm-12" v-show="c.branch.length>0">
+                                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+                                        {{c1.name}}
+                                        <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
+                                        <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                        <div class="col-sm-12" v-show="c1.branch.length>0">
+                                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+                                                {{c2.name}}
+                                                <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div v-for="c , index in complain_categories">
                             <div class="col-sm-12" v-show="c.branch.length>0">
                                 <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
                                     {{c1.name}}
@@ -93,7 +119,7 @@ var app3 = new Vue({
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <div v-if="complain_categories.length === 0">
                             <div class="alert alert-warning">No categories</div>
                         </div>

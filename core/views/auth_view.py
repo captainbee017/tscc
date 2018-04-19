@@ -9,6 +9,7 @@ from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
+from core.models import CallDetail
 from core.forms import UserSignupForm, SUPasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordChangeView
@@ -29,6 +30,13 @@ class UserDashboardView(LoginRequiredMixin, TemplateView):
 
     def get_template_names(self):
         return '{}/dashboard.html'.format(self.user_role)
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+
+        ctx['query_tickets'] = CallDetail.objects.filter(category__call_type=1).select_related('category').count()
+        ctx['complain_tickets'] = CallDetail.objects.filter(category__call_type=2).select_related('category').count()
+        return ctx
 
 
 class UserChangePasswordView(FormView):

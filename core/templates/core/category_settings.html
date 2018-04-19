@@ -6,22 +6,11 @@
 {% block page_title %}
     <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
     <i class="fa fa-chevron-right"></i>
-    <span class="breadcrumb-active">Manage query categories</span>
+    <span class="">Manage categories</span>
+    <i class="fa fa-chevron-right"></i>
+    <span class="breadcrumb-active">{% if ticket_type == "1" %}Query{% else %}Complain{% endif %}</span>
 {% endblock %}
 
-{% block user_detail %}
-    <div class="">
-        <hr width="50%">
-        <p class="text-center small primary-text-color">
-              <a href="{% url 'category_settings' 1 %}" class="pl-3 small">Query Category</a> |
-              <a href="{% url 'category_settings' 2 %}" class="pl-3 small">Complain Category </a> |
-              <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
-              <span class="pr-3">{{ request.user.username }}</span>|
-              <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
-        </p>
-        <hr>
-    </div>
-{% endblock %}
 
 {% block maincontainer %}
 {% csrf_token %}

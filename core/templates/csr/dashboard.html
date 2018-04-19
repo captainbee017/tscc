@@ -5,26 +5,22 @@
 
 
 {% block maincontainer %}
-
-<div class="row m-40">
+<br><br><br><br>
+<div class="row">
     <div class="offset-md-3 col-md-4 ">
-        <button class="btn bg-primary text-white btn-lg">
-            <a href="" class="text-white">ADD QUERY</a></button>
+            <a href="{% url 'new_ticket' 1 %}" class="text-white btn bg-primary btn-lg p-5">
+                <i class="fa fa-plus-circle"></i> ADD QUERY</a>
     </div>
     <div class="col-md-4">
-        <button class="btn bg-primary text-white btn-lg">
-            <a href="" class="text-white">ADD COMPLAIN</a></button>
+        <a href="{% url 'new_ticket' 2 %}" class="text-white btn bg-primary btn-lg p-5">
+            <i class="fa fa-plus-circle"></i> ADD COMPLAIN</a>
     </div>
 </div>
-<div class="row m-5">
-       <div class="col-md-3 offset-md-1 b-r">
-           <div class="card-title text-center"><a href="">View Queries</a></div>
-       </div>
-    <div class="col-md-3 b-r">
-        <div class="card-title text-center"><a href="">View Complains</a></div>
-    </div>
-    <div class="col-md-3">
-        <div class="card-title text-center"><a href="{% url 'account_logout' %}">Logout</a></div>
+<br><br><br><br>
+<div class="col-sm-12">
+    <div class="text-center">
+        <a href="{% url 'report' 1 %}" class="h4 pr-5">Query Tickets <span class="badge badge-success">{{ query_tickets }}</span></a>
+        <a href="{% url 'report' 2 %}" class="h4 pl-5">Complain Tickets <span class="badge badge-primary">{{ complain_tickets }}</span></a>
     </div>
 </div>
 

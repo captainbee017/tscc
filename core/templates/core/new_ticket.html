@@ -6,6 +6,7 @@
 
 {% block page_title %} New Ticket{% endblock %}
 
+{% comment %}
 {% block user_detail %}
     <div class="">
         <hr width="50%">
@@ -19,6 +20,7 @@
         <hr>
     </div>
 {% endblock %}
+{% endcomment %}
 
 {% block maincontainer %}
 {% csrf_token %}

@@ -174,7 +174,6 @@ REST_FRAMEWORK = {
 
 
 try:
-    from local_settings import *
-except ImportError:
-    print("failed")
+    from .local_settings import *
+except Exception as e:
     pass

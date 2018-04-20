@@ -1,6 +1,6 @@
-import os
-import settings
-
+# import os
+# import settings
+#
 
 DATABASES = {
     'default': {

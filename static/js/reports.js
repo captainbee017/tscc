@@ -23,10 +23,10 @@ var app3 = new Vue({
           </div>
 
 
-          <div class="form-group" v-for="(k, v) in ticket.other_properties">
+          <div class="form-group" v-for="(k, v) in other_properties">
             <label >{{v}}</label>
             <input type="text" class="form-control"
-            placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
+            placeholder=""  v-bind:id="v"  v-bind:ref="v" v-bind:value="k"  @change="formHandler(v)">
           </div>
 
           <div class="form-group" v-show="has_district">
@@ -387,9 +387,18 @@ var app3 = new Vue({
     ticket: function (newVal, oldVal) {
                 var self = this;
                 if (newVal) {
+                console.log(newVal.category.other_properties);
                     Object.keys(newVal.category.other_properties).forEach(function(key,index) {
 
-                    self.other_properties[key] = "";
+                    if(newVal.other_properties.hasOwnProperty(key)){
+                        self.other_properties[key] = newVal.other_properties[key];
+
+                    }else{
+                        self.other_properties[key] = "";
+                    }
+
+
+
 
 
                 });

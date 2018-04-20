@@ -44,10 +44,10 @@ class TicketViewSet(viewsets.ModelViewSet):
             self.queryset = self.queryset.filter(phone_number__icontains=search_key)
         return self.queryset
 
+
 class TicketDetailViewSet(viewsets.ModelViewSet):
     queryset = CallDetail.objects.all()
     serializer_class = TickerDetailSerializer
-
 
 
 class DistrictViewSet(viewsets.ModelViewSet):

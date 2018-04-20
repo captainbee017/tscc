@@ -45,6 +45,16 @@ var app3 = new Vue({
             <textarea v-model="ticket.comment" placeholder="add Comment" rows="3"></textarea>
           </div>
 
+          <div class="form-group">
+          <label for="status">Status</label>
+            <select v-model="ticket.status">
+              <option disabled value="Pending">Please Select Status</option>
+              <option>Pending</option>
+              <option>Inprogress</option>
+              <option>Completed</option>
+            </select>
+          </div>
+
            <div class="form-group">
 
             <a  class="btn btn-primary" @click="saveTicket()">Update Ticket</a>
@@ -67,8 +77,8 @@ var app3 = new Vue({
       <th scope="col">Datas</th>
       <th scope="col">Status</th>
       <th scope="col">Comment</th>
-      <th scope="col" colspan="2" v-show="can_approve">Change Status</th>
-      <th scope="col" v-show="can_delete">Actions</th>
+      <th scope="col" v-show="can_approve">Edit</th>
+      <th scope="col" v-show="can_delete">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -85,10 +95,8 @@ var app3 = new Vue({
       </td>
       <td>{{t.status}}</td>
       <td>{{t.comment}}</td>
-      <td><a v-show="can_approve && t.status=='Pending'" @click="setInProgress(t)">set in Progress</a></td>
-      <td><a v-show="can_approve && t.status=='Inprogress'" @click="setCompleted(t)">set Completed</a></td>
-      <td><a v-show="can_approve" @click="editTicket(t)">Edit</a></td>
-      <td><a v-show="can_delete" @click="deleteTicket(t)">Delete</a></td>
+      <td><a title="Edit" v-show="can_approve" @click="editTicket(t)"><i class="fa fa-edit"></i></a></td>
+      <td><a title="Delete" v-show="can_delete" @click="deleteTicket(t)"><i class="fa fa-trash"></i></a></td>
     </tr>
     </tbody>
     </table>
@@ -198,11 +206,13 @@ var app3 = new Vue({
             ticket.id = self.ticket.id;
             ticket.district = self.district;
             ticket.comment = self.comment;
+            ticket.status = self.ticket.status;
             ticket.other_properties = self.other_properties;
 
 
 
             function successUpdateCallback(response) {
+            console.log(response);
                 new PNotify({
                     title: 'ticket Updated',
                     text: 'ticket ' + response.body.phone_number + ' Updated'
@@ -216,6 +226,7 @@ var app3 = new Vue({
                 }
                 console.log(category_index);
                 Vue.set(self.tickets, category_index, response.body);
+                self.show_ticket_form = false;
 
             }
 

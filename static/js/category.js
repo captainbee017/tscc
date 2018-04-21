@@ -18,7 +18,7 @@ var app3 = new Vue({
                                 </div>
                                 <div class="col-md-6">
                                     <a @click="subCategory(c, index)" title="New Sub Category" class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-plus-circle"></i> Add Sub category
+                                        <i class="fa fa-plus-circle"></i> Add
                                     </a>
                                     <a @click="detailCategory(c, index)" title="Edit Details" class="btn btn-sm btn-secondary">
                                         <i class="fa fa-edit"></i> Edit
@@ -27,15 +27,15 @@ var app3 = new Vue({
                                 <div class="col-sm-12" v-show="c.branch.length>0">
                                     <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
                                         {{c1.name}}
-                                        <a class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> Add Sub Category </a>
+                                        <a class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> Add </a>
                                         <a class="btn btn-sm btn-secondary" @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i>Edit </a>
                                         <div class="col-sm-12" v-show="c1.branch.length>0">
-                                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
-                                            {{c2.name}}
-                                                <a class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)" title="New Sub Category"><i class="fa fa-plus"></i>Add Sub Category </a>
+                                            <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
+                                            <span>{{c2.name}}</span>
+                                                <a class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)" title="New Sub Category"><i class="fa fa-plus"></i>Add</a>
                                                 <a class="btn btn-sm btn-secondary" @click="detailCategory(c2, index2)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
                                                         <div class="col-sm-12" v-show="c2.branch.length>0">
-                                                    <div class="col-sm-6" v-for="c3 , index3 in c2.branch ">
+                                                    <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
                                                         {{c3.name}}
                                                         <a class="btn btn-sm btn-secondary" @click="detailCategory(c3, index1)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
                                                     </div>
@@ -50,7 +50,7 @@ var app3 = new Vue({
                         <!--<div v-for="c , index in query_categories">
                             {{c.name}}
                             <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                            <a @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                            <a  @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
                             <div class="col-sm-12" v-show="c.branch.length>0">
                                 <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
                                     {{c1.name}}
@@ -59,7 +59,7 @@ var app3 = new Vue({
                                     <div class="col-sm-12" v-show="c1.branch.length>0">
                                         <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
                                             {{c2.name}}
-                                            <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
+                                            <a  @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
                                         </div>
                                     </div>
                                 </div>
@@ -81,27 +81,27 @@ var app3 = new Vue({
                                     {{c.name}}
                                 </div>
                                 <div class="col-md-6">
-                                    <a @click="subCategory(c, index)" title="New Sub Category" class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-plus-circle"></i> Add sub category
+                                    <a title="Add sub category" @click="subCategory(c, index)" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-plus-circle"></i> Add
                                     </a>
-                                    <a @click="detailCategory(c, index)" title="Edit Details" class="btn btn-sm btn-secondary">
+                                    <a title="edit" @click="detailCategory(c, index)" class="btn btn-sm btn-secondary">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
                                 </div>
                                 <div class="col-sm-12" v-show="c.branch.length>0">
-                                    <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
+                                    <div class="col-sm-12" v-for="c1 , index1 in c.branch ">
                                         {{c1.name}}
-                                        <a class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> Add Sub Category</a>
-                                        <a class="btn btn-sm btn-secondary" @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
+                                        <a title="Add sub category" class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" ><i class="fa fa-plus"></i> Add</a>
+                                        <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c1, index1)"><i class="fa fa-edit"></i> Edit</a>
                                         <div class="col-sm-12" v-show="c1.branch.length>0">
-                                            <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
+                                            <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
                                             {{c2.name}}
-                                                <a class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)" title="New Sub Category"><i class="fa fa-plus"></i> Add Sub Category</a>
-                                                <a class="btn btn-sm btn-secondary" @click="detailCategory(c2, index2)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
+                                                <a title="Add sub category" class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)"><i class="fa fa-plus"></i> Add </a>
+                                                <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c2, index2)"><i class="fa fa-edit"></i> Edit</a>
                                                         <div class="col-sm-12" v-show="c2.branch.length>0">
-                                                    <div class="col-sm-6" v-for="c3 , index3 in c2.branch ">
+                                                    <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
                                                         {{c3.name}}
-                                                        <a class="btn btn-sm btn-secondary" @click="detailCategory(c3, index1)" title="Edit Details"><i class="fa fa-edit"></i>Edit </a>
+                                                        <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c3, index1)" ><i class="fa fa-edit"></i>Edit </a>
                                                     </div>
                                                 </div>
                                             </div>

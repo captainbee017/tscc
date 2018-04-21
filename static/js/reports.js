@@ -48,7 +48,6 @@ var app3 = new Vue({
           <div class="form-group">
           <label for="status">Status</label>
             <select v-model="ticket.status">
-              <option disabled value="Pending">Please Select Status</option>
               <option>Pending</option>
               <option>Inprogress</option>
               <option>Completed</option>
@@ -190,8 +189,6 @@ var app3 = new Vue({
                     'X-CSRFToken': csrf
                 }
             };
-        var ticket = {};
-        ticket.category = self.ticket.category.id;
         if(self.ticket.phone_number.length <1){
 
          new PNotify({
@@ -202,12 +199,17 @@ var app3 = new Vue({
                         return
 
       }
-            ticket.phone_number = self.ticket.phone_number;
-            ticket.id = self.ticket.id;
-            ticket.district = self.district;
-            ticket.comment = self.comment;
-            ticket.status = self.ticket.status;
-            ticket.other_properties = self.other_properties;
+              self.ticket.category = self.ticket.category.id;
+
+
+            if(self.ticket.district.hasOwnProperty("id")){
+                self.ticket.district = self.ticket.district.id;
+
+            }else{
+
+                self.ticket.district = "";
+            }
+            self.ticket.other_properties = self.other_properties;
 
 
 
@@ -231,7 +233,6 @@ var app3 = new Vue({
             }
 
             function errorCallback(response) {
-            console.log(response);
 
                 if (response.body.error) {
 
@@ -250,9 +251,8 @@ var app3 = new Vue({
 
                 }
             }
-            console.log(ticket);
 
-                self.$http.put('/core/ticket/'+ ticket.id +'/',ticket, options).then(successUpdateCallback, errorCallback);
+                self.$http.put('/core/ticket/'+ self.ticket.id +'/', self.ticket, options).then(successUpdateCallback, errorCallback);
 
 
 

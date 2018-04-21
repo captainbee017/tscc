@@ -1,5 +1,11 @@
 Vue.use(VueMultiselect);
 
+Vue.directive('focus', {
+    bind: function () {
+        this.el.focus();
+    }
+});
+
 var app3 = new Vue({
   el: '#app',
   template: `
@@ -14,7 +20,7 @@ var app3 = new Vue({
                 <hr width="60%">  
             </div>
             
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div v-for="c in categories">
                     <a @click="categoryForm(c)" class="h4">{{c.name}}<br/></a>
                     <div class="" v-show="c.branch.length>0">
@@ -29,13 +35,44 @@ var app3 = new Vue({
                         </div>
                     </div>
                 </div>
+            </div> -->
+
+            <div class="card-body p-3">
+                            <div class="row pt-3" v-for="c , index in categories">
+                                <div class="col-md-6">
+                                    {{c.name}}
+                                </div>
+                                <div class="col-md-6">
+                                    <a title="Select Category " @click="categoryForm(c)">
+                                        <i class="fa fa-check"></i> Choose
+                                    </a>
+                                </div>
+                                <div class="col-sm-12" v-show="c.branch.length>0">
+                                    <div class="col-sm-12" v-for="c1 , index1 in c.branch ">
+                                        {{c1.name}}
+                                        <a title="Select Category" class="btn btn-sm btn-secondary" @click="categoryForm(c1)" ><i class="fa fa-check"></i> Choose</a>
+                                        <div class="col-sm-12" v-show="c1.branch.length>0">
+                                            <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
+                                            {{c2.name}}
+                                                <a title="Select category" class="btn btn-sm btn-secondary" @click="categoryForm(c2)"><i class="fa fa-check"></i> Choose </a>
+                                                        <div class="col-sm-12" v-show="c2.branch.length>0">
+                                                    <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
+                                                        {{c3.name}}
+                                                        <a title="Select category" class="btn btn-sm btn-secondary" @click="categoryForm(c3)"><i class="fa fa-check"></i> Choose </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
             </div>
 
             <div class="col-sm-6" v-show="category">
                 <form>
                     <div class="form-group">
                         <label for="phone_number">Phone</label>
-                        <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp" placeholder="Enter Phone" v-model="phone_number">
+                        <input type="text" ref="phone_number" class="form-control" id="phone_number" aria-describedby="emailHelp" placeholder="Enter Phone" v-model="phone_number">
                         <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
                     </div>
 
@@ -129,6 +166,7 @@ var app3 = new Vue({
             var self = this;
             self.category = val;
             self.show_categories = false;
+            self.$nextTick(() => self.$refs.phone_number.focus())
 
         },
         changeCategory: function(){

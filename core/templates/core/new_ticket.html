@@ -4,7 +4,13 @@
 
 {% load static staticfiles %}
 
-{% block page_title %} New Ticket{% endblock %}
+{% block page_title %}
+  <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+  <i class="fa fa-chevron-right"></i>
+  <span class="">New ticket</span>
+  <i class="fa fa-chevron-right"></i>
+  <span class="breadcrumb-active">{% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} </span>
+{% endblock %}
 
 {% comment %}
 {% block user_detail %}

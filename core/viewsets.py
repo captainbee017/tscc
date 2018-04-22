@@ -1,8 +1,14 @@
 from requests import Response
 from rest_framework import viewsets
 
-from core.models import Category, CallDetail, District
-from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer
+from core.models import Category, CallDetail, District, TypeOption
+from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer, \
+    TypeSerializer
+
+
+class TypeViewSet(viewsets.ModelViewSet):
+    queryset = TypeOption.objects.all().order_by('name')
+    serializer_class = TypeSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

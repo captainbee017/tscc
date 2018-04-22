@@ -145,10 +145,38 @@ var app3 = new Vue({
                             </div>
                             <div class="form-check">
                                 <label for="" class="text-muted form-check-label">
-                                    <input type="checkbox" class="form-check-input" id="has_district" aria-describedby="districtHelp"
-                                    placeholder="Enter Name Of Category" v-model="category.has_district">
+                                    <input type="checkbox" class="form-check-input" id="has_district" v-model="category.has_district">
                                     Choose if this form contains district
                                 </label>
+                            </div>
+                            <div class="form-check">
+                                <label for="" class="text-muted form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="has_type"  v-model="has_type">
+                                    Choose if this form contains Type Option
+                                </label>
+                            </div>
+                            <div class="form-group" v-show="show_type_form">
+                                <label for="typeform" class="type_form">
+                                    New Type Option
+                                </label>
+                                <input type="text" class="form-control" id="typeform" aria-describedby="typeHelp"
+                                placeholder="Enter Name Of Option" v-model="option_name">
+
+                                 <a class="btn btn-xs btn-info text-white" @click="saveOption()"><i class="fa fa-plus-save"></i> Save</a>
+
+                            </div>
+
+                            <div class="form-group" v-show="has_type">
+                                        <label for="types">Type Options</label>
+                                        <vselect :options="type_options" label="name" :value="'[]'" v-model="category.types" :allow-empty="true" :loading="loading"
+                                             :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select Types'" :multiple=false track-by="id" :hide-selected="true">
+                                            <template slot="noResult">NO Types Available</template>
+                                            <template slot="afterList" slot-scope="props">
+                                            <div  class="wrapper-sm bg-danger">
+                                            <a title="click to add New TYpe" @click="addType()"><i class="fa fa-plus-circle"></i> Add</a>
+                                            </div></template>
+                                        </vselect>
+
                             </div>
 
                             <div class="form-group">
@@ -161,7 +189,7 @@ var app3 = new Vue({
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control" id="key" placeholder="Type" v-model="property.key">
+                                            <input type="text" class="form-control" id="key" placeholder="Field Name" v-model="property.key">
                                         </td>
                                         <td>
                                             <select class="form-control" v-model="property.value">
@@ -214,9 +242,16 @@ var app3 = new Vue({
   data: {
     seen: true,
     categories: [],
+    types: [],
+    type_options: [],
+    loading :false,
     show_category_form :false,
+    show_type_form :false,
+    has_type :false,
+    option_name :"",
     call_type: rare_settings.ticket_type,
-    category :{'name':'', 'call_type':rare_settings.ticket_type,'other_properties':{}, 'has_district':true},
+    category :{'name':'', 'call_type':rare_settings.ticket_type,'other_properties':{}, 'has_district':true,
+     'has_type':false, 'types':[]},
     property: {'key':'', 'val':''},
   },
   methods:{
@@ -233,12 +268,37 @@ var app3 = new Vue({
             }
             self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
       },
+      loadTypes: function(){
+            var self = this;
+            var options = {};
+
+            function successCallback(response) {
+                self.types = response.body;
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get('/core/types/', {params:  options}).then(successCallback, errorCallback);
+      },
       newCategory: function(val){
           var self = this;
           self.show_category_form = true;
-          self.category = {'name':'', 'call_type':self.call_type,'other_properties':{},  'has_district':true}
+          self.category = {'name':'', 'call_type':self.call_type,'other_properties':{},  'has_district':true,
+            'has_type':false, 'types':[]}
 
 
+      },
+      addType: function (){
+      var self = this;
+        self.show_type_form = true;
+        self.option_name = "";
+      },
+
+    saveOption: function (){
+      var self = this;
+        self.show_type_form = true;
+        self.option_name = "";
       },
       addField : function(){
       var self = this;
@@ -383,6 +443,7 @@ var app3 = new Vue({
                 return filtered;
             },
     },
+    components: {'vselect': VueMultiselect.default},
   created() {
       var self = this;
       self.loadDatas();

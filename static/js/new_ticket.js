@@ -37,8 +37,8 @@ var app3 = new Vue({
                 </div>
             </div> -->
 
-            <div class="card-body p-3">
-                            <div class="row pt-3" v-for="c , index in categories">
+            <div class="col-sm-8 ">
+                            <div class="row pt-3 main-category" v-for="c , index in categories">
                                 <div class="col-md-6">
                                     {{c.name}}
                                 </div>
@@ -68,7 +68,7 @@ var app3 = new Vue({
                             </div>
             </div>
 
-            <div class="col-sm-6" v-show="category">
+            <div class="col-sm-4" v-show="category">
                 <form>
                     <div class="form-group">
                         <label for="phone_number">Phone</label>

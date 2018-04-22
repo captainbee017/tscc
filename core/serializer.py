@@ -1,15 +1,23 @@
 from rest_framework import serializers
 
-from core.models import Category, CallDetail, District
+from core.models import Category, CallDetail, District, TypeOption
 from rest_framework.fields import CurrentUserDefault
+
+
+class TypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TypeOption
+        fields = ('id', 'name')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     branch = serializers.SerializerMethodField()
+    # types = TypeSerializer()
 
     class Meta:
         model = Category
-        fields = ('id','name', 'call_type', 'other_properties', 'parent', 'branch', 'has_district')
+        fields = ('id','name', 'call_type', 'other_properties', 'parent', 'branch', 'has_district', 'has_type', 'types',)
 
     def get_branch(self, obj):
         qs =  obj.sub_categories.all()

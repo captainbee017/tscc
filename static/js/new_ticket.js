@@ -268,7 +268,7 @@ var app3 = new Vue({
 
                 }
             }
-            console.log(ticket);
+//            console.log(ticket);
 
                 self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
 

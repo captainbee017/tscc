@@ -40,6 +40,17 @@ var app3 = new Vue({
 
         </div>
 
+          <div class="form-group" v-show="has_type">
+            <label for="type">Type</label>
+            <vselect :options="type_options" label="name" :value="''" v-model="ticket.types" :allow-empty="true" :loading="loading"
+                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
+                <template slot="noResult">NO Types Available</template>
+                <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
+                No Types</div></template>
+            </vselect>
+
+        </div>
+
           <div class="form-group">
             <label for="exampleInputEmail1">Comment</label>
             <textarea v-model="ticket.comment" placeholder="add Comment" rows="3"></textarea>
@@ -113,6 +124,7 @@ var app3 = new Vue({
     tickets: [],
     ticket: [],
     districts: [],
+    type_options: [],
     categories: [],
     category: '',
     phone_number: '',
@@ -124,11 +136,25 @@ var app3 = new Vue({
     show_ticket_form :false,
     other_properties:{},
     has_district: false,
+    has_type: false,
     call_type: rare_settings.ticket_type,
     can_approve: rare_settings.can_approve,
     can_delete: rare_settings.can_delete,
   },
   methods:{
+    loadTagFromArray: function (tags){
+        if(!tags || tags=="null") return ''
+        var tags_array = '';
+        var self = this;
+        for (var i = 0; i < self.type_options.length; i++) {
+                if (tags == self.type_options[i].id) {
+                    tags_array = (self.type_options[i]);
+                }
+            }
+
+            return tags_array;
+
+    },
             formHandler: function(key){
                     var self = this;
                     console.log(key);
@@ -208,6 +234,13 @@ var app3 = new Vue({
             }else{
 
                 self.ticket.district = "";
+            }
+            if(self.ticket.types.hasOwnProperty("id")){
+                self.ticket.types = self.ticket.types.id;
+
+            }else{
+
+                self.ticket.types = "";
             }
             self.ticket.other_properties = self.other_properties;
 
@@ -414,6 +447,9 @@ var app3 = new Vue({
 
                 });
                     self.has_district = newVal.category.has_district;
+                    self.has_type = newVal.category.has_type;
+                    self.type_options = newVal.category.type_options;
+                    self.ticket.types = self.loadTagFromArray(newVal.types);
                 }else{
                     self.other_properties = {};
                 }

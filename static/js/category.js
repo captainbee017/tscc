@@ -435,6 +435,7 @@ var app3 = new Vue({
 
             function successCallback(response) {
             self.show_category_form = false;
+            self.show_type_form = false;
             self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{},
                         'has_district':true, 'has_type':false, 'types':[]}
                 new PNotify({
@@ -449,6 +450,7 @@ var app3 = new Vue({
             }
             function successUpdateCallback(response) {
             self.show_category_form = false;
+            self.show_type_form = false;
             self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{}, 'has_district':true,
                                 'has_type':true, 'types':[]
                                  };
@@ -498,7 +500,6 @@ var app3 = new Vue({
             }
 
 
-
       },
       detailCategory: function(c, index){
         var self = this;
@@ -511,7 +512,7 @@ var app3 = new Vue({
       subCategory: function(c, index){
         var self = this;
         self.category = {'name':'', 'call_type':self.call_type,'other_properties':{}, parent:c.id, 'has_district':true,
-         'has_type':true, 'types':[]};
+         'has_type':false, 'types':[]};
         self.show_category_form = true;
       },
 

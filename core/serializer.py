@@ -23,6 +23,15 @@ class CategorySerializer(serializers.ModelSerializer):
         qs =  obj.sub_categories.all()
         return CategorySerializer(qs, many=True).data
 
+
+class MainCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ('id','name')
+
+
+
 class SingleCategorySerializer(serializers.ModelSerializer):
     type_options = serializers.SerializerMethodField()
 

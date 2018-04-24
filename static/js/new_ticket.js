@@ -7,34 +7,35 @@ Vue.directive('focus', {
 });
 
 var app3 = new Vue({
-  el: '#app',
-  template: `
-    <div class="px-5">
+    el: '#app',
+    template: `
+        <div class="px-5">
         <div class="row">
-            <!-- <div class="col-sm-12" v-show="categories.length>0">
-                <div v-show="!category" v-if="call_type===1" class="text-center h4"> Select Query </div>
-                <div v-show="!category" v-if="call_type===2" class="text-center h4"> Select Complains </div>
-                <div v-show="category" class="text-center"><h4>{{category.name}}</h4>
-                    
-                </div>
-                <hr width="60%">  
-            </div> -->
-
             <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-3" v-for="c in categories">
-                        <div class="dropdown">
-                            <h4 class="my-3" data-toggle="dropdown" @click="categoryForm(c)">
-                                {{ c.name }} </h4>
-                            <div class="dropdown-menu" v-show="c.branch.length>0">
-                                <p @click="categoryForm(c1)" class="dropdown-item py-2" v-for="c1 , index1 in c.branch">{{ c1.name }}</p>
+                <div class="row align-items-start">
+                    <div class="col-sm-2 card mx-3 my-2" v-for="c in categories">
+                        <div class="card-body" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                            <div class="header parent-category">
+                                <p class="my-2" @click="categoryForm(c)">
+                                    {{ c.name }}
+                                    <span><i v-show="c.branch.length > 0" class="fa fa-chevron-down float-right mb-0"></i></span>
+                                </p>
+                            </div>
+                            <div class="sub-category" v-bind:class="[active, ]" v-for="c1 , index1 in c.branch" 
+                                v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                                <p class="ml-3">
+                                    <a @click="categoryForm(c1)" class="py-2">
+                                        {{ c1.name }}
+                                    </a>
+                                </p>
+                                <p class="ml-5" v-show="c1.branch.length>0" v-for="c2, index in c1.branch">
+                                    <a @click="categoryForm(c2)" class="submenu-item">{{ c2.name }}</a>
+                                </p>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
-            
             <!-- <div class="col-md-6">
                 <div v-for="c in categories">
                     <a @click="categoryForm(c)" class="h4">{{c.name}}<br/></a>
@@ -51,7 +52,6 @@ var app3 = new Vue({
                     </div>
                 </div>
             </div> -->
-
             <!-- <div class="p-3">
                 <div class="row pt-3" v-for="c , index in categories">
                     <div class="col-md-6">
@@ -82,66 +82,87 @@ var app3 = new Vue({
                     </div>
                 </div>
             </div> -->
-
             <div class="col-sm-12" v-show="category">
-                <hr width="70%">
-                <form class="offset-md-3 col-sm-6">
-                    <div class="form-group">
-                        <label for="phone_number">Phone</label>
-                        <input type="text" ref="phone_number" class="form-control" id="phone_number" aria-describedby="emailHelp" placeholder="Enter Phone" v-model="phone_number">
-                        <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
+                <hr width="100%">
+                <h3 class="category-header py-3"></h3>
+                <form class="">
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <input type="text" placeholder="Phone Number" ref="phone_number" 
+                            class="form-control" id="phone_number" v-model="phone_number">
+                            <!-- <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small> -->
                     </div>
-
-
-                    <div class="form-group" v-for="(k, v) in category.other_properties">
-                        <label >{{v}}</label>
-                        <input type="text" class="form-control" placeholder=""  v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
+                    <div class="form-group col-sm-3" v-for="(k, v) in category.other_properties">
+                        <input type="text" class="form-control" placeholder="" 
+                            v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
                     </div>
-
-                    <div class="form-group" v-show="has_district">
-                        <label for="district">District</label>
+                    <div class="form-group col-sm-3" v-show="has_district">
                         <vselect :options="districts" label="name" :value="''" v-model="district" :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
                             <template slot="noResult">NO Districts Available</template>
                             <template slot="afterList" slot-scope="props">
                                 <div v-show="districts.length==0" class="wrapper-sm bg-danger">No Districts</div>
                             </template>
                         </vselect>
-
                     </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Comment</label>
-                        <textarea v-model="comment" placeholder="add Comment" rows="3" class="form-control"></textarea>
+                    <div class="form-group col-sm-4">
+                        <textarea v-model="comment" placeholder="Add Comment" rows="1" class="form-control"></textarea>
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-group col align-self-end">
                         <a  class="btn btn-primary text-white" @click="saveTicket()">Save Ticket</a>
                     </div>
+                </div>
                 </form>
             </div>
         </div>
-    </div>
+        </div>
+    `,
+    data: {
+        call_type: rare_settings.ticket_type,
+        categories: [],
+        category: '',
+        phone_number: '',
+        comment: '',
+        loading: false,
+        show_category_form :false,
+        show_categories :false,
+        other_properties:{},
+        has_district: true,
+        district: '',
+        districts: [],
+        active: false,
+    },
+    methods:{
 
+        mouseOver: function (ev){
+            $(ev.currentTarget).children('.sub-category').removeClass('show');
+            $(ev.currentTarget).children('.sub-category').removeClass('hide');
+            $(ev.currentTarget).children('.sub-category').addClass('show');
 
-  `,
+            // set color
+            $(ev.currentTarget).removeClass('primary-text-color');
+            $(ev.currentTarget).addClass('primary-text-color');
 
-  data: {
-    call_type: rare_settings.ticket_type,
-    categories: [],
-    category: '',
-    phone_number: '',
-    comment: '',
-    loading: false,
-    show_category_form :false,
-    show_categories :false,
-    other_properties:{},
-    has_district: true,
-    district: '',
-    districts: [],
+            // set box border
+            $(ev.currentTarget).parent('.card').removeClass('box-shadow');
+            $(ev.currentTarget).parent('.card').addClass('box-shadow');
 
-  },
-  methods:{
-      loadDatas: function(){
+            $(ev.currentTarget).parent('.card').removeClass('zi');
+            $(ev.currentTarget).parent('.card').addClass('zi');
+
+        },
+
+        mouseLeave: function(ev){
+            $(ev.currentTarget).children('.sub-category').removeClass('hide');
+            $(ev.currentTarget).children('.sub-category').removeClass('show');
+            $(ev.currentTarget).children('.sub-category').addClass('hide');
+            
+            $(ev.currentTarget).removeClass('primary-text-color');
+            $(ev.currentTarget).parent('.card').removeClass('box-shadow');
+
+            $(ev.currentTarget).parent('.card').removeClass('zi');
+        },
+
+        loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};
 
@@ -153,8 +174,8 @@ var app3 = new Vue({
                 console.log('failed');
             }
             self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
-      },
-      loadDistricts: function(){
+        },
+        loadDistricts: function(){
             var self = this;
             var options = {};
             self.loading = true;
@@ -169,13 +190,13 @@ var app3 = new Vue({
                 console.log('failed');
             }
             self.$http.get('/core/districts/', {params:  options}).then(successCallback, errorCallback);
-      },
+        },
 
-      setQueryType: function(val){
-          var self= this;
+        setQueryType: function(val){
+            var self= this;
 
-          self.category = '';
-          self.show_categories = true;
+            self.category = '';
+            self.show_categories = true;
         },
 
         categoryForm: function(val){
@@ -183,6 +204,7 @@ var app3 = new Vue({
             self.category = val;
             self.show_categories = false;
             self.$nextTick(() => self.$refs.phone_number.focus())
+            $('.category-header').html(val.name);
 
         },
         changeCategory: function(){
@@ -192,29 +214,27 @@ var app3 = new Vue({
 
         },
         formHandler: function(key){
-                    var self = this;
-                    console.log(key);
-                    console.log(document.getElementById(key).value);
-                    val = document.getElementById(key).value;
-                    self.other_properties[key] = val;
-                    console.log(self.other_properties);
+            var self = this;
+            console.log(key);
+            console.log(document.getElementById(key).value);
+            val = document.getElementById(key).value;
+            self.other_properties[key] = val;
+            console.log(self.other_properties);
 
-                },
+        },
 
         saveTicket : function (){
-        var self = this;
-        var ticket = {};
-        ticket.category = self.category.id;
-        if(self.phone_number.length <1){
-
-         new PNotify({
+            var self = this;
+            var ticket = {};
+            ticket.category = self.category.id;
+            if(self.phone_number.length <1){
+                new PNotify({
                     title: 'failed',
                     text: 'Phone No Required',
                     type: 'error'
                 });
-                        return
-
-      }
+                return
+            }
 
             let csrf = $('[name = "csrfmiddlewaretoken"]').val();
             let options = {
@@ -252,79 +272,66 @@ var app3 = new Vue({
                     title: 'ticket Updated',
                     text: 'category ' + response.body.phone_number + ' Updated'
                 });
-//                var category_index = -1;
-//                for(var i=0; i < self.tickets.length; i++){
-//                    if(self.tickets[i].id == response.body.id){
-//                    category_index = i;
-//                    }
-//
-//                }
-//                console.log(category_index);
-//                Vue.set(self.tickets, category_index, response.body);
+                   var category_index = -1;
+                   for(var i=0; i < self.tickets.length; i++){
+                       if(self.tickets[i].id == response.body.id){
+                       category_index = i;
+                       }
+    
+                   }
+                   console.log(category_index);
+                   Vue.set(self.tickets, category_index, response.body);
 
             }
 
             function errorCallback(response) {
-            console.log(response);
+                console.log(response);
 
                 if (response.body.error) {
-
-                new PNotify({
-                    title: 'failed',
-                    text: response.body.error,
-                    type: 'error'
-                });
-
+                    new PNotify({
+                        title: 'failed',
+                        text: response.body.error,
+                        type: 'error'
+                    });
                 } else {
-                new PNotify({
-                    title: 'failed',
-                    text: 'Ticket Failed to Save',
-                    type: 'error'
-                });
-
+                    new PNotify({
+                        title: 'failed',
+                        text: 'Ticket Failed to Save',
+                        type: 'error'
+                    });
                 }
             }
             console.log(ticket);
 
-                self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
+            self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
+        },
+    },
 
+    components: {'vselect': VueMultiselect.default},
 
-
-
-      },
-
-
-  },
-
-  components: {'vselect': VueMultiselect.default},
-
-
-  created() {
+    created() {
 
       var self = this;
       self.loadDatas();
       self.loadDistricts();
       self.setQueryType(self.call_type);
 
-  },
-  watch:{
+    },
+    watch:{
     category: function (newVal, oldVal) {
-                var self = this;
-                if (newVal) {
-                    Object.keys(newVal.other_properties).forEach(function(key,index) {
+        var self = this;
+        if (newVal) {
+            Object.keys(newVal.other_properties).forEach(function(key,index) {
+            self.other_properties[key] = "";
+        });
 
-                    self.other_properties[key] = "";
+        self.has_district = newVal.has_district;
+        }else{
+            self.other_properties = {};
+            self.has_district = false;
+        }
 
+    },
 
-                });
-
-                self.has_district = newVal.has_district;
-                }else{
-                    self.other_properties = {};
-                    self.has_district = false;
-                }
-
-            },
-
-  },
+    },
 });

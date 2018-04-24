@@ -55,3 +55,15 @@ body {
 
 
 /*show dropdowns on ticket hover*/
+
+
+.sub-category {
+    display: none;
+}
+
+.show {display: block;}
+.hide {display: none;}
+
+.box-shadow {box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);}
+
+.zi {z-index:999;}

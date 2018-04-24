@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+
+{% load static staticfiles %}
+
+{% block page_title %}
+  <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+  <i class="fa fa-chevron-right"></i>
+  <span class="">New ticket</span>
+  <i class="fa fa-chevron-right"></i>
+  <span class="breadcrumb-active">{{ ticket_type|title }}</span>
+{% endblock %}
+
+
+{% block maincontainer %}
+	
+	<div class="col-sm-12 px-5">
+        <div class="row">
+        	{% for category in categories %}
+	            <div class="col-sm-3">
+	                <div class="dropdown">
+	                    <a href="#" class="pt-3" data-toggle="dropdown">
+	                        {{ category.name }} </a>
+	                    <div class="dropdown-menu" v-show="c.branch.length>0">
+	                        <a href="#" class="dropdown-item py-2" v-for="c1 , index1 in c.branch">{{ c1.name }}</a>
+	                    </div>
+	                </div>
+	            </div>
+            {% empty %}
+            	<div class="alert alert-warning"> <i class="fa fa-exclamation-circle"></i> You are too early here</div>
+            {% endfor %}    
+        </div>
+    </div>
+
+
+{% endblock %}

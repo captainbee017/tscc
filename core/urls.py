@@ -6,6 +6,7 @@ from django.urls import re_path
 from core.views.auth_view import LoginView, UserDashboardView, UserCreateView, UserChangePasswordView, DeactivateCsrView
 from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet, DistrictViewSet, TicketDetailViewSet
 from core.views import supervisor as sv
+from core.views import ticket as tk
 
 router = routers.DefaultRouter()
 router.register(r'category', CategoryViewSet)
@@ -33,5 +34,7 @@ urlpatterns = [
     path('deactivate/<username>/', DeactivateCsrView.as_view(), name='deactivate_csr'),
 
     # path('manage-tickets/<ticket_type>/', sv.ManageTickets.as_view(), name='manage_tickets'),
+
+    path('new/ticket/<ticket_type>/', tk.NewTicketView.as_view(), name='new_ticket_view'),
 ]
 

@@ -3,24 +3,24 @@ var app3 = new Vue({
   template: `
     <div class="container">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="card">
                     <div v-show="call_type==1">
                         <div class="card-header">Query Categories
-                        <a @click="newCategory()" class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-plus-circle"></i> Add Main category
-                        </a>
+                            <a @click="newCategory()" class="btn btn-sm btn-secondary float-right">
+                                <i class="fa fa-plus-circle"></i> Add Main category
+                            </a>
                         </div>
                         <div class="card-body p-3">
                             <div class="row pt-3" v-for="c , index in query_categories">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     {{c.name}}
                                 </div>
-                                <div class="col-md-6">
-                                    <a @click="subCategory(c, index)" title="New Sub Category" class="btn btn-sm btn-secondary">
+                                <div class="col-md-4">
+                                    <a @click="subCategory(c, index)" title="New Sub Category" class="btn btn-sm btn-secondary pull-right">
                                         <i class="fa fa-plus-circle"></i> Add
                                     </a>
-                                    <a @click="detailCategory(c, index)" title="Edit Details" class="btn btn-sm btn-secondary">
+                                    <a @click="detailCategory(c, index)" title="Edit Details" class="btn btn-sm btn-secondary pull-right mx-2">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
                                 </div>
@@ -28,43 +28,25 @@ var app3 = new Vue({
                                     <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
                                         {{c1.name}}
                                         <a class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> Add </a>
-                                        <a class="btn btn-sm btn-secondary" @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i>Edit </a>
+                                        <a class="btn btn-sm btn-secondary m-2" @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i>Edit </a>
                                         <div class="col-sm-12" v-show="c1.branch.length>0">
                                             <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
                                             <span>{{c2.name}}</span>
                                                 <a class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)" title="New Sub Category"><i class="fa fa-plus"></i>Add</a>
-                                                <a class="btn btn-sm btn-secondary" @click="detailCategory(c2, index2)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
+                                                <a class="btn btn-sm btn-secondary m-2" @click="detailCategory(c2, index2)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
                                                         <div class="col-sm-12" v-show="c2.branch.length>0">
                                                     <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
                                                         {{c3.name}}
-                                                        <a class="btn btn-sm btn-secondary" @click="detailCategory(c3, index1)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
+                                                        <a class="btn btn-sm btn-secondary m-2" @click="detailCategory(c3, index1)" title="Edit Details"><i class="fa fa-edit"></i> Edit</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr width="100%">
                             </div>
                         </div>
-
-                        <!--<div v-for="c , index in query_categories">
-                            {{c.name}}
-                            <a @click="subCategory(c, index)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                            <a  @click="detailCategory(c, index)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                            <div class="col-sm-12" v-show="c.branch.length>0">
-                                <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
-                                    {{c1.name}}
-                                    <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                                    <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                                    <div class="col-sm-12" v-show="c1.branch.length>0">
-                                        <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
-                                            {{c2.name}}
-                                            <a  @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <div v-if="query_categories.length === 0">
                             <div class="alert alert-warning">No categories</div>
                         </div>
@@ -72,19 +54,19 @@ var app3 = new Vue({
 
                     <div v-show="call_type==2">
                         <div class="card-header">Complain Categories
-                         <a @click="newCategory()" class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-plus-circle"></i> Add Main category
+                         <a @click="newCategory()" class="btn btn-sm btn-secondary float-right">
+                            <i class="fa fa-plus-circle"></i> Add Main category
                         </a></div>
                         <div class="card-body p-3">
                             <div class="row pt-3" v-for="c , index in complain_categories">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     {{c.name}}
                                 </div>
-                                <div class="col-md-6">
-                                    <a title="Add sub category" @click="subCategory(c, index)" class="btn btn-sm btn-secondary">
+                                <div class="col-md-4">
+                                    <a title="Add sub category" @click="subCategory(c, index)" class="btn btn-sm btn-secondary pull-right">
                                         <i class="fa fa-plus-circle"></i> Add
                                     </a>
-                                    <a title="edit" @click="detailCategory(c, index)" class="btn btn-sm btn-secondary">
+                                    <a title="edit" @click="detailCategory(c, index)" class="btn btn-sm btn-secondary pull-right mx-2">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
                                 </div>
@@ -92,16 +74,16 @@ var app3 = new Vue({
                                     <div class="col-sm-12" v-for="c1 , index1 in c.branch ">
                                         {{c1.name}}
                                         <a title="Add sub category" class="btn btn-sm btn-secondary" @click="subCategory(c1, index1)" ><i class="fa fa-plus"></i> Add</a>
-                                        <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c1, index1)"><i class="fa fa-edit"></i> Edit</a>
+                                        <a title="Edit" class="btn btn-sm btn-secondary m-2" @click="detailCategory(c1, index1)"><i class="fa fa-edit"></i> Edit</a>
                                         <div class="col-sm-12" v-show="c1.branch.length>0">
                                             <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
                                             {{c2.name}}
                                                 <a title="Add sub category" class="btn btn-sm btn-secondary" @click="subCategory(c2, index2)"><i class="fa fa-plus"></i> Add </a>
-                                                <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c2, index2)"><i class="fa fa-edit"></i> Edit</a>
+                                                <a title="Edit" class="btn btn-sm btn-secondary m-2" @click="detailCategory(c2, index2)"><i class="fa fa-edit"></i> Edit</a>
                                                         <div class="col-sm-12" v-show="c2.branch.length>0">
                                                     <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
                                                         {{c3.name}}
-                                                        <a title="Edit" class="btn btn-sm btn-secondary" @click="detailCategory(c3, index1)" ><i class="fa fa-edit"></i>Edit </a>
+                                                        <a title="Edit" class="btn btn-sm btn-secondary m-2" @click="detailCategory(c3, index1)" ><i class="fa fa-edit"></i>Edit </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,28 +92,13 @@ var app3 = new Vue({
                                 </div>
                             </div>
                         </div>
-                        <!--<div v-for="c , index in complain_categories">
-                            <div class="col-sm-12" v-show="c.branch.length>0">
-                                <div class="col-sm-6" v-for="c1 , index1 in c.branch ">
-                                    {{c1.name}}
-                                    <a @click="subCategory(c1, index1)" title="New Sub Category"><i class="fa fa-plus"></i> </a>
-                                    <a @click="detailCategory(c1, index1)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                                    <div class="col-sm-12" v-show="c1.branch.length>0">
-                                        <div class="col-sm-6" v-for="c2 , index2 in c1.branch ">
-                                            {{c2.name}}
-                                            <a @click="detailCategory(c2, index2)" title="Edit Details"><i class="fa fa-edit"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
                         <div v-if="complain_categories.length === 0">
                             <div class="alert alert-warning">No categories</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="card" v-show="show_category_form">
                     <div class="card-header">
                         Add category
@@ -149,6 +116,7 @@ var app3 = new Vue({
                                     Choose if this form contains district
                                 </label>
                             </div>
+                            <hr />
                             <div class="form-check">
                                 <label for="" class="text-muted form-check-label">
                                     <input type="checkbox" class="form-check-input" id="has_type"  v-model="category.has_type">
@@ -162,26 +130,28 @@ var app3 = new Vue({
                                 <input type="text" class="form-control" id="typeform" aria-describedby="typeHelp"
                                 placeholder="Enter Name Of Option" v-model="option_name">
 
-                                 <a class="btn btn-xs btn-info text-white" @click="saveOption()"><i class="fa fa-plus-save"></i> Save This Option</a>
+                                <a class="btn btn-sm btn-info text-white my-2" @click="saveOption()">
+                                    <i class="fa fa-plus-save"></i> Save This Option
+                                </a>
 
                             </div>
 
                             <div class="form-group" v-show="category.has_type">
-                                        <label for="types">Type Options</label>
-                                        <vselect :options="type_options" label="name" :value="'[]'" v-model="category.types" :allow-empty="true" :loading="loading"
-                                             :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select Types'" :multiple=true track-by="id" :hide-selected="true">
-                                            <template slot="noResult">NO Types Available</template>
-                                            <template slot="afterList" slot-scope="props">
-                                            <div  class="wrapper-sm bg-danger">
-                                            <a title="click to add New Type" @click="addType()"><i class="fa fa-plus-circle"></i> Add</a>
-                                            </div></template>
-                                        </vselect>
-
+                                <label for="types">Type Options</label>
+                                <vselect :options="type_options" label="name" :value="'[]'" v-model="category.types" :allow-empty="true" :loading="loading"
+                                     :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select Types'" :multiple=true track-by="id" :hide-selected="true">
+                                    <template slot="noResult">NO Types Available</template>
+                                    <template slot="afterList" slot-scope="props">
+                                    <div  class="wrapper-sm bg-danger">
+                                    <a class="text-white p-3" title="click to add New Type" @click="addType()"><i class="fa fa-plus-circle"></i> Add</a>
+                                    </div></template>
+                                </vselect>
                             </div>
-
+                            
+                            <hr />
                             <div class="form-group">
                                 <strong> Additional form fields</strong>
-                                <table class="table">
+                                <table class="table table-bordered">
                                     <tr>
                                         <td>New Field</td>
                                         <td>Field Type</td>
@@ -223,9 +193,7 @@ var app3 = new Vue({
                                     </tr>
                                 </table>
                             </div>
-
-                            <br>
-
+                            <hr />
                             <div class="form-group">
                                 <a  class="btn btn-success text-white" @click="saveCategory()">Save Category</a>
                                 <a  class="btn btn-warning text-white" @click="show_category_form=false">Cancel</a>

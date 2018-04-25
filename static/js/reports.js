@@ -18,7 +18,7 @@ var app3 = new Vue({
 
             </div>
   </div>
-  <div class="col-sm-8 col-sm-offset-4" v-show="show_ticket_form">
+  <div class="col-sm-8 offset-md-2" v-show="show_ticket_form">
         <h4> {{ticket.category_display}} </h4>
         <form>
             <div class="form-group">
@@ -59,12 +59,12 @@ var app3 = new Vue({
 
           <div class="form-group">
             <label for="exampleInputEmail1">Comment</label>
-            <textarea v-model="ticket.comment" placeholder="add Comment" rows="3"></textarea>
+            <textarea v-model="ticket.comment" placeholder="add Comment" rows="3" class="form-control"></textarea>
           </div>
 
           <div class="form-group">
           <label for="status">Status</label>
-            <select v-model="ticket.status">
+            <select v-model="ticket.status" class="form-control">
               <option>Pending</option>
               <option>Inprogress</option>
               <option>Completed</option>
@@ -73,7 +73,7 @@ var app3 = new Vue({
 
            <div class="form-group">
 
-            <a  class="btn btn-primary" @click="saveTicket()">Update Ticket</a>
+            <a  class="btn btn-primary text-white" @click="saveTicket()">Update Ticket</a>
 
         </div>
 

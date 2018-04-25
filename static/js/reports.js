@@ -421,28 +421,39 @@ var app3 = new Vue({
       },
       deleteTicket : function (t){
         var self = this;
-        var options = {"pk":t.id};
 
-            function successCallback(response) {
-                console.log(response.body.pk);
-                new PNotify({
-                    title: 'success',
-                    text: 'Ticket Deleted',
+            self.$dialog.confirm('Please confirm to continue')
+                .then(function () {
+
+                    var options = {"pk":t.id};
+
+                    function successCallback(response) {
+                        console.log(response.body.pk);
+                        new PNotify({
+                            title: 'success',
+                            text: 'Ticket Deleted',
+                        });
+                        let _index = self.tickets.findIndex(x => x.id == response.body.pk);
+                        self.tickets.splice(_index, 1);
+
+                    }
+
+                    function errorCallback(errorResponse) {
+                        console.log(errorResponse.error);
+                        new PNotify({
+                            title: 'failed',
+                            text: errorResponse.error,
+                            type: 'error'
+                        });
+                    }
+                    self.$http.get('/core/ticket-delete/', {params:  options}).then(successCallback, errorCallback);
+
+                })
+                .catch(function () {
+                    console.log('Clicked on cancel')
                 });
-                let _index = self.tickets.findIndex(x => x.id == response.body.pk);
-                self.tickets.splice(_index, 1);
 
-            }
 
-            function errorCallback(errorResponse) {
-                console.log(errorResponse.error);
-                new PNotify({
-                    title: 'failed',
-                    text: errorResponse.error,
-                    type: 'error'
-                });
-            }
-            self.$http.get('/core/ticket-delete/', {params:  options}).then(successCallback, errorCallback);
       },
 
 

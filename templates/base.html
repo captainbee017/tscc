@@ -24,9 +24,9 @@
     <div class="">
         <hr width="50%">
         <p class="text-center small primary-text-color">
-            <span class="pr-3">{{ request.user.username }}</span>|
-            <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
-            <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
+            <span class="pr-3"><i class="fa fa-user fa-fw"></i> {{ request.user.username }}</span>|
+            <span class="pl-3 pr-3"><i class="fa fa-clock-o fa-fw"></i> Last Login: {{ request.user.last_login }}</span>|
+            <a class="pl-3 pr-3" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </p>
         <hr>
     </div>

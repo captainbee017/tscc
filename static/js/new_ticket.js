@@ -36,95 +36,48 @@ var app3 = new Vue({
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-6">
-                <div v-for="c in categories">
-                    <a @click="categoryForm(c)" class="h4">{{c.name}}<br/></a>
-                    <div class="" v-show="c.branch.length>0">
-                        <div class="" v-for="c1 , index1 in c.branch ">
-                            <a @click="categoryForm(c1)" class="h4 pl-2">{{c1.name}}<br/></a>
-                            <div class="row" v-show="c1.branch.length>0">
-                                <div class="" v-for="c2 , index2 in c1.branch ">
-                                    <a @click="categoryForm(c2)" class="h4 pl-5">{{c2.name}}<br/></a>
-                                    <br/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="p-3">
-                <div class="row pt-3" v-for="c , index in categories">
-                    <div class="col-md-6">
-                        {{c.name}}
-                    </div>
-                    <div class="col-md-6">
-                        <a title="Select Category " @click="categoryForm(c)">
-                            <i class="fa fa-check"></i> Choose
-                        </a>
-                    </div>
-                    <div class="col-sm-12" v-show="c.branch.length>0">
-                        <div class="col-sm-12" v-for="c1 , index1 in c.branch ">
-                            {{c1.name}}
-                            <a title="Select Category" class="btn btn-sm btn-secondary" @click="categoryForm(c1)" ><i class="fa fa-check"></i> Choose</a>
-                            <div class="col-sm-12" v-show="c1.branch.length>0">
-                                <div class="col-sm-12" v-for="c2 , index2 in c1.branch ">
-                                {{c2.name}}
-                                    <a title="Select category" class="btn btn-sm btn-secondary" @click="categoryForm(c2)"><i class="fa fa-check"></i> Choose </a>
-                                            <div class="col-sm-12" v-show="c2.branch.length>0">
-                                        <div class="col-sm-12" v-for="c3 , index3 in c2.branch ">
-                                            {{c3.name}}
-                                            <a title="Select category" class="btn btn-sm btn-secondary" @click="categoryForm(c3)"><i class="fa fa-check"></i> Choose </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="col-sm-12" v-show="category">
                 <hr width="100%">
                 <h3 class="category-header py-3"></h3>
                 <form class="">
-                <div class="row">
-                    <div class="form-group col-sm-3">
-                        <input type="text" placeholder="Phone Number" ref="phone_number" 
-                            class="form-control" id="phone_number" v-model="phone_number">
-                            <!-- <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small> -->
-                    </div>
-                    <div class="form-group col-sm-3" v-for="(k, v) in category.other_properties">
-                        <input type="text" class="form-control" placeholder="" 
-                            v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
-                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-3">
+                            <input type="text" placeholder="Phone Number" ref="phone_number" 
+                                class="form-control" id="phone_number" v-model="phone_number">
+                                <!-- <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small> -->
+                        </div>
+                        <div class="form-group col-sm-3" v-for="(k, v) in category.other_properties">
+                            <input type="text" class="form-control" v-bind:placeholder="v" 
+                                v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
+                        </div>
 
-                    <div class="form-group" v-show="has_type">
-                        <label for="types">Type</label>
-                        <vselect :options="type_choices" label="name" :value="''" v-model="types" 
-                            :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" 
-                            :internal-search="true"  :placeholder="'Select Any Option'" :multiple=false track-by="id" 
-                            :hide-selected="true">
-                            <template slot="noResult">NO Types Available</template>
-                            <template slot="afterList" slot-scope="props">
-                                <div v-show="type_choices.length==0" class="wrapper-sm bg-danger">No Options</div>
-                            </template>
-                        </vselect>
+                        <div class="form-group" v-show="has_type">
+                            <vselect :options="type_choices" label="name" :value="''" v-model="types" 
+                                :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" 
+                                :internal-search="true"  :placeholder="'Type'" :multiple=false track-by="id" 
+                                :hide-selected="true">
+                                <template slot="noResult">NO Types Available</template>
+                                <template slot="afterList" slot-scope="props">
+                                    <div v-show="type_choices.length==0" class="wrapper-sm bg-danger">No Options</div>
+                                </template>
+                            </vselect>
+                        </div>
+                        
+                        <div class="form-group col-sm-3" v-show="has_district">
+                            <vselect :options="districts" label="name" :value="''" v-model="district" :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
+                                <template slot="noResult">NO Districts Available</template>
+                                <template slot="afterList" slot-scope="props">
+                                    <div v-show="districts.length==0" class="wrapper-sm bg-danger">No Districts</div>
+                                </template>
+                            </vselect>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <textarea v-model="comment" placeholder="Add Comment" rows="1" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group col align-self-end">
+                            <a  class="btn btn-primary text-white" @click="saveTicket()">Save Ticket</a>
+                        </div>
                     </div>
-                    
-                    <div class="form-group col-sm-3" v-show="has_district">
-                        <vselect :options="districts" label="name" :value="''" v-model="district" :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
-                            <template slot="noResult">NO Districts Available</template>
-                            <template slot="afterList" slot-scope="props">
-                                <div v-show="districts.length==0" class="wrapper-sm bg-danger">No Districts</div>
-                            </template>
-                        </vselect>
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <textarea v-model="comment" placeholder="Add Comment" rows="1" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group col align-self-end">
-                        <a  class="btn btn-primary text-white" @click="saveTicket()">Save Ticket</a>
-                    </div>
-                </div>
                 </form>
             </div>
         </div>

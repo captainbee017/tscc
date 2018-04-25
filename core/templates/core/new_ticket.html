@@ -5,16 +5,15 @@
 {% load static staticfiles %}
 
 {% block page_title %}
-  <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+  <a href="{% url 'dashboard' %}" class="primary-text-color h3 mx-3"><i class="fa fa-home fa-1x"></i></a>
+  <i class="fa fa-chevron-right align-text-bottom"></i>
+  <span class="h3 mx-3">New ticket</span>
   <i class="fa fa-chevron-right"></i>
-  <span class="">New ticket</span>
-  <i class="fa fa-chevron-right"></i>
-  <span class="breadcrumb-active">{% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} </span>
+  <span class="breadcrumb-active h3 mx-3">{% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} </span>
 {% endblock %}
 
 
-{% block user_detail %}
-    <div class="">
+<!--     <div class="">
         <hr width="50%">
         <p class="text-center small primary-text-color">
             <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
@@ -25,8 +24,7 @@
               <a class="pl-3 pr-3" href="{% url 'account_logout' %}">Logout</a>
         </p>
         <hr>
-    </div>
-{% endblock %}
+    </div> -->
 
 
 {% block maincontainer %}

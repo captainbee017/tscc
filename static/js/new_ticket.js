@@ -18,7 +18,7 @@ var app3 = new Vue({
                             <div class="header parent-category">
                                 <p class="my-2" @click="categoryForm(c)">
                                     {{ c.name }}
-                                    <span><i v-show="c.branch.length > 0" class="fa fa-chevron-down float-right mb-0"></i></span>
+                                    <span class=""><i v-show="c.branch.length > 0" class="align-text-bottom fa fa-chevron-down float-right mb-0"></i></span>
                                 </p>
                             </div>
                             <div class="sub-category" v-bind:class="[active, ]" v-for="c1 , index1 in c.branch" 

@@ -31,11 +31,11 @@ body {
     color: #b7b3b3;
 }
 
-.page-header .fa {
+/*.page-header .fa {
     font-size: 0.6em !important;
     padding: 5px !important;
     vertical-align: middle;
-}
+}*/
 
 .floating-button {
     border-radius: 50%;
@@ -67,3 +67,7 @@ body {
 .box-shadow {box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2), 0 0px 20px 0 rgba(0, 0, 0, 0.19);}
 
 .zi {z-index:999;}
+
+.fa-1x {
+    font-size: 1.3em !important;
+}

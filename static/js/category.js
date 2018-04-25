@@ -197,6 +197,7 @@ var app3 = new Vue({
                             <div class="form-group">
                                 <a  class="btn btn-success text-white" @click="saveCategory()">Save Category</a>
                                 <a  class="btn btn-warning text-white" @click="show_category_form=false">Cancel</a>
+                                <a  v-show="category.id" class="btn btn-danger text-white" @click="deleteCategory()">Delete</a>
                             </div>
                         </form>
                     </div>
@@ -237,6 +238,50 @@ var app3 = new Vue({
 
     },
 
+      deleteCategory: function(){
+            var self = this;
+            self.$dialog.confirm('Please confirm to Delete')
+                .then(function () {
+
+                    let csrf = $('[name = "csrfmiddlewaretoken"]').val();
+                    let options = {
+                        headers: {
+                            'X-CSRFToken': csrf
+                        }
+                    };
+
+
+            function successCallback(response) {
+                self.loadDatas();
+                new PNotify({
+                    title: 'deleted',
+                    text: "Category deleted",
+                    type: 'info'
+                });
+
+            }
+
+            function errorCallback(errorResponse) {
+                console.log(errorResponse);
+                new PNotify({
+                    title: 'failed',
+                    text: errorResponse.error,
+                    type: 'error'
+                });
+            }
+            self.$http.delete('/core/category/' + self.category.id + '/', options).then(successCallback, errorCallback);
+
+
+
+
+                })
+                .catch(function () {
+                    console.log('Cancel')
+                });
+
+
+
+      },
       loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};

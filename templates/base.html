@@ -55,6 +55,7 @@
 {#<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>#}
 {#<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>#}
 <script src="{% static 'vendor/js/vue.js' %}"></script>
+<script src="{% static 'vendor/js/vuejs-dialog.min.js' %}"></script>
 <script src="{% static 'vendor/js/moment.min.js' %}"></script>
 <script src="{% static 'vendor/pnotify/pnotify.custom.min.js' %}"></script>
 <script src="{% static 'vendor/js/vue-resource.min.js' %}"></script>
@@ -66,6 +67,9 @@
         $($(this).data("target") + ' .modal-content').load($(this).data("remote"));
     });
 
+</script>
+<script>
+window.Vue.use(VuejsDialog.default)
 </script>
 {% block js %}{% endblock %}
 </body>

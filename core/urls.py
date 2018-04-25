@@ -18,7 +18,7 @@ router.register(r'types', TypeViewSet)
 
 urlpatterns = [
     path('dashboard/', UserDashboardView.as_view(), name='dashboard'),
-    path('category/<pk>/', CategoryDetailViewSet.as_view({'get':'retrieve', 'put':'update'}), name='cat_details'),
+    path('category/<pk>/', CategoryDetailViewSet.as_view({'get':'retrieve', 'put':'update','delete':'destroy'}), name='cat_details'),
     path('', include(router.urls)),
     path('category-settings/<ticket_type>/', sv.CategorySettings.as_view(), name='category_settings'),
 

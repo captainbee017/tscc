@@ -1,4 +1,4 @@
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import JSONField, ArrayField
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -33,11 +33,17 @@ class UserRole(models.Model):
         return self.user_role
 
 
+class TypeOption(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class Category(models.Model):
     name = models.CharField(max_length=64)
     call_type = models.SmallIntegerField(choices=QUERY_TYPE, default=1)
     parent = models.ForeignKey("self", related_name="sub_categories", null=True, blank=True, on_delete=models.SET_NULL)
     has_district = models.BooleanField(default=True)
+    has_type = models.BooleanField(default=False)
+    types = ArrayField(models.IntegerField(), null=True)
     other_properties = JSONField()
 
     def __str__(self):
@@ -55,6 +61,7 @@ class CallDetail(models.Model):
     phone_number = models.CharField(max_length=30)
     district = models.ForeignKey(District, related_name="calls", on_delete=models.SET_NULL, blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
+    types = models.ForeignKey(TypeOption, related_name="call_detail", on_delete=models.SET_NULL, null=True, blank=True)
     call_time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(null=True, blank=True)
     modified_time = models.DateTimeField(blank=True, null=True)

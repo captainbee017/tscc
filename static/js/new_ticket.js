@@ -96,6 +96,20 @@ var app3 = new Vue({
                         <input type="text" class="form-control" placeholder="" 
                             v-bind:id="v"  v-bind:ref="v"  @change="formHandler(v)">
                     </div>
+
+                    <div class="form-group" v-show="has_type">
+                        <label for="types">Type</label>
+                        <vselect :options="type_choices" label="name" :value="''" v-model="types" 
+                            :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" 
+                            :internal-search="true"  :placeholder="'Select Any Option'" :multiple=false track-by="id" 
+                            :hide-selected="true">
+                            <template slot="noResult">NO Types Available</template>
+                            <template slot="afterList" slot-scope="props">
+                                <div v-show="type_choices.length==0" class="wrapper-sm bg-danger">No Options</div>
+                            </template>
+                        </vselect>
+                    </div>
+                    
                     <div class="form-group col-sm-3" v-show="has_district">
                         <vselect :options="districts" label="name" :value="''" v-model="district" :allow-empty="true" :loading="loading" :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
                             <template slot="noResult">NO Districts Available</template>
@@ -127,8 +141,12 @@ var app3 = new Vue({
         show_categories :false,
         other_properties:{},
         has_district: true,
+        has_type: true,
         district: '',
+        types: '',
         districts: [],
+        type_choices: [],
+        available_types: [],
         active: false,
     },
     methods:{
@@ -162,6 +180,18 @@ var app3 = new Vue({
             $(ev.currentTarget).parent('.card').removeClass('zi');
         },
 
+        loadTagsFromArray: function (tags){
+            if(!tags || tags=="null") return []
+            var tags_array = [];
+            var self = this;
+            for (var i = 0; i < self.available_types.length; i++) {
+                    if (tags.indexOf(self.available_types[i].id) != -1) {
+                        tags_array.push(self.available_types[i]);
+                    }
+                }
+                return tags_array;
+            },
+
         loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};
@@ -174,6 +204,20 @@ var app3 = new Vue({
                 console.log('failed');
             }
             self.$http.get('/core/category/', {params:  options}).then(successCallback, errorCallback);
+        },
+
+        loadTypes: function(){
+            var self = this;
+            var options = {};
+
+            function successCallback(response) {
+                self.available_types = response.body;
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get('/core/types/', {params:  options}).then(successCallback, errorCallback);
         },
         loadDistricts: function(){
             var self = this;
@@ -250,6 +294,11 @@ var app3 = new Vue({
 
                 ticket.district = self.district.id;
             }
+            if(self.has_type && self.types!=''){
+
+                ticket.types = self.types.id;
+                console.log(ticket.types);
+            }
 
 
             function successCallback(response) {
@@ -301,7 +350,7 @@ var app3 = new Vue({
                     });
                 }
             }
-            console.log(ticket);
+//            console.log(ticket);
 
             self.$http.post('/core/ticket/', ticket, options).then(successCallback, errorCallback);
         },
@@ -314,24 +363,28 @@ var app3 = new Vue({
       var self = this;
       self.loadDatas();
       self.loadDistricts();
+      self.loadTypes();
       self.setQueryType(self.call_type);
 
     },
     watch:{
-    category: function (newVal, oldVal) {
-        var self = this;
-        if (newVal) {
-            Object.keys(newVal.other_properties).forEach(function(key,index) {
-            self.other_properties[key] = "";
-        });
-
-        self.has_district = newVal.has_district;
-        }else{
-            self.other_properties = {};
-            self.has_district = false;
-        }
-
-    },
-
+        category: function (newVal, oldVal) {
+            var self = this;
+            if (newVal) {
+                Object.keys(newVal.other_properties).forEach(function(key,index) {
+                    self.other_properties[key] = "";
+                });
+                self.has_district = newVal.has_district;
+                self.has_type = newVal.has_type;
+                console.log(newVal.types);
+                self.type_choices = self.loadTagsFromArray(newVal.types);
+            }else{
+                self.other_properties = {};
+                self.has_district = false;
+                self.has_type = false;
+                self.type_choices = [];
+                self.types = [];
+            }
+        },
     },
 });

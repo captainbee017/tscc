@@ -4,14 +4,16 @@ from rest_framework import routers
 from django.urls import re_path
 
 from core.views.auth_view import LoginView, UserDashboardView, UserCreateView, UserChangePasswordView, DeactivateCsrView
-from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet, DistrictViewSet, TicketDetailViewSet
+from core.viewsets import CategoryViewSet, TicketViewSet, CategoryDetailViewSet, DistrictViewSet, TicketDetailViewSet, TypeViewSet, MainCategoryViewSet
 from core.views import supervisor as sv
 from core.views import ticket as tk
 
 router = routers.DefaultRouter()
 router.register(r'category', CategoryViewSet)
+router.register(r'main-categories', MainCategoryViewSet)
 router.register(r'ticket', TicketViewSet)
 router.register(r'districts', DistrictViewSet)
+router.register(r'types', TypeViewSet)
 
 
 urlpatterns = [

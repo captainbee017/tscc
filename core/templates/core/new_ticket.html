@@ -12,12 +12,13 @@
   <span class="breadcrumb-active">{% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} </span>
 {% endblock %}
 
-{% comment %}
+
 {% block user_detail %}
     <div class="">
         <hr width="50%">
         <p class="text-center small primary-text-color">
-              <a href="{% url 'new_ticket' 1 %}" class="pl-3 small">Query Ticket</a> |
+            <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+            <a href="{% url 'new_ticket' 1 %}" class="pl-3 small">Query Ticket</a> |
               <a href="{% url 'new_ticket' 2 %}" class="pl-3 small">Complain Ticket </a> |
             <span class="pl-3 pr-3">Last Login: {{ request.user.last_login }}</span>|
               <span class="pr-3">{{ request.user.username }}</span>|
@@ -26,7 +27,7 @@
         <hr>
     </div>
 {% endblock %}
-{% endcomment %}
+
 
 {% block maincontainer %}
 {% csrf_token %}
@@ -43,5 +44,5 @@
   rare_settings.ticket_type = {{ticket_type}};
 
 </script>
-<script src="{% static 'js/new_ticket.js' %}?v=2.2"></script>
+<script src="{% static 'js/new_ticket.js' %}?v=2.6"></script>
 {% endblock %}

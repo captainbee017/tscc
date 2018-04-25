@@ -3,14 +3,20 @@ var app3 = new Vue({
   template: `
   <div class="container">
     <div class="row mb-2" v-show="!show_ticket_form">
-            <div class="col-sm-6 offset-md-2">
+            <div class="col-sm-6">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for..." v-model="search_key" @change="searchTickets()">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button">Go!</button>
-                  </span>
+                  <input type="text" class="form-control" placeholder="Search Phone..." v-model="search_key">
                 </div>
               </div>
+              <div class="col-sm-6">
+                <vselect :options="categories" label="name" :value="''" v-model="searchCategory" :allow-empty="true" :loading="loading"
+                     :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select Category'" :multiple=false track-by="id" :hide-selected="true">
+                    <template slot="noResult">NO Categories Available</template>
+                    <template slot="afterList" slot-scope="props"><div v-show="categories.length==0" class="wrapper-sm bg-danger">
+                    No Categories</div></template>
+                </vselect>
+
+            </div>
   </div>
   <div class="col-sm-8 col-sm-offset-4" v-show="show_ticket_form">
         <h4> {{ticket.category_display}} </h4>
@@ -36,6 +42,17 @@ var app3 = new Vue({
                 <template slot="noResult">NO Districts Available</template>
                 <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
                 No Districts</div></template>
+            </vselect>
+
+        </div>
+
+          <div class="form-group" v-show="has_type">
+            <label for="type">Type</label>
+            <vselect :options="type_options" label="name" :value="''" v-model="ticket.types" :allow-empty="true" :loading="loading"
+                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
+                <template slot="noResult">NO Types Available</template>
+                <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
+                No Types</div></template>
             </vselect>
 
         </div>
@@ -97,6 +114,9 @@ var app3 = new Vue({
       <td><a title="Edit" v-show="can_approve" @click="editTicket(t)"><i class="fa fa-edit"></i></a></td>
       <td><a title="Delete" v-show="can_delete" @click="deleteTicket(t)"><i class="fa fa-trash"></i></a></td>
     </tr>
+    <tr v-if="tickets.length==0">
+    <td colspan="11">No Tickets</td>
+    </tr>
     </tbody>
     </table>
 
@@ -113,6 +133,7 @@ var app3 = new Vue({
     tickets: [],
     ticket: [],
     districts: [],
+    type_options: [],
     categories: [],
     category: '',
     phone_number: '',
@@ -124,11 +145,26 @@ var app3 = new Vue({
     show_ticket_form :false,
     other_properties:{},
     has_district: false,
+    has_type: false,
     call_type: rare_settings.ticket_type,
     can_approve: rare_settings.can_approve,
     can_delete: rare_settings.can_delete,
+    searchCategory:'',
   },
   methods:{
+    loadTagFromArray: function (tags){
+        if(!tags || tags=="null") return ''
+        var tags_array = '';
+        var self = this;
+        for (var i = 0; i < self.type_options.length; i++) {
+                if (tags == self.type_options[i].id) {
+                    tags_array = (self.type_options[i]);
+                }
+            }
+
+            return tags_array;
+
+    },
             formHandler: function(key){
                     var self = this;
                     console.log(key);
@@ -138,6 +174,19 @@ var app3 = new Vue({
                     console.log(self.other_properties);
 
                 },
+    loadCategories: function(){
+            var self = this;
+            var options = {'call_type': self.call_type};
+
+            function successCallback(response) {
+                self.categories = response.body;
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get('/core/main-categories/', {params:  options}).then(successCallback, errorCallback);
+      },
     loadDistricts: function(){
             var self = this;
             var options = {};
@@ -157,6 +206,13 @@ var app3 = new Vue({
     loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};
+
+            if(self.searchCategory.hasOwnProperty("id")){
+                options.category = self.searchCategory.id;
+            }
+            if(self.search_key.length>0){
+                options.search_key = self.search_key;
+               }
 
             function successCallback(response) {
                 self.tickets = response.body;
@@ -208,6 +264,13 @@ var app3 = new Vue({
             }else{
 
                 self.ticket.district = "";
+            }
+            if(self.ticket.types.hasOwnProperty("id")){
+                self.ticket.types = self.ticket.types.id;
+
+            }else{
+
+                self.ticket.types = "";
             }
             self.ticket.other_properties = self.other_properties;
 
@@ -384,6 +447,8 @@ var app3 = new Vue({
 
       var self = this;
       self.loadDatas();
+      self.loadCategories();
+
       self.can_approve = false;
       if(rare_settings.can_approve =="True"){
         self.can_approve = true;
@@ -395,7 +460,7 @@ var app3 = new Vue({
 
   },
   watch:{
-    ticket: function (newVal, oldVal) {
+        ticket: function (newVal, oldVal) {
                 var self = this;
                 if (newVal) {
                 console.log(newVal.category.other_properties);
@@ -414,11 +479,26 @@ var app3 = new Vue({
 
                 });
                     self.has_district = newVal.category.has_district;
+                    self.has_type = newVal.category.has_type;
+                    self.type_options = newVal.category.type_options;
+                    self.ticket.types = self.loadTagFromArray(newVal.types);
                 }else{
                     self.other_properties = {};
                 }
 
             },
+        searchCategory: function (newVal, oldVal) {
+                var self = this;
+                if (newVal) {
+                    self.loadDatas();
+                }
+
+                },
+        search_key: function (newVal, oldVal) {
+                var self = this;
+                    self.loadDatas();
+
+                },
 
   },
 });

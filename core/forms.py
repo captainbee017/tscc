@@ -7,6 +7,8 @@ from core.models import USER_ROLES, UserRole
 
 class UserSignupForm(SignupForm):
     user_role = forms.ChoiceField(choices=USER_ROLES, required=True, widget=forms.Select())
+    error_css_class = 'field-error'
+    required_css_class = 'required'
 
     def save(self):
         user, created = User.objects.get_or_create(

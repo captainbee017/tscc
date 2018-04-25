@@ -58,6 +58,11 @@ class UserCreateView(SuperuserOnlyMixin, FormView):
         form.save()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        # import ipdb
+        # ipdb.set_trace()
+        return super().form_invalid(form)
+
 
 class DeactivateCsrView(SuperuserOnlyMixin, UpdateView):
     template_name = 'superuser/deactivate_csr.html'

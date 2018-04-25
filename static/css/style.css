@@ -71,3 +71,13 @@ body {
 .fa-1x {
     font-size: 1.3em !important;
 }
+
+
+/*form error styles*/
+.field-error, .invalid-feedback {
+    color: #710203;
+}
+
+.field-error .invalid-feedback {
+    font-size: 0.8em;
+}

@@ -264,21 +264,24 @@ var app3 = new Vue({
       }
               self.ticket.category = self.ticket.category.id;
 
+            if(self.ticket.hasOwnProperty("district")){
+                if(self.ticket.district.hasOwnProperty("id")){
+                    self.ticket.district = self.ticket.district.id;
 
-            if(self.ticket.district.hasOwnProperty("id")){
-                self.ticket.district = self.ticket.district.id;
+                }else{
 
-            }else{
+                    self.ticket.district = "";
+                }
+                }
+            if(self.ticket.hasOwnProperty("types")){
+                if(self.ticket.types.hasOwnProperty("id")){
+                    self.ticket.types = self.ticket.types.id;
 
-                self.ticket.district = "";
-            }
-            if(self.ticket.types.hasOwnProperty("id")){
-                self.ticket.types = self.ticket.types.id;
+                }else{
 
-            }else{
-
-                self.ticket.types = "";
-            }
+                    self.ticket.types = "";
+                }
+                }
             self.ticket.other_properties = self.other_properties;
 
 

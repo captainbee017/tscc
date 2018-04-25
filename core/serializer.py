@@ -36,7 +36,10 @@ class SingleCategorySerializer(serializers.ModelSerializer):
     type_options = serializers.SerializerMethodField()
 
     def get_type_options(self, obj):
-        types = TypeOption.objects.filter(pk__in=obj.types)
+        if obj.types:
+            types = TypeOption.objects.filter(pk__in=obj.types)
+        else:
+            types = []
 
         return TypeSerializer(types, many=True).data
 

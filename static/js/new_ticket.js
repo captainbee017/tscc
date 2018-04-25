@@ -80,6 +80,10 @@ var app3 = new Vue({
                     </div>
                 </form>
             </div>
+
+            <div class="col-sm-12" v-show="categories.length == 0">
+                <div class="alert alert-danger text-center"><i class="fa fa-exclamation-circle"></i> No records to show</div>
+            </div>
         </div>
         </div>
     `,

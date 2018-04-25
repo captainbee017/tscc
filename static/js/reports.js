@@ -82,7 +82,7 @@ var app3 = new Vue({
 
   <div class="row" v-show="!show_ticket_form">
 
-         <table class="table table-stripped">
+         <table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -93,8 +93,9 @@ var app3 = new Vue({
       <th scope="col">Datas</th>
       <th scope="col">Status</th>
       <th scope="col">Comment</th>
-      <th scope="col" v-show="can_approve">Edit</th>
-      <th scope="col" v-show="can_delete">Delete</th>
+      <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
+      <!-- <th scope="col" v-show="can_approve">Edit</th>
+      <th scope="col" v-show="can_delete">Delete</th> -->
     </tr>
   </thead>
   <tbody>
@@ -111,8 +112,14 @@ var app3 = new Vue({
       </td>
       <td>{{t.status}}</td>
       <td>{{t.comment}}</td>
-      <td><a title="Edit" v-show="can_approve" @click="editTicket(t)"><i class="fa fa-edit"></i></a></td>
-      <td><a title="Delete" v-show="can_delete" @click="deleteTicket(t)"><i class="fa fa-trash"></i></a></td>
+      <td>
+        <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
+          <i class="fa fa-edit"></i>
+        </a>
+        <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
+          <i class="fa fa-trash"></i>
+        </a>
+      </td>
     </tr>
     <tr v-if="tickets.length==0">
     <td colspan="11">No Tickets</td>

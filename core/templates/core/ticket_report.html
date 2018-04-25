@@ -4,12 +4,11 @@
 {% load static staticfiles %}
 
 {% block page_title %}
-    <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
+    <a href="{% url 'dashboard' %}" class="primary-text-color h3 mx-3"><i class="fa fa-home fa-1x"></i></a>
+    <i class="fa fa-chevron-right align-text-bottom"></i>
+    <span class="h3 mx-3">Reports</span>
     <i class="fa fa-chevron-right"></i>
-    <span class="breadcrumb-active">Reports <i class="fa fa-chevron-right"></i></span>
-    <span class="breadcrumb-active"> 
-      {% if ticket_type == "1" %}query{% else %}complain{% endif %}
-    </span>
+    <span class="breadcrumb-active h3 mx-3">{% if ticket_type == "1" %}query{% else %}complain{% endif %}</span>
 {% endblock %}
 
 {% block maincontainer %}

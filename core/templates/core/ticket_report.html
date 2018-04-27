@@ -9,14 +9,57 @@
     <span class="h3 mx-3">Reports</span>
     <i class="fa fa-chevron-right"></i>
     <span class="breadcrumb-active h3 mx-3">{% if ticket_type == "1" %}query{% else %}complain{% endif %}</span>
+
+{% endblock %}
+
+{% block css %}
+<style>
+    body {
+  font-family: Menlo, Consolas, monospace;
+  color: #444;
+}
+
+    .item {
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+ul {
+  padding-left: 1em;
+  line-height: 1.5em;
+  list-style-type: dot;
+}
+</style>
+
 {% endblock %}
 
 {% block maincontainer %}
 {% csrf_token %}
+  {% verbatim %}
 
-<div class="container" id="app">
+<script type="text/x-template" id="item-template">
+  <li>
+    <div>
+     <a  href="javascript:void(0)" @click="loadReports(model)">{{ model.name }} </a>
 
-</div>
+    </div>
+    <ul  v-if="isFolder">
+      <item
+        class="item"
+        v-for="(model, index) in model.branch"
+        :key="index"
+        :model="model">
+      </item>
+
+    </ul>
+  </li>
+</script>
+
+
+<div class="container" id="app"></div>
+
+{% endverbatim %}
 
 {% endblock %}
 
@@ -27,5 +70,5 @@
   rare_settings.can_approve = "{{can_approve}}";
   rare_settings.can_delete = "{{can_delete}}";
 </script>
-<script src="{% static 'js/reports.js' %}?v=1.21"></script>
+<script src="{% static 'js/reports.js' %}?v=1.22"></script>
 {% endblock %}

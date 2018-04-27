@@ -1,22 +1,74 @@
+let bus = new Vue();
+// define the item component
+Vue.component('item', {
+  template: '#item-template',
+  props: {
+    model: Object
+  },
+  data: function () {
+    return {
+      open: false
+    }
+  },
+  computed: {
+    isFolder: function () {
+      return this.model.branch &&
+        this.model.branch.length
+    }
+  },
+  methods: {
+    toggle: function () {
+      if (this.isFolder) {
+        this.open = !this.open
+      }
+    },
+    changeType: function () {
+      if (!this.isFolder) {
+        Vue.set(this.model, 'children', [])
+        this.addChild()
+        this.open = true
+      }
+    },
+    addChild: function () {
+      this.model.branch.push({
+        name: 'new stuff'
+      })
+    },
+    loadReports: function(c){
+    bus.$emit('sub_category_selected', c)
+
+    },
+  }
+})
+
 var app3 = new Vue({
   el: '#app',
   template: `
   <div class="container">
     <div class="row mb-2" v-show="!show_ticket_form">
-            <div class="col-sm-6">
+
+            <div class="col-sm-2" v-for="c in categories" style="margin:2 0 2 0">
+            <a  href="javascript:void(0)" class="btn btn-info" @click="setMCategory(c)"><i class="fa fa-eye"></i>{{c.name}}</a>
+            </div>
+    </div>
+    <div class="row" v-show="!show_ticket_form">
+
+            <div class="col-sm-4">
+             <ul id="demo">
+                  <item
+                    class="item"
+                    :model="treeData">
+                  </item>
+                </ul>
+
+            </div>
+            <div class="col-sm-8">
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="Search Phone..." v-model="search_key">
                 </div>
-              </div>
-              <div class="col-sm-6">
-                <vselect :options="categories" label="name" :value="''" v-model="searchCategory" :allow-empty="true" :loading="loading"
-                     :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select Category'" :multiple=false track-by="id" :hide-selected="true">
-                    <template slot="noResult">NO Categories Available</template>
-                    <template slot="afterList" slot-scope="props"><div v-show="categories.length==0" class="wrapper-sm bg-danger">
-                    No Categories</div></template>
-                </vselect>
 
-            </div>
+    </div>
+
   </div>
   <div class="col-sm-8 offset-md-2" v-show="show_ticket_form">
         <h4> {{ticket.category_display}} </h4>
@@ -80,7 +132,7 @@ var app3 = new Vue({
           </form>
   </div>
 
-  <div class="row" v-show="!show_ticket_form">
+  <div class="row" v-show="!show_ticket_form && searchCategory">
 
          <table class="table table-striped">
   <thead>
@@ -90,12 +142,10 @@ var app3 = new Vue({
       <th scope="col">Category</th>
       <th scope="col">Date</th>
       <th scope="col">District</th>
-      <th scope="col">Datas</th>
+      <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
       <th scope="col">Status</th>
       <th scope="col">Comment</th>
       <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
-      <!-- <th scope="col" v-show="can_approve">Edit</th>
-      <th scope="col" v-show="can_delete">Delete</th> -->
     </tr>
   </thead>
   <tbody>
@@ -105,11 +155,7 @@ var app3 = new Vue({
       <th>{{t.category_display}}</th>
       <th >{{t.date_display}}</th>
       <th >{{t.district_display}}</th>
-      <td>
-        <div v-for="(v,k) in t.other_properties">
-        {{k}} : {{v}}<br>
-        </div>
-      </td>
+      <td v-for="(v,k) in t.other_properties">{{v}}</td>
       <td>{{t.status}}</td>
       <td>{{t.comment}}</td>
       <td>
@@ -128,6 +174,7 @@ var app3 = new Vue({
     </table>
 
       </div>
+
 
 
 
@@ -157,6 +204,7 @@ var app3 = new Vue({
     can_approve: rare_settings.can_approve,
     can_delete: rare_settings.can_delete,
     searchCategory:'',
+    treeData: {},
   },
   methods:{
     loadTagFromArray: function (tags){
@@ -193,6 +241,19 @@ var app3 = new Vue({
                 console.log('failed');
             }
             self.$http.get('/core/main-categories/', {params:  options}).then(successCallback, errorCallback);
+      },
+      loadsubCategories: function(c){
+            var self = this;
+            var options = {};
+
+            function successCallback(response) {
+                self.treeData = response.body;
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get('/core/category/'+ c.id+'/', {params:  options}).then(successCallback, errorCallback);
       },
     loadDistricts: function(){
             var self = this;
@@ -458,6 +519,12 @@ var app3 = new Vue({
 
 
       },
+      setMCategory: function (c){
+        var self= this;
+        self.tickets=[];
+        self.loadsubCategories(c);
+
+      },
 
 
   },
@@ -478,6 +545,9 @@ var app3 = new Vue({
       if(rare_settings.can_delete =="True"){
         self.can_delete = true;
       }
+      bus.$on('sub_category_selected', function(category){
+            self.searchCategory = category;
+        });
 
   },
   watch:{

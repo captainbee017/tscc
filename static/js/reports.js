@@ -44,150 +44,80 @@ Vue.component('item', {
 let app3 = new Vue({
   el: '#app',
   template: `
-  <div class="container">
-    <div class="row mb-2" v-show="!show_ticket_form">
+  <div class="px-5">
+    
+    <div class="col-md-12">
+        <div class="row">
 
-            <div class="col-sm-2" v-for="c in categories" style="margin:2 0 2 0">
-            <a  href="javascript:void(0)" class="btn btn-info" @click="setMCategory(c)"><i class="fa fa-eye"></i>{{c.name}}</a>
-            </div>
-    </div>
-    <div class="row" v-show="!show_ticket_form">
-
-            <div class="col-sm-4">
-             <ul id="demo">
-                  <item
-                    class="item"
-                    :model="treeData">
-                  </item>
-                </ul>
-
-            </div>
-            <div class="col-sm-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search Phone..." v-model="search_key">
+            <div class="col-md-2" style="border-right: 1px solid #E1E1E1;">
+                <div id="accordion">            
+                    <div class="" v-for="c in categories" >
+                        <div :id="'headingTwo_' + c.id"></div>
+                            <a class="btn-link primary-text-color collapsed" data-toggle="collapse" 
+                            :data-target="'#collapseTwo_' + c.id" aria-expanded="false" :aria-controls="'collapseTwo_' + c.id"
+                             style="text-decoration: none;" @click="setMCategory(c)" >
+                                {{ c.name }}
+                            </a>
+                        <ul :id="'collapseTwo_' + c.id" class="collapse" aria-labelledby="'headingTwo_' + c.id"
+                         data-parent="#accordion" style="list-style-type:none;">
+                            <item class="primary-text-color" :model="treeData"></item>
+                        </ul>
+                        <hr width="100%">
+                    </div>
                 </div>
-
+            </div>
+            <div class="col-md-10">
+                <div class="row">   
+                    <div class="col-md-6 align-bottom" id="category-title">
+                        All Reports
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search by Phone Number" v-model="search_key">
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Phone</th>
+                                    <!-- <th scope="col">Category</th> -->
+                                    <th scope="col">Date</th>
+                                    <th scope="col">District</th>
+                                    <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Comment</th>
+                                    <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="t , index in tickets">
+                                    <th>{{t.phone_number}}</th>
+                                    <!-- <th>{{t.category_display}}</th> -->
+                                    <th >{{t.date_display}}</th>
+                                    <th >{{t.district_display}}</th>
+                                    <td v-for="(v,k) in t.other_properties">{{v}}</td>
+                                    <td>{{t.status}}</td>
+                                    <td>{{t.comment}}</td>
+                                    <td>
+                                        <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
+                                          <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
+                                          <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-  </div>
-  <div class="col-sm-8 offset-md-2" v-show="show_ticket_form">
-        <h4> {{ticket.category_display}} </h4>
-        <form>
-            <div class="form-group">
-            <label for="phone_number">Phone</label>
-            <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
-            placeholder="Enter Phone" v-model="ticket.phone_number">
-            <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
-          </div>
-
-
-          <div class="form-group" v-for="(k, v) in other_properties">
-            <label >{{v}}</label>
-            <input type="text" class="form-control"
-            placeholder=""  v-bind:id="v"  v-bind:ref="v" v-bind:value="k"  @change="formHandler(v)">
-          </div>
-
-          <div class="form-group" v-show="has_district">
-            <label for="district">District</label>
-            <vselect :options="districts" label="name" :value="''" v-model="ticket.district" :allow-empty="true" :loading="loading"
-                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
-                <template slot="noResult">NO Districts Available</template>
-                <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
-                No Districts</div></template>
-            </vselect>
-
-        </div>
-
-          <div class="form-group" v-show="has_type">
-            <label for="type">Type</label>
-            <vselect :options="type_options" label="name" :value="''" v-model="ticket.types" :allow-empty="true" :loading="loading"
-                 :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
-                <template slot="noResult">NO Types Available</template>
-                <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
-                No Types</div></template>
-            </vselect>
-
-        </div>
-
-          <div class="form-group">
-            <label for="exampleInputEmail1">Comment</label>
-            <textarea v-model="ticket.comment" placeholder="add Comment" rows="3" class="form-control"></textarea>
-          </div>
-
-          <div class="form-group">
-          <label for="status">Status</label>
-            <select v-model="ticket.status" class="form-control">
-              <option>Pending</option>
-              <option>Inprogress</option>
-              <option>Completed</option>
-            </select>
-          </div>
-
-           <div class="form-group">
-
-            <a  class="btn btn-primary text-white" @click="saveTicket()">Update Ticket</a>
-
-        </div>
-
-          </form>
-  </div>
-
-  <div class="row" v-if="tickets.length==0">
-    No Tickets
 </div>
-  <div class="row" v-show="!show_ticket_form && tickets.length>0">
-     <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Category</th>
-              <th scope="col">Date</th>
-              <th scope="col">District</th>
-              <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
-              <th scope="col">Status</th>
-              <th scope="col">Comment</th>
-              <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="t , index in tickets">
-              <th scope="row">{{index+1}}</th>
-              <th>{{t.phone_number}}</th>
-              <th>{{t.category_display}}</th>
-              <th >{{t.date_display}}</th>
-              <th >{{t.district_display}}</th>
-              <td v-for="(v,k) in t.other_properties">{{v}}</td>
-              <td>{{t.status}}</td>
-              <td>{{t.comment}}</td>
-              <td>
-                <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
-                  <i class="fa fa-edit"></i>
-                </a>
-                <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
-                  <i class="fa fa-trash"></i>
-                </a>
-              </td>
-            </tr>
-
-        </tbody>
-        </table>
-
-      </div>
-
-    <div style="padding-left:15px;">
-                      <ul class="pagination">
-                          <li v-for="currentlink in middle_pages">
-                              <a class="" v-on:click="paginationData(currentlink.url)" :class="{ 'btn-primary': currentlink.index == current }">
-                              <span>{{currentlink.index}}</span></a>
-                          </li>
-                      </ul>
-  </div>
-
-
-
-
-  </div>
 
   `,
 
@@ -663,6 +593,7 @@ let app3 = new Vue({
         self.tickets=[];
         self.loadsubCategories(c);
         self.searchCategory = c;
+        $("#category-title").html(c.name);
 
       },
 

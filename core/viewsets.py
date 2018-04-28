@@ -1,6 +1,7 @@
 from django.db.models import Q
 from requests import Response
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 
 from core.models import Category, CallDetail, District, TypeOption
 from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer, \
@@ -47,9 +48,14 @@ class CategoryDetailViewSet(viewsets.ModelViewSet):
         return self.queryset
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 50
+
+
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = CallDetail.objects.all().order_by("-call_time")
     serializer_class = TickerSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         params = self.request.query_params
@@ -63,11 +69,8 @@ class TicketViewSet(viewsets.ModelViewSet):
             self.queryset = self.queryset.filter(phone_number__icontains=search_key)
 
         if category:
-            self.queryset = self.queryset.filter(Q(category__id=category)
-                                                 | Q(category__parent__id=category)
-                                                 | Q(category__parent__parent__id=category)
-                                                 | Q(category__parent__parent__parent__id=category)
-                                                 )
+            self.queryset = self.queryset.filter(category__id=category)
+
         return self.queryset
 
 

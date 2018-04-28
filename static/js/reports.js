@@ -132,48 +132,50 @@ var app3 = new Vue({
           </form>
   </div>
 
-  <div class="row" v-show="!show_ticket_form && searchCategory">
+  <div class="row" v-if="tickets.length==0">
+    No Tickets
+</div>
+  <div class="row" v-show="!show_ticket_form && tickets.length>0">
+     <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Category</th>
+              <th scope="col">Date</th>
+              <th scope="col">District</th>
+              <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
+              <th scope="col">Status</th>
+              <th scope="col">Comment</th>
+              <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="t , index in tickets">
+              <th scope="row">{{index+1}}</th>
+              <th>{{t.phone_number}}</th>
+              <th>{{t.category_display}}</th>
+              <th >{{t.date_display}}</th>
+              <th >{{t.district_display}}</th>
+              <td v-for="(v,k) in t.other_properties">{{v}}</td>
+              <td>{{t.status}}</td>
+              <td>{{t.comment}}</td>
+              <td>
+                <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
 
-         <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Phone</th>
-      <th scope="col">Category</th>
-      <th scope="col">Date</th>
-      <th scope="col">District</th>
-      <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
-      <th scope="col">Status</th>
-      <th scope="col">Comment</th>
-      <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="t , index in tickets">
-      <th scope="row">{{index+1}}</th>
-      <th>{{t.phone_number}}</th>
-      <th>{{t.category_display}}</th>
-      <th >{{t.date_display}}</th>
-      <th >{{t.district_display}}</th>
-      <td v-for="(v,k) in t.other_properties">{{v}}</td>
-      <td>{{t.status}}</td>
-      <td>{{t.comment}}</td>
-      <td>
-        <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
-          <i class="fa fa-edit"></i>
-        </a>
-        <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
-          <i class="fa fa-trash"></i>
-        </a>
-      </td>
-    </tr>
-    <tr v-if="tickets.length==0">
-    <td colspan="11">No Tickets</td>
-    </tr>
-    </tbody>
-    </table>
+        </tbody>
+        </table>
 
       </div>
+
+
 
 
 
@@ -274,6 +276,7 @@ var app3 = new Vue({
     loadDatas: function(){
             var self = this;
             var options = {'call_type': self.call_type};
+            self.tickets = [];
 
             if(self.searchCategory.hasOwnProperty("id")){
                 options.category = self.searchCategory.id;
@@ -283,7 +286,8 @@ var app3 = new Vue({
                }
 
             function successCallback(response) {
-                self.tickets = response.body;
+                self.tickets = response.body.results;
+                console.log(self.tickets);
             }
 
             function errorCallback() {
@@ -291,6 +295,7 @@ var app3 = new Vue({
             }
             self.$http.get('/core/ticket/', {params:  options}).then(successCallback, errorCallback);
       },
+
     searchTickets: function(){
             var self = this;
             var options = {'search_key': self.search_key,'call_type':self.call_type};
@@ -523,6 +528,7 @@ var app3 = new Vue({
         var self= this;
         self.tickets=[];
         self.loadsubCategories(c);
+        self.searchCategory = c;
 
       },
 
@@ -534,7 +540,7 @@ var app3 = new Vue({
   created() {
 
       var self = this;
-      self.loadDatas();
+//      self.loadDatas();
       self.loadCategories();
 
       self.can_approve = false;

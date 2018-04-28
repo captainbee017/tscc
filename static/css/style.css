@@ -81,3 +81,20 @@ body {
 .field-error .invalid-feedback {
     font-size: 0.8em;
 }
+
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #e62561;
+    background: rgba(230,34,100,1);
+    background: -moz-linear-gradient(left, rgba(230,34,100,1) 0%, rgba(233,89,45,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(230,34,100,1)), color-stop(100%, rgba(233,89,45,1)));
+    background: -webkit-linear-gradient(left, rgba(230,34,100,1) 0%, rgba(233,89,45,1) 100%);
+    background: -o-linear-gradient(left, rgba(230,34,100,1) 0%, rgba(233,89,45,1) 100%);
+    background: -ms-linear-gradient(left, rgba(230,34,100,1) 0%, rgba(233,89,45,1) 100%);
+    background: linear-gradient(to right, rgba(230,34,100,1) 0%, rgba(233,89,45,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e62264', endColorstr='#e9592d', GradientType=1 );
+}

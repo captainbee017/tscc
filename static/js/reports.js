@@ -41,7 +41,7 @@ Vue.component('item', {
   }
 })
 
-var app3 = new Vue({
+let app3 = new Vue({
   el: '#app',
   template: `
   <div class="container">
@@ -175,7 +175,14 @@ var app3 = new Vue({
 
       </div>
 
-
+    <div style="padding-left:15px;">
+                      <ul class="pagination">
+                          <li v-for="currentlink in middle_pages">
+                              <a class="" v-on:click="paginationData(currentlink.url)" :class="{ 'btn-primary': currentlink.index == current }">
+                              <span>{{currentlink.index}}</span></a>
+                          </li>
+                      </ul>
+  </div>
 
 
 
@@ -207,13 +214,17 @@ var app3 = new Vue({
     can_delete: rare_settings.can_delete,
     searchCategory:'',
     treeData: {},
+    middle_pages: [],
+    previous: '',
+    next: '',
+    current: 1,
   },
   methods:{
     loadTagFromArray: function (tags){
         if(!tags || tags=="null") return ''
-        var tags_array = '';
-        var self = this;
-        for (var i = 0; i < self.type_options.length; i++) {
+        let tags_array = '';
+        let self = this;
+        for (let i = 0; i < self.type_options.length; i++) {
                 if (tags == self.type_options[i].id) {
                     tags_array = (self.type_options[i]);
                 }
@@ -223,7 +234,7 @@ var app3 = new Vue({
 
     },
             formHandler: function(key){
-                    var self = this;
+                    let self = this;
                     console.log(key);
                     console.log(document.getElementById(key).value);
                     val = document.getElementById(key).value;
@@ -231,9 +242,83 @@ var app3 = new Vue({
                     console.log(self.other_properties);
 
                 },
+    paginationData: function (url) {
+            let self = this;
+
+            function successCallback(response) {
+                self.tickets = response.body.results;
+                self.next = response.body.next;
+                let rex = /page=[0-9]+/;
+                self.total = response.body.count;
+                self.next = response.body.next;
+                self.previous = response.body.previous;
+
+                self.middle_pages = [];
+                let pages = Math.floor(self.total / 50);
+                if (self.total % 50) {
+                    pages += 1;
+                }
+                if (response.body.next) {
+                    let k = response.body.next;
+                    let np = k.match(rex)[0].split("=")[1];
+                    self.current = parseInt(np) - 1;
+                    for (let i = 1; i < pages + 1; i++) {
+                        if (i < 5 || (Math.abs(i - self.current) < 5) || i > (pages - 5)) {
+                            let npa = "page=" + i;
+                            let tmp = k;
+                            let next_url = tmp.replace(rex, npa)
+                            self.middle_pages.push({
+                                'index': i,
+                                'url': next_url
+                            });
+                        }
+                    }
+
+
+
+                } else if (response.body.previous) {
+                    let k = response.body.previous;
+
+                    if (k.match(rex) == null) {
+                        self.middle_pages.push({
+                            'index': "previous",
+                            'url': response.body.previous
+                        });
+                        self.middle_pages.push({
+                            'index': 2,
+                            'url': response.body.previous
+                        });
+                        self.current = 2;
+                    } else {
+
+                        let np = k.match(rex)[0].split("=")[1];
+                        self.current = parseInt(np) + 1;
+
+                        for (i = 1; i <= pages; i++) {
+                            if (i < 5 || (Math.abs(i - self.current) < 5) || i > (pages - 5)) {
+                                let npa = "page=" + i;
+                                let tmp = k;
+                                let next_url = tmp.replace(rex, npa)
+                                self.middle_pages.push({
+                                    'index': i,
+                                    'url': next_url
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            function errorCallback() {
+                console.log('failed');
+            }
+            self.$http.get(url)
+                .then(successCallback, errorCallback);
+
+        },
     loadCategories: function(){
-            var self = this;
-            var options = {'call_type': self.call_type};
+            let self = this;
+            let options = {'call_type': self.call_type};
 
             function successCallback(response) {
                 self.categories = response.body;
@@ -245,8 +330,8 @@ var app3 = new Vue({
             self.$http.get('/core/main-categories/', {params:  options}).then(successCallback, errorCallback);
       },
       loadsubCategories: function(c){
-            var self = this;
-            var options = {};
+            let self = this;
+            let options = {};
 
             function successCallback(response) {
                 self.treeData = response.body;
@@ -258,8 +343,8 @@ var app3 = new Vue({
             self.$http.get('/core/category/'+ c.id+'/', {params:  options}).then(successCallback, errorCallback);
       },
     loadDistricts: function(){
-            var self = this;
-            var options = {};
+            let self = this;
+            let options = {};
             self.loading = true;
 
             function successCallback(response) {
@@ -274,8 +359,8 @@ var app3 = new Vue({
             self.$http.get('/core/districts/', {params:  options}).then(successCallback, errorCallback);
       },
     loadDatas: function(){
-            var self = this;
-            var options = {'call_type': self.call_type};
+            let self = this;
+            let options = {'call_type': self.call_type};
             self.tickets = [];
 
             if(self.searchCategory.hasOwnProperty("id")){
@@ -287,7 +372,56 @@ var app3 = new Vue({
 
             function successCallback(response) {
                 self.tickets = response.body.results;
-                console.log(self.tickets);
+
+                self.next = response.body.next;
+                let rex = /page=[0-9]+/;
+                self.total = response.body.count;
+                self.next = response.body.next;
+                self.previous = response.body.previous;
+
+                self.middle_pages = [];
+                let pages = Math.floor(self.total / 50);
+                if (self.total % 50) {
+                    pages += 1;
+                }
+                if (response.body.next) {
+                    let k = response.body.next;
+                    let np = k.match(rex)[0].split("=")[1];
+                    self.current = parseInt(np) - 1;
+                    for (let i = 1; i < pages + 1; i++) {
+                        if (i < 5 || (Math.abs(i - self.current) < 5) || i > (pages - 5)) {
+                            let npa = "page=" + i;
+                            let tmp = k;
+                            let next_url = tmp.replace(rex, npa)
+                            self.middle_pages.push({
+                                'index': i,
+                                'url': next_url
+                            });
+                        }
+                    }
+
+
+
+                } else if (response.body.previous) {
+                    let k = response.body.previous;
+                    let np = k.match(rex)[0].split("=")[1];
+                    self.current = parseInt(np) + 1;
+
+                    for (let i = 1; i <= pages; i++) {
+                        if (i < 5 || (Math.abs(i - self.current) < 5) || i > (pages - 5)) {
+                            let npa = "page=" + i;
+                            let tmp = k;
+                            let next_url = tmp.replace(rex, npa)
+                            self.middle_pages.push({
+                                'index': i,
+                                'url': next_url
+                            });
+                        }
+                    }
+
+
+                }
+
             }
 
             function errorCallback() {
@@ -297,8 +431,8 @@ var app3 = new Vue({
       },
 
     searchTickets: function(){
-            var self = this;
-            var options = {'search_key': self.search_key,'call_type':self.call_type};
+            let self = this;
+            let options = {'search_key': self.search_key,'call_type':self.call_type};
 
             function successCallback(response) {
                 self.tickets = response.body;
@@ -311,7 +445,7 @@ var app3 = new Vue({
       },
 
     saveTicket : function (){
-        var self = this;
+        let self = this;
         let csrf = $('[name = "csrfmiddlewaretoken"]').val();
             let options = {
                 headers: {
@@ -358,8 +492,8 @@ var app3 = new Vue({
                     title: 'ticket Updated',
                     text: 'ticket ' + response.body.phone_number + ' Updated'
                 });
-                var category_index = -1;
-                for(var i=0; i < self.tickets.length; i++){
+                let category_index = -1;
+                for(let i=0; i < self.tickets.length; i++){
                     if(self.tickets[i].id == response.body.id){
                     category_index = i;
                     }
@@ -398,19 +532,19 @@ var app3 = new Vue({
 
       },
       setInProgress : function (t){
-        var self = this;
-        var options = {'status': "Inprogress", "pk":t.id};
+        let self = this;
+        let options = {'status': "Inprogress", "pk":t.id};
 
             function successCallback(response) {
                 console.log(response.body.pk);
-                var category_index = -1;
-                for(var i=0; i < self.tickets.length; i++){
+                let category_index = -1;
+                for(let i=0; i < self.tickets.length; i++){
                     if(self.tickets[i].id == response.body.pk){
                     category_index = i;
                     }
 
                 }
-                var ticket_updated = self.tickets[category_index];
+                let ticket_updated = self.tickets[category_index];
                     ticket_updated.status = "Inprogress"
                 Vue.set(self.tickets, category_index, ticket_updated);
 
@@ -433,8 +567,8 @@ var app3 = new Vue({
 
       },
       setCompleted : function (t){
-        var self = this;
-        var options = {'status': "Completed", "pk":t.id};
+        let self = this;
+        let options = {'status': "Completed", "pk":t.id};
 
             function successCallback(response) {
                 console.log(response.body.pk);
@@ -442,14 +576,14 @@ var app3 = new Vue({
                     title: 'success',
                     text: 'Ticket Completed',
                 });
-                var category_index = -1;
-                for(var i=0; i < self.tickets.length; i++){
+                let category_index = -1;
+                for(let i=0; i < self.tickets.length; i++){
                     if(self.tickets[i].id == response.body.pk){
                     category_index = i;
                     }
 
                 }
-                var ticket_updated = self.tickets[category_index];
+                let ticket_updated = self.tickets[category_index];
                     ticket_updated.status = "Completed"
                 Vue.set(self.tickets, category_index, ticket_updated);
 
@@ -467,9 +601,9 @@ var app3 = new Vue({
 
       },
       editTicket : function (t){
-        var self = this;
+        let self = this;
         self.loadDistricts();
-            var options = {};
+            let options = {};
 
             function successCallback(response) {
                 self.ticket = response.body;
@@ -485,16 +619,16 @@ var app3 = new Vue({
 
       },
       canceleditTicket : function (t){
-        var self = this;
+        let self = this;
         self.show_ticket_form = false;
       },
       deleteTicket : function (t){
-        var self = this;
+        let self = this;
 
             self.$dialog.confirm('Please confirm to continue')
                 .then(function () {
 
-                    var options = {"pk":t.id};
+                    let options = {"pk":t.id};
 
                     function successCallback(response) {
                         console.log(response.body.pk);
@@ -525,7 +659,7 @@ var app3 = new Vue({
 
       },
       setMCategory: function (c){
-        var self= this;
+        let self= this;
         self.tickets=[];
         self.loadsubCategories(c);
         self.searchCategory = c;
@@ -539,7 +673,7 @@ var app3 = new Vue({
 
   created() {
 
-      var self = this;
+      let self = this;
 //      self.loadDatas();
       self.loadCategories();
 
@@ -558,7 +692,7 @@ var app3 = new Vue({
   },
   watch:{
         ticket: function (newVal, oldVal) {
-                var self = this;
+                let self = this;
                 if (newVal) {
                 console.log(newVal.category.other_properties);
                     Object.keys(newVal.category.other_properties).forEach(function(key,index) {
@@ -585,14 +719,14 @@ var app3 = new Vue({
 
             },
         searchCategory: function (newVal, oldVal) {
-                var self = this;
+                let self = this;
                 if (newVal) {
                     self.loadDatas();
                 }
 
                 },
         search_key: function (newVal, oldVal) {
-                var self = this;
+                let self = this;
                     self.loadDatas();
 
                 },

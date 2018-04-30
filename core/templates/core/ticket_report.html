@@ -41,8 +41,7 @@ ul {
 <script type="text/x-template" id="item-template">
   <li>
     <div>
-     <a  href="javascript:void(0)" @click="loadReports(model)">{{ model.name }} </a>
-
+      <a  href="javascript:void(0)">{{ model.name }} </a>
     </div>
     <ul  v-if="isFolder">
       <item

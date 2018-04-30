@@ -100,6 +100,11 @@ body {
 }
 
 
+.active-menu {
+    background-color: #fff;
+}
+
+
 /*//report navigation*/
 
 /*.just-padding {
@@ -135,3 +140,4 @@ body {
 /*.list-group-item .glyphicon {
     margin-right: 5px;
 }*/
+

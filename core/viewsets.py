@@ -43,7 +43,7 @@ class CategoryDetailViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         params = self.request.query_params
         call_type = params.get("call_type", False)
-        if call_type:
+        if call_type:            
             self.queryset = self.queryset.filter(call_type=call_type)
         return self.queryset
 

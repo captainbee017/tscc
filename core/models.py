@@ -50,6 +50,12 @@ class Category(models.Model):
         return self.name
 
 
+    # @property
+    # def has_child(self):
+    #     import ipdb;
+    #     ipdb.set
+
+
 class District(models.Model):
     name = models.CharField(max_length=50)
 

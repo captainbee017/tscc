@@ -11,6 +11,7 @@ class TypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+
 class CategorySerializer(serializers.ModelSerializer):
     branch = serializers.SerializerMethodField()
     # types = TypeSerializer()
@@ -25,10 +26,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class MainCategorySerializer(serializers.ModelSerializer):
+    branch = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ('id','name', 'other_properties')
+        fields = ('id','name', 'other_properties', 'branch')
+
+    def get_branch(self, obj):
+        qs =  obj.sub_categories.all()
+        return CategorySerializer(qs, many=True).data
 
 
 

@@ -65,6 +65,12 @@ let app3 = new Vue({
 
                     <hr width="100%" class="p-0 m-0">
                 </div>
+                <div v-show="categories.length == 0" class="p-2">
+                    <div class="alert alert-warning text-center">
+                        <i class="fa fa-exclamation-circle"></i><br />
+                        No Categories to show. <br />
+                    </div>
+                </div>
             </div>
             <div class="col-md-10" v-if="!show_ticket_form">
                 <div class="row align-items-bottom">   

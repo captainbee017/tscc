@@ -60,13 +60,14 @@ let app3 = new Vue({
                             </div>
                         </div>
 
-                        <div>
+                        <div class="activeNavItem hide">
                             <!-- this loop is dangerous. Every time the depth of category
                             is increased, another for loop is required here,
                             v-model fixes it, maybe.-->
 
                             <ul v-for="c1 in c.branch">
-                                <li class="ml-2" style="list-style-type:circle;" @click="setMCategory(c1)">{{ c1.name }}</li>
+                                <li class="ml-2" style="list-style-type:circle;" @click="setMCategory(c1)"
+                                 @mouseOver>{{ c1.name }}</li>
                                 <ul v-show="c1.branch.length>0" v-for="c2 in c1.branch">
                                     <li class="ml-2" style="list-style-type:disc;" @click="setMCategory(c2)">{{ c2.name }}</li>
                                     <ul v-show="c2.branch.length>0" v-for="c3 in c2.branch">
@@ -178,6 +179,9 @@ let app3 = new Vue({
         ret = c.currentTarget.className.split(" ");
         $("." + ret[0] + "").removeClass("active-menu");
         $("." + ret[0] + "").addClass("active-menu");
+
+        $("." + ret[0] + "").find(".activeNavItem").removeClass('hide');
+        $("." + ret[0] + "").find(".activeNavItem").addClass('show');
         // $(".activeNav_"+c.id).css('background-color: #fff');
     },
 
@@ -185,6 +189,9 @@ let app3 = new Vue({
         //do noothing
         ret = c.currentTarget.className.split(" ");
         $("." + ret[0] + "").removeClass("active-menu");
+
+        $("." + ret[0] + "").find(".activeNavItem").addClass('hide');
+        $("." + ret[0] + "").find(".activeNavItem").removeClass('show');
     },
 
 

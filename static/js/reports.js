@@ -84,7 +84,7 @@ let app3 = new Vue({
                     <hr width="100%" class="p-0">
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10" v-if="!show_ticket_form">
                 <div class="row align-items-bottom">   
                     <div class="col-md-6 my-auto">
                         <h4 class="px-2 mb-0" id="category-title">All Reports</h4>
@@ -136,8 +136,70 @@ let app3 = new Vue({
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-10" v-if="show_ticket_form">
+                <h4> {{ticket.category_display}} </h4>
+                <form>
+                    <div class="form-group">
+                    <label for="phone_number">Phone</label>
+                    <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
+                    placeholder="Enter Phone" v-model="ticket.phone_number">
+                    <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
+                  </div>
+
+
+                  <div class="form-group" v-for="(k, v) in other_properties">
+                    <label >{{v}}</label>
+                    <input type="text" class="form-control"
+                    placeholder=""  v-bind:id="v"  v-bind:ref="v" v-bind:value="k"  @change="formHandler(v)">
+                  </div>
+
+                  <div class="form-group" v-show="has_district">
+                    <label for="district">District</label>
+                    <vselect :options="districts" label="name" :value="''" v-model="ticket.district" :allow-empty="true" :loading="loading"
+                         :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select District'" :multiple=false track-by="id" :hide-selected="true">
+                        <template slot="noResult">NO Districts Available</template>
+                        <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
+                        No Districts</div></template>
+                    </vselect>
+
+                    </div>
+
+                  <div class="form-group" v-show="has_type">
+                    <label for="type">Type</label>
+                    <vselect :options="type_options" label="name" :value="''" v-model="ticket.types" :allow-empty="true" :loading="loading"
+                         :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
+                        <template slot="noResult">NO Types Available</template>
+                        <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
+                        No Types</div></template>
+                    </vselect>
+
+                    </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Comment</label>
+                    <textarea v-model="ticket.comment" placeholder="add Comment" rows="3" class="form-control"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                  <label for="status">Status</label>
+                    <select v-model="ticket.status" class="form-control">
+                      <option>Pending</option>
+                      <option>Inprogress</option>
+                      <option>Completed</option>
+                    </select>
+                  </div>
+
+                   <div class="form-group">
+
+                    <a  class="btn btn-primary text-white" @click="saveTicket()">Update Ticket</a>
+
+                </div>
+
+              </form>
+            </div>
         </div>
-    </div>
+      </div>
 </div>
 
   `,
@@ -565,6 +627,7 @@ let app3 = new Vue({
 
         function successCallback(response) {
             self.ticket = response.body;
+            console.log(self.ticket);
             self.show_ticket_form = true;
         }
 

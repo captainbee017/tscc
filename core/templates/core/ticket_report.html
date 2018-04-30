@@ -41,7 +41,7 @@ ul {
 <script type="text/x-template" id="item-template">
   <li>
     <div>
-      <a  href="javascript:void(0)">{{ model.name }} </a>
+      <a  href="javascript:void(0)" @click="loadReports(model)">{{ model.name }} </a>
     </div>
     <ul  v-if="isFolder">
       <item
@@ -69,5 +69,5 @@ ul {
   rare_settings.can_approve = "{{can_approve}}";
   rare_settings.can_delete = "{{can_delete}}";
 </script>
-<script src="{% static 'js/reports.js' %}?v=1.25"></script>
+<script src="{% static 'js/reports.js' %}?v=1.26"></script>
 {% endblock %}

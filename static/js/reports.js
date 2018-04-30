@@ -51,19 +51,17 @@ let app3 = new Vue({
             <div class="col-md-2 pr-0" style="border-right: 1px solid #E1E1E1;">
                 <div class="" v-for="c in categories" >
                     <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
-                        <div class="row">
-                            <div class="col-md-12 pr-4">
-                                <a class="btn-link" style="text-decoration: none;" @click="setMCategory(c)" >
-                                    {{ c.name }}
-                                    <span v-show="c.branch.length > 0" class="pull-right"><i class="fa fa-chevron-down" style="color: #ababab;"></i></span>
-                                </a>
-                            </div>
-                        </div>
-
                         <div>
+                            <ul>
+                              <item
+                                class="item"
+                                :model="c">
+                              </item>
+                            </ul>
+
                             <!-- this loop is dangerous. Every time the depth of category
                             is increased, another for loop is required here,
-                            v-model fixes it, maybe.-->
+                            v-model fixes it, maybe.
 
                             <ul v-for="c1 in c.branch">
                                 <li class="ml-2" style="list-style-type:circle;" @click="setMCategory(c1)">{{ c1.name }}</li>
@@ -80,6 +78,7 @@ let app3 = new Vue({
                                     </ul>
                                 </ul>
                             </ul>
+                            -->
                         </div>
                     </div>
                     <hr width="100%" class="p-0">

@@ -44,14 +44,14 @@ Vue.component('item', {
 let app3 = new Vue({
   el: '#app',
   template: `
-  <div class="px-4">
+  <div class="pr-4">
     
-    <div class="col-md-12">
+    <div class="col-md-12 pl-0">
         <div class="row">
             <div class="col-md-2 pr-0" style="border-right: 1px solid #E1E1E1;">
-                <div class="" v-for="c in categories" >
-                    <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
-                        <div class="row">
+                <div class="" v-for="c in categories"  :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                    <div>
+                        <div class="row py-2 pl-3">
                             <div class="col-md-12 pr-4">
                                 <a class="btn-link" style="text-decoration: none;" @click="setMCategory(c)" >
                                     {{ c.name }}
@@ -66,7 +66,7 @@ let app3 = new Vue({
                             v-model fixes it, maybe.-->
 
                             <ul v-for="c1 in c.branch">
-                                <li class="ml-2" style="list-style-type:circle;" @click="setMCategory(c1)"
+                                <li class="ml-3" style="list-style-type:circle;" @click="setMCategory(c1)"
                                  @mouseOver>{{ c1.name }}</li>
                                 <ul v-show="c1.branch.length>0" v-for="c2 in c1.branch">
                                     <li class="ml-2" style="list-style-type:disc;" @click="setMCategory(c2)">{{ c2.name }}</li>
@@ -83,7 +83,7 @@ let app3 = new Vue({
                             </ul>
                         </div>
                     </div>
-                    <hr width="100%" class="p-0">
+                    <hr width="100%" class="p-0 m-0">
                 </div>
             </div>
             <div class="col-md-10">

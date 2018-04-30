@@ -44,11 +44,12 @@ Vue.component('item', {
 let app3 = new Vue({
   el: '#app',
   template: `
-  <div class="px-4">
+  <div class="pr-4">
     
-    <div class="col-md-12">
+    <div class="col-md-12 pl-0">
         <div class="row">
             <div class="col-md-2 pr-0" style="border-right: 1px solid #E1E1E1;">
+
                 <div class="" v-for="c in categories" >
                     <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
                         <div>
@@ -58,30 +59,11 @@ let app3 = new Vue({
                                 :model="c">
                               </item>
                             </ul>
-
-                            <!-- this loop is dangerous. Every time the depth of category
-                            is increased, another for loop is required here,
-                            v-model fixes it, maybe.
-
-                            <ul v-for="c1 in c.branch">
-                                <li class="ml-2" style="list-style-type:circle;" @click="setMCategory(c1)">{{ c1.name }}</li>
-                                <ul v-show="c1.branch.length>0" v-for="c2 in c1.branch">
-                                    <li class="ml-2" style="list-style-type:disc;" @click="setMCategory(c2)">{{ c2.name }}</li>
-                                    <ul v-show="c2.branch.length>0" v-for="c3 in c2.branch">
-                                        <li class="ml-2" @click="setMCategory(c3)" style="list-style-type:circle;">
-                                            {{ c3.name }}
-                                        </li>
-                                        <ul v-show="c3.branch.length>0" v-for="c4 in c3.branch">
-                                            <li class="ml-2" @click="setMCategory(c4)" style="list-style-type:disc;">
-                                                {{ c4.name }}</li>
-                                        </ul>
-                                    </ul>
-                                </ul>
-                            </ul>
-                            -->
                         </div>
                     </div>
-                    <hr width="100%" class="p-0">
+
+
+                    <hr width="100%" class="p-0 m-0">
                 </div>
             </div>
             <div class="col-md-10" v-if="!show_ticket_form">
@@ -239,6 +221,9 @@ let app3 = new Vue({
         ret = c.currentTarget.className.split(" ");
         $("." + ret[0] + "").removeClass("active-menu");
         $("." + ret[0] + "").addClass("active-menu");
+
+        $("." + ret[0] + "").find(".activeNavItem").removeClass('hide');
+        $("." + ret[0] + "").find(".activeNavItem").addClass('show');
         // $(".activeNav_"+c.id).css('background-color: #fff');
     },
 
@@ -246,6 +231,9 @@ let app3 = new Vue({
         //do noothing
         ret = c.currentTarget.className.split(" ");
         $("." + ret[0] + "").removeClass("active-menu");
+
+        $("." + ret[0] + "").find(".activeNavItem").addClass('hide');
+        $("." + ret[0] + "").find(".activeNavItem").removeClass('show');
     },
 
 

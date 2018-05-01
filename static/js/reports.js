@@ -89,7 +89,7 @@ let app3 = new Vue({
                             <thead>
                                 <tr>
                                     <th scope="col">Phone</th>
-                                    <!-- <th scope="col">Category</th> -->
+                                     <th scope="col">CSR</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">District</th>
                                     <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
@@ -101,7 +101,7 @@ let app3 = new Vue({
                             <tbody>
                                 <tr v-for="t , index in tickets">
                                     <td>{{t.phone_number}}</td>
-                                    <!-- <td>{{t.category_display}}</td> -->
+                                    <td>{{t.csr_display}}</td>
                                     <td >{{t.date_display}}</td>
                                     <td >{{t.district_display}}</td>
                                     <td v-for="(v,k) in t.other_properties">{{v}}</td>

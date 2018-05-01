@@ -59,12 +59,13 @@ class TickerSerializer(serializers.ModelSerializer):
     district_display = serializers.SerializerMethodField()
     type_display = serializers.SerializerMethodField()
     date_display = serializers.SerializerMethodField()
+    csr_display = serializers.SerializerMethodField()
 
     class Meta:
         model = CallDetail
         fields = ('id','category', 'other_properties', 'other_properties', 'user',
                   'phone_number', 'status','call_time','comment', 'category_display', 'date_display',
-                  'district_display','type_display', 'district', 'types')
+                  'district_display','type_display', 'district', 'types', 'csr_display')
 
     def get_category_display(self, obj):
         return obj.category.name
@@ -77,6 +78,9 @@ class TickerSerializer(serializers.ModelSerializer):
 
     def get_date_display(self, obj):
         return obj.call_time.strftime('%Y-%m-%d %H:%M')
+
+    def get_csr_display(self, obj):
+        return obj.user.username
 
     def create(self, validated_data):
         ticket = super(TickerSerializer, self).create(validated_data)

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
 from requests import Response
 from rest_framework import viewsets
@@ -5,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from core.models import Category, CallDetail, District, TypeOption
 from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer, \
-    TypeSerializer, MainCategorySerializer
+    TypeSerializer, MainCategorySerializer, UserSerializer
 
 
 class TypeViewSet(viewsets.ModelViewSet):
@@ -62,6 +63,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         call_type = params.get("call_type", False)
         search_key = params.get("search_key", False)
         category = params.get("category", False)
+        user = params.get("user", False)
         if call_type:
             self.queryset = self.queryset.filter(category__call_type=call_type)
 
@@ -70,6 +72,9 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         if category:
             self.queryset = self.queryset.filter(category__id=category)
+
+        if user:
+            self.queryset = self.queryset.filter(user__id=user)
 
         return self.queryset
 
@@ -83,3 +88,8 @@ class TicketDetailViewSet(viewsets.ModelViewSet):
 class DistrictViewSet(viewsets.ModelViewSet):
     queryset = District.objects.all()
     serializer_class = DistrictSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

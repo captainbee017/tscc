@@ -51,7 +51,7 @@ let app3 = new Vue({
             <div class="col-md-2 pr-0" style="border-right: 1px solid #E1E1E1;">
 
                 <div class="" v-for="c in categories" >
-                    <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                    <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave="mouseLeave">
                         <div>
                             <ul>
                               <item
@@ -74,12 +74,22 @@ let app3 = new Vue({
             </div>
             <div class="col-md-10" v-if="!show_ticket_form">
                 <div class="row align-items-bottom">   
-                    <div class="col-md-6 my-auto">
+                    <div class="col-md-4 my-auto">
                         <h4 class="px-2 mb-0" id="category-title">All Reports</h4>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search by Phone Number" v-model="search_key">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <vselect :options="users" label="username" :value="''" v-model="user" :allow-empty="true" :loading="loading"
+                             :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select CSR'" :multiple=false track-by="id" :hide-selected="true">
+                            <template slot="noResult">NO CSRS Available</template>
+                            <template slot="afterList" slot-scope="props"><div v-show="users.length==0" class="wrapper-sm bg-danger">
+                            No CSRS</div></template>
+                            </vselect>
                         </div>
                     </div>
                 </div>
@@ -219,6 +229,8 @@ let app3 = new Vue({
         previous: '',
         next: '',
         current: 1,
+        user: '',
+        users: [],
     },
   methods:{
 
@@ -352,7 +364,21 @@ let app3 = new Vue({
         }
         self.$http.get('/core/main-categories/', {params:  options}).then(successCallback, errorCallback);
     },
-    
+
+        loadUsers: function(){
+        let self = this;
+        let options = {};
+
+        function successCallback(response) {
+            self.users = response.body;
+        }
+
+        function errorCallback() {
+            console.log('failed');
+        }
+        self.$http.get('/core/users/', {params:  options}).then(successCallback, errorCallback);
+    },
+
     loadsubCategories: function(c){
         let self = this;
         let options = {};
@@ -389,6 +415,9 @@ let app3 = new Vue({
 
         if(self.searchCategory.hasOwnProperty("id")){
             options.category = self.searchCategory.id;
+        }
+        if(self.user.hasOwnProperty("id")){
+            options.user = self.user.id;
         }
         if(self.search_key.length>0){
             options.search_key = self.search_key;
@@ -691,6 +720,7 @@ let app3 = new Vue({
       let self = this;
 //      self.loadDatas();
       self.loadCategories();
+      self.loadUsers();
 
       self.can_approve = false;
       if(rare_settings.can_approve =="True"){
@@ -736,6 +766,11 @@ let app3 = new Vue({
 
                 },
         search_key: function (newVal, oldVal) {
+                let self = this;
+                    self.loadDatas();
+
+                },
+        user: function (newVal, oldVal) {
                 let self = this;
                     self.loadDatas();
 

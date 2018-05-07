@@ -101,7 +101,7 @@ let app3 = new Vue({
                                     <th scope="col">Phone</th>
                                      <th scope="col">CSR</th>
                                     <th scope="col">Date</th>
-                                    <th scope="col">District</th>
+                                    <th scope="col" v-show="searchCategory && searchCategory.has_district">District</th>
                                     <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Comment</th>
@@ -113,7 +113,7 @@ let app3 = new Vue({
                                     <td>{{t.phone_number}}</td>
                                     <td>{{t.csr_display}}</td>
                                     <td >{{t.date_display}}</td>
-                                    <td >{{t.district_display}}</td>
+                                    <td  v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
                                     <td v-for="(v,k) in t.other_properties">{{v}}</td>
                                     <td>{{t.status}}</td>
                                     <td>{{t.comment}}</td>
@@ -511,7 +511,7 @@ let app3 = new Vue({
         self.ticket.category = self.ticket.category.id;
 
         if(self.ticket.hasOwnProperty("district")){
-                if(self.ticket.district.hasOwnProperty("id")){
+                if(self.ticket.district &&  self.ticket.district.hasOwnProperty("id")){
                     self.ticket.district = self.ticket.district.id;
 
                 }else{

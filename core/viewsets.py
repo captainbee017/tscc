@@ -7,7 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from core.models import Category, CallDetail, District, TypeOption
 from core.serializer import CategorySerializer, TickerSerializer, DistrictSerializer, TickerDetailSerializer, \
     TypeSerializer, MainCategorySerializer, UserSerializer
-
+from datetime import datetime
 
 class TypeViewSet(viewsets.ModelViewSet):
     queryset = TypeOption.objects.all().order_by('name')
@@ -75,6 +75,14 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         if user:
             self.queryset = self.queryset.filter(user__id=user)
+        date = params.get('date')
+        if date and len(date) == 21:
+            start, end = date.split("/")
+            filter_start = datetime.strptime(start, '%Y-%m-%d')
+            filter_end = datetime.strptime(end, '%Y-%m-%d')
+            filter_end = filter_end.replace(hour=23, minute=59, second=59)
+            self.queryset = self.queryset.filter(
+                call_time__range=[filter_start, filter_end])
 
         return self.queryset
 

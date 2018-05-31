@@ -41,6 +41,92 @@ Vue.component('item', {
   }
 })
 
+Vue.component('daterangepicker', {
+  props: {
+    value: {
+      type: [String]
+    },
+    options: {
+      type: Object,
+      // default: function(){
+      //   return {
+      //     format: 'YYYY-MM-DD',
+      //     separator: '/'
+      //   }
+      // }
+    }
+  },
+  // props: ['options', 'value', 'multiple'],
+  template:
+  `<input/>`,
+  mounted: function () {
+
+    // let opts = Object.assign({},{
+    //     format: 'YYYY-MM-DD',
+    //     separator: '/'
+    // },this.options);
+
+    var vm = this;
+    // console.log('final datepicker config',this.config)
+    $(this.$el)
+      // .daterangepicker({format: 'YYYY-MM-DD', separator: '/'})
+      .daterangepicker(this.config)
+      .val(this.value)
+      .trigger('change')
+      // emit event on change.
+      .on('apply.daterangepicker', function () {
+        vm.$emit('input', this.value)
+      })
+      .on('change', function () {
+        vm.$emit('input', this.value)
+      })
+  },
+  computed: {
+    config: function(){
+      return Object.assign({},{
+          "showDropdowns": false,
+          locale: {
+            format: 'YYYY-MM-DD',
+            separator: '/'
+          },
+          ranges:   {
+            'Today': [moment(), moment()],
+             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+             'This Month': [moment().startOf('month'), moment().endOf('month')],
+             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+      },this.options);
+    }
+  },
+  watch: {
+    value: function (value) {
+      // update value
+      $(this.$el).val(value).trigger('change');
+    },
+    // config: function (options) {
+    //   console.trace('daterangepicker option changed',options)
+    //   // update options
+    //   $(this.$el)
+    //   .daterangepicker('destroy')
+    //   .daterangepicker({ data: this.config }).trigger('change')
+    // }
+  },
+  created: function() {
+      var vm = this;
+
+  },
+  destroyed: function () {
+    console.log('daterangepicker destroyed');
+    // $(this.$el).off().daterangepicker('destroy')
+    // debugger;
+    $(this.$el).data('daterangepicker').remove()
+    // $(this.$el).remove();
+  }
+})
+
+
 let app3 = new Vue({
   el: '#app',
   template: `
@@ -77,12 +163,17 @@ let app3 = new Vue({
                     <div class="col-md-4 my-auto">
                         <h4 class="px-2 mb-0" id="category-title">All Reports</h4>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search by Phone Number" v-model="search_key">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                             <daterangepicker :options="datepickeroptions" name="daterange" placeholder="Select Date"  class="form-control input-xs" v-model="date"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="input-group">
                             <vselect :options="users" label="username" :value="''" v-model="user" :allow-empty="true" :loading="loading"
                              :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select CSR'" :multiple=false track-by="id" :hide-selected="true">
@@ -231,6 +322,10 @@ let app3 = new Vue({
         current: 1,
         user: '',
         users: [],
+        date: '',
+        datepickeroptions: {
+            timePicker: false,
+        }
     },
   methods:{
 
@@ -421,6 +516,10 @@ let app3 = new Vue({
         }
         if(self.search_key.length>0){
             options.search_key = self.search_key;
+        }
+
+        if(self.date.length>0){
+            options.date = self.date;
         }
 
         function successCallback(response) {
@@ -771,6 +870,11 @@ let app3 = new Vue({
 
                 },
         user: function (newVal, oldVal) {
+                let self = this;
+                    self.loadDatas();
+
+                },
+        date: function (newVal, oldVal) {
                 let self = this;
                     self.loadDatas();
 

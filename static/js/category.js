@@ -449,6 +449,7 @@ var app3 = new Vue({
             function successCallback(response) {
             self.show_category_form = false;
             self.show_type_form = false;
+            self.type_options = [];
             self.category = {'name':'', 'call_type':response.body.call_type,'other_properties':{},
                         'has_district':true, 'has_type':false, 'types':[]}
                 new PNotify({

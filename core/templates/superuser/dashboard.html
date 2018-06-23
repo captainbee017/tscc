@@ -2,7 +2,10 @@
 
 {% load static staticfiles %}
 
-{% block page_title %} <h3 class="primary-text-color text-center">Superuser Dashboard</h3>{% endblock %}
+{% block page_title %}Superuser Dashboard{% endblock %}
+
+
+{% block vertical_navbar %}{% endblock %}
 
 {% block maincontainer %}
     {% csrf_token %}
@@ -11,7 +14,7 @@
         <div class="row m-5">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
-                    <div class="card-body m-4">
+                    <div class="card-body m-3">
                         <div class="row">
                             <div class="col-md-2">
                                 <i class="fa fa-ticket fa-3x"></i>
@@ -31,13 +34,13 @@
         <div class="row m-5">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-body m-4">
+                    <div class="card-body m-3">
                         <div class="row">
                             <div class="col-md-2">
                                 <i class="fa fa-tasks fa-3x"></i>
                             </div>
-                            <div class="col-md-8">
-                                <h5 class="card-title primary-text-color">Manage ticket categories </h5>
+                            <div class="col-md-10">
+                                <h5 class="card-title primary-text-color pl-1">Manage ticket categories </h5>
                                 <a href="{% url 'category_settings' 1 %}" class="pr-3 small">Query</a>
                                 <a href="{% url 'category_settings' 2 %}" class="px-3 small">Complain </a>
                             </div>
@@ -47,7 +50,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-body m-4">
+                    <div class="card-body m-3">
                         <div class="row">
                             <div class="col-md-2"><i class="fa fa-users fa-3x"></i></div>
                             <div class="col-md-10">

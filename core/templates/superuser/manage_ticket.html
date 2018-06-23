@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}
-    <a href="{% url 'dashboard' %}" class="primary-text-color">Dashboard</a>
-    <i class="fa fa-chevron-right"></i>
-    <span class="breadcrumb-active">Manage {{ ticket_type }} tickets</span>
+{% block page_title %}Manage {{ ticket_type }} tickets
 {% endblock %}
 
 {% load bootstrap4 %}

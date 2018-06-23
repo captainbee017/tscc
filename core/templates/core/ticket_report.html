@@ -3,37 +3,29 @@
 
 {% load static staticfiles %}
 
-{% block page_title %}
-    <a href="{% url 'dashboard' %}" class="primary-text-color h3 mx-3"><i class="fa fa-home fa-1x"></i></a>
-    <i class="fa fa-chevron-right align-text-bottom"></i>
-    <span class="h3 mx-3">Reports</span>
-    <i class="fa fa-chevron-right"></i>
-    <span class="breadcrumb-active h3 mx-3">{% if ticket_type == "1" %}query{% else %}complain{% endif %}</span>
+{% block page_title %}reports / {% if ticket_type == "1" %}Query{% else %}Complain{% endif %}
 
 {% endblock %}
 
 {% block css %}
 <style>
-    body {
-      font-family: Menlo, Consolas, monospace;
+    body, {
       color: #444;
     }
-
+    
     a {
-      word-wrap: break-word;
-      font-size: 14px;
+      color: #999;
     }
-
-  .item {
-    cursor: pointer;
-  }
-  .bold {
-    font-weight: bold;
-  }
-  ul {
-    padding-left: 1.6em;
-    line-height: 1.3em;
-  }
+    .item {
+      cursor: pointer;
+    }
+    .bold {
+      font-weight: bold;
+    }
+    ul {
+      padding-left: 1.6em;
+      line-height: 1.3em;
+    }
 </style>
 
 {% endblock %}

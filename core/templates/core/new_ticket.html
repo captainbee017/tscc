@@ -5,11 +5,7 @@
 {% load static staticfiles %}
 
 {% block page_title %}
-  <a href="{% url 'dashboard' %}" class="primary-text-color h3 mx-3"><i class="fa fa-home fa-1x"></i></a>
-  <i class="fa fa-chevron-right align-text-bottom"></i>
-  <span class="h3 mx-3">New ticket</span>
-  <i class="fa fa-chevron-right"></i>
-  <span class="breadcrumb-active h3 mx-3">{% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} </span>
+    New {% if ticket_type == '1' %}Query{% elif ticket_type == '2' %}Compalin{% endif %} tickets
 {% endblock %}
 
 

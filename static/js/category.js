@@ -1,18 +1,18 @@
 var app3 = new Vue({
   el: '#app',
   template: `
-    <div class="container">
+    <div class="container ml-0 pl-0" style="font-size: 13px;">
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card border-0">
                     <div v-show="call_type==1">
-                        <div class="card-header">Query Categories
+                        <div class="card-header p-2">Query Categories
                             <a @click="newCategory()" class="btn btn-sm btn-secondary float-right">
                                 <i class="fa fa-plus-circle"></i> Add Main category
                             </a>
                         </div>
-                        <div class="card-body p-3">
-                            <div class="row pt-3" v-for="c , index in query_categories">
+                        <div class="card-body">
+                            <div class="row px-2 pt-2" v-for="c , index in query_categories">
                                 <div class="col-md-8">
                                     {{c.name}}
                                 </div>
@@ -44,7 +44,7 @@ var app3 = new Vue({
                                         </div>
                                     </div>
                                 </div>
-                                <hr width="100%">
+                                <hr width="100%" class="text-muted m-1 mx-2">
                             </div>
                         </div>
                         <div v-if="query_categories.length === 0">
@@ -99,11 +99,11 @@ var app3 = new Vue({
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card" v-show="show_category_form">
-                    <div class="card-header">
+                <div class="card border-0" v-show="show_category_form">
+                    <div class="card-header p-2">
                         Add category
                     </div>
-                    <div class="card-body p-3">
+                    <div class="card-body p-2">
                         <form>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -195,9 +195,9 @@ var app3 = new Vue({
                             </div>
                             <hr />
                             <div class="form-group">
-                                <a  class="btn btn-success text-white" @click="saveCategory()">Save Category</a>
-                                <a  class="btn btn-warning text-white" @click="show_category_form=false">Cancel</a>
-                                <a  v-show="category.id" class="btn btn-danger text-white" @click="deleteCategory()">Delete</a>
+                                <a  class="btn btn-success btn-sm text-white" @click="saveCategory()">Save Category</a>
+                                <a  class="btn btn-warning btn-sm text-white" @click="show_category_form=false">Cancel</a>
+                                <a  v-show="category.id" class="btn btn-sm btn-danger text-white" @click="deleteCategory()">Delete</a>
                             </div>
                         </form>
                     </div>

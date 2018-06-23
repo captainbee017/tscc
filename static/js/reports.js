@@ -130,26 +130,20 @@ Vue.component('daterangepicker', {
 let app3 = new Vue({
   el: '#app',
   template: `
-  <div class="pr-4">
-    
-    <div class="col-md-12 pl-0">
+  <div class="container ml-0 pl-0">
         <div class="row">
-            <div class="col-md-2 pr-0" style="border-right: 1px solid #E1E1E1;">
-
+            <div class="col-md-2 pl-2">
                 <div class="" v-for="c in categories" >
-                    <div :class="'activeNav_' + c.id" v-on:mouseover="mouseOver" @mouseleave="mouseLeave">
+                    <div>
                         <div>
-                            <ul>
+                            <ul class="list-unstyled">
                               <item
-                                class="item"
+                                class="item text-muted"
                                 :model="c">
                               </item>
                             </ul>
                         </div>
                     </div>
-
-
-                    <hr width="100%" class="p-0 m-0">
                 </div>
                 <div v-show="categories.length == 0" class="p-2">
                     <div class="alert alert-warning text-center">
@@ -159,71 +153,75 @@ let app3 = new Vue({
                 </div>
             </div>
             <div class="col-md-10" v-if="!show_ticket_form">
-                <div class="row align-items-bottom">
-                    <div class="col-md-4 my-auto">
-                        <h4 class="px-2 mb-0" id="category-title">All Reports</h4>
+                  <div class="card border-0">
+                  <div class="card-header p-2">
+                    <div class="row">
+                    <div class="col-md-3 my-auto">
+                        <h5 class="px-2 mb-0" id="category-title">All Reports</h5>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search by Phone Number" v-model="search_key">
+                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number" v-model="search_key">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
-                             <daterangepicker :options="datepickeroptions" name="daterange" placeholder="Select Date"  class="form-control input-xs" v-model="date"/>
+                             <daterangepicker :options="datepickeroptions" name="daterange" placeholder="Date"  class="form-control form-control-sm" v-model="date"/>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
-                            <vselect :options="users" label="username" :value="''" v-model="user" :allow-empty="true" :loading="loading"
-                             :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select CSR'" :multiple=false track-by="id" :hide-selected="true">
-                            <template slot="noResult">NO CSRS Available</template>
-                            <template slot="afterList" slot-scope="props"><div v-show="users.length==0" class="wrapper-sm bg-danger">
-                            No CSRS</div></template>
+                            <vselect :options="users" label="username" :value="''" v-model="user" :allow-empty="true" 
+                            :loading="loading" :select-label="''" :show-labels="false" :internal-search="true"
+                            :placeholder="'Ticket added by'" :multiple=false track-by="id" :hide-selected="true">
+                              <template slot="noResult">NO CSRS Available</template>
+                              <template slot="afterList" slot-scope="props">
+                                <div v-show="users.length==0" class="wrapper-sm bg-danger">No CSRS</div>
+                              </template>
                             </vselect>
                         </div>
                     </div>
-                </div>
-                <div class="row my-3">
-                    <div class="col-md-12">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Phone</th>
-                                     <th scope="col">CSR</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col" v-show="searchCategory && searchCategory.has_district">District</th>
-                                    <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Comment</th>
-                                    <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="t , index in tickets">
-                                    <td>{{t.phone_number}}</td>
-                                    <td>{{t.csr_display}}</td>
-                                    <td >{{t.date_display}}</td>
-                                    <td  v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
-                                    <td v-for="(v,k) in t.other_properties">{{v}}</td>
-                                    <td>{{t.status}}</td>
-                                    <td>{{t.comment}}</td>
-                                    <td>
-                                        <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
-                                          <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
-                                          <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr v-show="tickets.length == 0">
-                                    <td colspan="8"><div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> No datas. Select categories.</div></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-borderless">
+                          <thead>
+                              <tr>
+                                  <th scope="col">Phone</th>
+                                  <th scope="col">CSR</th>
+                                  <th scope="col">Date</th>
+                                  <th scope="col" v-show="searchCategory && searchCategory.has_district">District</th>
+                                  <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Comment</th>
+                                  <th class="text-center" scope="col" v-show="[can_approve, can_delete]"><i class="fa fa-cogs"></i></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr v-for="t , index in tickets">
+                                  <td>{{t.phone_number}}</td>
+                                  <td>{{t.csr_display}}</td>
+                                  <td >{{t.date_display}}</td>
+                                  <td  v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
+                                  <td v-for="(v,k) in t.other_properties">{{v}}</td>
+                                  <td>{{t.status}}</td>
+                                  <td>{{t.comment}}</td>
+                                  <td>
+                                      <a title="Edit" v-show="can_approve" @click="editTicket(t)" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-edit"></i>
+                                      </a>
+                                      <a title="Delete" v-show="can_delete" @click="deleteTicket(t)" class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-trash"></i>
+                                      </a>
+                                  </td>
+                              </tr>
+                              <tr v-show="tickets.length == 0">
+                                  <td colspan="8"><div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> No datas. Select categories.</div></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                </div>  
             </div>
 
             <div class="col-md-10" v-if="show_ticket_form">
@@ -337,7 +335,6 @@ let app3 = new Vue({
 
         $("." + ret[0] + "").find(".activeNavItem").removeClass('hide');
         $("." + ret[0] + "").find(".activeNavItem").addClass('show');
-        // $(".activeNav_"+c.id).css('background-color: #fff');
     },
 
     mouseLeave: function(c) {

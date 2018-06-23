@@ -16,34 +16,95 @@
     <link rel="stylesheet" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}" type="text/css" />
     {% block css %}{% endblock %}
     <style>
-        body, p, h1, h2, h3, h4, h5 {
-            /*font-size: 13px;*/
+        body, p, h1, h2, h3, h4, h5, div {
             color: #999 !important;
+            font-family: Roboto !important;
+            word-wrap: break-word;
+        }
+        table th, td {
+            font-size: 13px;
+        }
+        p, a {
+            font-size: 13px;
+        }
+
+        .btn-sm {
+            font-size: 11px;
+        }
+
+        input, .form-control {
+            /*padding: 4px;*/
+            font-size: 14px !important;
             font-family: Roboto !important;
         }
     </style>
 </head>
 <body>
 
-<p class="page-header text-center mt-3 primary-text-color">{% block page_title %}{% endblock %}</p>
 
 {% if request.user.is_authenticated %}
-{% block user_detail %}
-    <div class="">
-        <hr width="50%">
-        <p class="text-center small primary-text-color">
-            <span class="pr-3"><i class="fa fa-user fa-fw"></i> {{ request.user.username }}</span>|
-            <span class="pl-3 pr-3"><i class="fa fa-clock-o fa-fw"></i> Last Login: {{ request.user.last_login }}</span>|
-            <a class="pl-3 pr-3" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-        </p>
-        <hr>
-    </div>
-{% endblock %}
+    {% block user_detail %}
+        <div class="row p-0 m-0">
+            <div class="col-md-6">
+                <p class="text-uppercase primary-text-color mb-1 mt-2">{% block page_title %}{% endblock %}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="text-right small text-muted mb-1 mt-2">
+                    <span class="pr-3"><i class="fa fa-user fa-fw"></i> {{ request.user.username }}</span>|
+                    <span class="pl-3 pr-3"><i class="fa fa-clock-o fa-fw"></i> Last Login: {{ request.user.last_login }}</span>|
+                    <a class="pl-3 pr-3 text-muted" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                </p>
+            </div>
+            <div class="col-md-12 p-0">
+                <hr class="mb-3 mt-0">
+            </div>
+        </div>
+    {% endblock %}
+    
+
 {% endif %}
 
-{% block maincontainer %}
-
-{% endblock %}
+<div class="d-flex flex-row">
+    {% block vertical_navbar %}
+        <div class="float-left mr-4" style="border-right: 1px solid #efefef;">
+            <nav class="navbar bg-light h-100 px-2">
+                <ul class="navbar-nav primary-text-color">
+                    <li class="nav-item mb-3">
+                        <a href="{% url 'dashboard' %}" class="primary-text-color" data-toggle="tooltip" title="Dashboard"
+                            data-placement="right">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item my-3">
+                        <a class="primary-text-color" data-toggle="tooltip" title="View Reports"
+                            data-placement="right">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item my-3">
+                        <a class="primary-text-color" data-toggle="tooltip" title="Manage Tickets"
+                            data-placement="right">
+                            <i class="fa fa-ticket"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item my-3">
+                        <a class="primary-text-color" data-toggle="tooltip" title="Add Tickets"
+                            data-placement="right">
+                            <i class="fa fa-plus-circle"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item my-3">
+                        <a href="{% url 'add_new_user' %}" class="primary-text-color" data-toggle="tooltip" title="Manage Users"
+                            data-placement="right">
+                            <i class="fa fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    {% endblock %}
+    {% block maincontainer %}{% endblock %}
+</div>
 
 
 {% block modal %}
@@ -76,9 +137,15 @@
         $($(this).data("target") + ' .modal-content').load($(this).data("remote"));
     });
 
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+
 </script>
 <script>
 window.Vue.use(VuejsDialog.default)
+
+
 </script>
 {% block js %}{% endblock %}
 </body>

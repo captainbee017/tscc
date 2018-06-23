@@ -3,25 +3,31 @@
 
 {% block page_title %}CSR Dashboard{% endblock %}
 
+{% block vertical_navbar %}{% endblock %}
 
 {% block maincontainer %}
+<div class="container">
 <br><br><br><br>
+    
 <div class="row">
-    <div class="offset-md-3 col-md-4 ">
-            <a href="{% url 'new_ticket' 1 %}" class="text-white btn bg-primary btn-lg p-5">
+    <div class="col-md-6">
+            <a href="{% url 'new_ticket' 1 %}" class="text-white btn bg-primary btn-lg p-5 float-right">
                 <i class="fa fa-plus-circle"></i> ADD QUERY</a>
     </div>
-    <div class="col-md-4">
-        <a href="{% url 'new_ticket' 2 %}" class="text-white btn bg-primary btn-lg p-5">
+    <div class="col-md-6">
+        <a href="{% url 'new_ticket' 2 %}" class="text-white btn bg-primary btn-lg py-5 pl-5 pr-4">
             <i class="fa fa-plus-circle"></i> ADD COMPLAIN</a>
     </div>
 </div>
 <br><br><br><br>
-<div class="col-sm-12">
-    <div class="text-center">
-        <a href="{% url 'report' 1 %}" class="h4 pr-5">Query Tickets <span class="badge badge-success">{{ query_tickets }}</span></a>
-        <a href="{% url 'report' 2 %}" class="h4 pl-5">Complain Tickets <span class="badge badge-primary">{{ complain_tickets }}</span></a>
+<div class="row">
+    <div class="col-md-6">
+        <a href="{% url 'report' 1 %}" class="h4 float-right">Query Tickets <span class="badge badge-success">{{ query_tickets }}</span></a>
     </div>
+    <div class="col-md-6">        
+        <a href="{% url 'report' 2 %}" class="h4">Complain Tickets <span class="badge badge-primary">{{ complain_tickets }}</span></a>
+    </div>
+</div>
 </div>
 
 {% endblock %}

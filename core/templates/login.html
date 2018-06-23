@@ -3,33 +3,37 @@
 
 {% block page_title %}TSCC Login{% endblock %}
 
+{% block vertical_navbar %}{% endblock %}
 
 {% block maincontainer %}
-    <div class="row">
-    <div class="col-sm-4 offset-md-4">
-        <div class="card rounded-0 mx-auto bt-primary">
-            <div class="card-block">
-                <form action="{% url 'login_page' %}" method="POST">{% csrf_token %}
-                    {% if form.errors %}
-                        {% for key, error in form.errors.items %}
-                            <small class="text-danger">{{ error|striptags }}</small>
-                        {% endfor %}
-                    {% endif %}
-                    {% bootstrap_field form.login %}
-                    {% bootstrap_field form.password %}
-                    <div class="font-xs">
-                        <div class="float-left">
-                            {% bootstrap_field form.remember %}
+    <div class="container">
+        
+    <div class="row mt-5">
+        <div class="col-sm-4 offset-md-4">
+            <div class="card rounded-0 mx-auto bt-primary">
+                <div class="card-block">
+                    <form action="{% url 'login_page' %}" method="POST">{% csrf_token %}
+                        {% if form.errors %}
+                            {% for key, error in form.errors.items %}
+                                <small class="text-danger">{{ error|striptags }}</small>
+                            {% endfor %}
+                        {% endif %}
+                        {% bootstrap_field form.login %}
+                        {% bootstrap_field form.password %}
+                        <div class="font-xs">
+                            <div class="float-left">
+                                {% bootstrap_field form.remember %}
+                            </div>
+                            <div class="float-right">
+                                <a href="{% url 'account_reset_password' %}">Forgot Password ?</a>
+                            </div>
                         </div>
-                        <div class="float-right">
-                            <a href="{% url 'account_reset_password' %}">Forgot Password ?</a>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-md bg-primary text-white rounded-0">LOGIN
-                        </button>
-                </form>
+                        <div class="clearfix"></div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-md bg-primary text-white rounded-0">LOGIN
+                            </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

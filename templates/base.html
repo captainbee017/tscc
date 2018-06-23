@@ -81,24 +81,28 @@
                             <i class="fa fa-eye"></i>
                         </a>
                     </li>
+                    {% if request.user.user_role == 'Superuser' %}
                     <li class="nav-item my-3">
                         <a class="primary-text-color" data-toggle="tooltip" title="Manage Tickets"
                             data-placement="right">
                             <i class="fa fa-ticket"></i>
                         </a>
                     </li>
+                    {% endif %}
                     <li class="nav-item my-3">
                         <a class="primary-text-color" data-toggle="tooltip" title="Add Tickets"
                             data-placement="right">
                             <i class="fa fa-plus-circle"></i>
                         </a>
                     </li>
+                    {% if request.user.user_role == 'Superuser' %}
                     <li class="nav-item my-3">
                         <a href="{% url 'add_new_user' %}" class="primary-text-color" data-toggle="tooltip" title="Manage Users"
                             data-placement="right">
                             <i class="fa fa-user"></i>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

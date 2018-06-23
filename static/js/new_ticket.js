@@ -14,7 +14,7 @@ var app3 = new Vue({
         <div class="row">
             <div class="col-sm-12">
                 <div class="row align-items-start">
-                    <div class="col-sm-2 card mx-2 my-2" v-for="c in categories">
+                    <div class="col-sm-2 card mx-2 my-2 border-0" v-for="c in categories">
                             <div class="card-body" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
                                 <div class="header parent-category">
                                     <p class="my-2" @click="categoryForm(c)">

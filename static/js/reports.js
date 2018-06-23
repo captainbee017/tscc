@@ -159,7 +159,7 @@ let app3 = new Vue({
                 </div>
             </div>
             <div class="col-md-10" v-if="!show_ticket_form">
-                <div class="row align-items-bottom">   
+                <div class="row align-items-bottom">
                     <div class="col-md-4 my-auto">
                         <h4 class="px-2 mb-0" id="category-title">All Reports</h4>
                     </div>

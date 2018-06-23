@@ -15,20 +15,25 @@
 {% block css %}
 <style>
     body {
-  font-family: Menlo, Consolas, monospace;
-  color: #444;
-}
+      font-family: Menlo, Consolas, monospace;
+      color: #444;
+    }
 
-    .item {
-  cursor: pointer;
-}
-.bold {
-  font-weight: bold;
-}
-ul {
-  padding-left: 1.6em;
-  line-height: 1.3em;
-}
+    a {
+      word-wrap: break-word;
+      font-size: 14px;
+    }
+
+  .item {
+    cursor: pointer;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  ul {
+    padding-left: 1.6em;
+    line-height: 1.3em;
+  }
 </style>
 
 {% endblock %}
@@ -40,7 +45,7 @@ ul {
 <script type="text/x-template" id="item-template">
   <li>
     <div>
-      <a  href="javascript:void(0)" @click="loadReports(model)">{{ model.name }} </a>
+      <a  href="javascript:void(0)" @click="loadReports(model)" >{{ model.name }} </a>
     </div>
     <ul  v-if="isFolder">
       <item

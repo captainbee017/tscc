@@ -1,7 +1,7 @@
 var app3 = new Vue({
   el: '#app',
   template: `
-    <div class="container ml-0 pl-0" style="font-size: 13px;">
+    <div class="">
         <div class="row">
             <div class="col-md-8">
                 <div class="card border-0">

@@ -130,29 +130,36 @@ Vue.component('daterangepicker', {
 let app3 = new Vue({
   el: '#app',
   template: `
-  <div class="container ml-0 pl-0">
+  <div class="">
         <div class="row">
-            <div class="col-md-2 pl-2">
-                <div class="" v-for="c in categories" >
-                    <div>
-                        <div>
-                            <ul class="list-unstyled">
-                              <item
-                                class="item text-muted"
-                                :model="c">
-                              </item>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="col-md-3 pl-2 pr-0">
+              <div class="card border-0">
+                <div class="card-header pl-2">
+                  <h5 class="mb-2">All Categories</h5>                  
                 </div>
-                <div v-show="categories.length == 0" class="p-2">
-                    <div class="alert alert-warning text-center">
-                        <i class="fa fa-exclamation-circle"></i><br />
-                        No Categories to show. <br />
-                    </div>
+                <div class="card-body">
+                  <div class="" v-for="c in categories" >
+                      <div>
+                          <div>
+                              <ul class="list-unstyled mb-0">
+                                <item
+                                  class="item text-muted"
+                                  :model="c">
+                                </item>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div v-show="categories.length == 0" class="p-2">
+                      <div class="alert alert-warning text-center">
+                          <i class="fa fa-exclamation-circle"></i><br />
+                          No Categories to show. <br />
+                      </div>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="col-md-10" v-if="!show_ticket_form">
+            <div class="col-md-9" v-if="!show_ticket_form">
                   <div class="card border-0">
                   <div class="card-header p-2">
                     <div class="row">
@@ -176,7 +183,7 @@ let app3 = new Vue({
                             :placeholder="'Ticket added by'" :multiple=false track-by="id" :hide-selected="true">
                               <template slot="noResult">NO CSRS Available</template>
                               <template slot="afterList" slot-scope="props">
-                                <div v-show="users.length==0" class="wrapper-sm bg-danger">No CSRS</div>
+                                <div v-show="users.length==0" class="wrapper-sm bg-danger">No CSR</div>
                               </template>
                             </vselect>
                         </div>
@@ -225,22 +232,19 @@ let app3 = new Vue({
             </div>
 
             <div class="col-md-10" v-if="show_ticket_form">
-                <h4> {{ticket.category_display}} </h4>
-                <form>
-                    <div class="form-group">
+              <h4> {{ticket.category_display}} </h4>
+              <form>
+                  <div class="form-group">
                     <label for="phone_number">Phone</label>
                     <input type="text" class="form-control" id="phone_number" aria-describedby="emailHelp"
                     placeholder="Enter Phone" v-model="ticket.phone_number">
                     <small id="emailHelp" class="form-text text-muted">Enter Phone Number.</small>
                   </div>
-
-
                   <div class="form-group" v-for="(k, v) in other_properties">
                     <label >{{v}}</label>
                     <input type="text" class="form-control"
                     placeholder=""  v-bind:id="v"  v-bind:ref="v" v-bind:value="k"  @change="formHandler(v)">
                   </div>
-
                   <div class="form-group" v-show="has_district">
                     <label for="district">District</label>
                     <vselect :options="districts" label="name" :value="''" v-model="ticket.district" :allow-empty="true" :loading="loading"
@@ -249,45 +253,35 @@ let app3 = new Vue({
                         <template slot="afterList" slot-scope="props"><div v-show="districts.length==0" class="wrapper-sm bg-danger">
                         No Districts</div></template>
                     </vselect>
-
-                    </div>
-
+                  </div>
                   <div class="form-group" v-show="has_type">
                     <label for="type">Type</label>
                     <vselect :options="type_options" label="name" :value="''" v-model="ticket.types" :allow-empty="true" :loading="loading"
-                         :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
-                        <template slot="noResult">NO Types Available</template>
-                        <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
-                        No Types</div></template>
+                       :select-label="''" :show-labels="false" :internal-search="true"  :placeholder="'Select type'" :multiple=false track-by="id" :hide-selected="true">
+                      <template slot="noResult">NO Types Available</template>
+                      <template slot="afterList" slot-scope="props"><div v-show="type_options.length==0" class="wrapper-sm bg-danger">
+                      No Types</div></template>
                     </vselect>
-
-                    </div>
-
+                  </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Comment</label>
                     <textarea v-model="ticket.comment" placeholder="add Comment" rows="3" class="form-control"></textarea>
                   </div>
-
                   <div class="form-group">
-                  <label for="status">Status</label>
+                    <label for="status">Status</label>
                     <select v-model="ticket.status" class="form-control">
                       <option>Pending</option>
                       <option>Inprogress</option>
                       <option>Completed</option>
                     </select>
                   </div>
-
-                   <div class="form-group">
-
+                  <div class="form-group">
                     <a  class="btn btn-primary text-white" @click="saveTicket()">Update Ticket</a>
-
-                </div>
-
+                  </div>
               </form>
             </div>
         </div>
-      </div>
-</div>
+  </div>
 
   `,
 
@@ -328,7 +322,6 @@ let app3 = new Vue({
   methods:{
 
     mouseOver: function(c) {
-        console.log('here');
         ret = c.currentTarget.className.split(" ");
         $("." + ret[0] + "").removeClass("active-menu");
         $("." + ret[0] + "").addClass("active-menu");
@@ -457,7 +450,7 @@ let app3 = new Vue({
         self.$http.get('/core/main-categories/', {params:  options}).then(successCallback, errorCallback);
     },
 
-        loadUsers: function(){
+    loadUsers: function(){
         let self = this;
         let options = {};
 

@@ -37,78 +37,90 @@
             font-size: 14px !important;
             font-family: Roboto !important;
         }
+        #topbarmenu, #topbarmenu a {
+            font-size: 11.33px;
+        }
     </style>
 </head>
 <body>
 
 
-{% if request.user.is_authenticated %}
-    {% block user_detail %}
-        <div class="row p-0 m-0">
-            <div class="col-md-6">
-                <p class="text-uppercase primary-text-color mb-1 mt-2">{% block page_title %}{% endblock %}</p>
-            </div>
-            <div class="col-md-6">
-                <p class="text-right small text-muted mb-1 mt-2">
-                    <span class="pr-3"><i class="fa fa-user fa-fw"></i> {{ request.user.username }}</span>|
-                    <span class="pl-3 pr-3"><i class="fa fa-clock-o fa-fw"></i> Last Login: {{ request.user.last_login }}</span>|
+    <div class="row p-0 m-0">
+        <div class="col-md-6">
+            <p class="text-uppercase primary-text-color mb-1 mt-2">{% block page_title %}{% endblock %}</p>
+        </div>
+        <div class="col-md-6">
+            {% if request.user.is_authenticated %}
+            {% block user_detail %}
+                <p class="text-right mb-1 mt-2" id="topbarmenu">
+                    <span class="pr-3 text-muted"><i class="fa fa-user fa-fw"></i> {{ request.user.username }}</span>|
+                    <span class="pl-3 pr-3 text-muted"><i class="fa fa-clock-o fa-fw"></i> Last Login: {{ request.user.last_login }}</span>|
                     <a class="pl-3 pr-3 text-muted" href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </p>
+            {% endblock %}
+            {% endif %}
+        </div>
+        <div class="col-md-12 p-0">
+            <hr class="mb-3 mt-0">
+        </div>
+    </div>
+    <div class="">
+        <div class="col-md-12 d-flex">
+            <div class="">
+                    {% block vertical_navbar %}
+                        <div class="float-left mr-4" style="border-right: 1px solid #efefef;">
+                            <nav class="navbar bg-light h-100 p-0 pr-2">
+                                <ul class="navbar-nav primary-text-color">
+                                    <li class="nav-item mb-3">
+                                        <a href="{% url 'dashboard' %}" class="primary-text-color" data-toggle="tooltip" title="Dashboard"
+                                            data-placement="right">
+                                            <i class="fa fa-home"></i>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item my-3">
+                                        <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
+
+                                        <a class="primary-text-color" data-toggle="tooltip" title="View Reports"
+                                            data-placement="right">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a href="" class="dropdown-item">Query Reports</a>
+                                            <a href="" class="dropdown-item">Complain Reports</a>
+                                        </div>
+                                    </li>
+                                    {% if request.user.userrole.user_role == 'Superuser' %}
+                                    <li class="nav-item my-3">
+                                        <a class="primary-text-color" data-toggle="tooltip" title="Manage Ticket Categories"
+                                            data-placement="right">
+                                            <i class="fa fa-ticket"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    <li class="nav-item my-3">
+                                        <a class="primary-text-color" data-toggle="tooltip" title="Add Tickets"
+                                            data-placement="right">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </a>
+                                    </li>
+                                    {% if request.user.userrole.user_role == 'Superuser' %}
+                                    <li class="nav-item my-3">
+                                        <a href="{% url 'add_new_user' %}" class="primary-text-color" data-toggle="tooltip" title="Manage Users"
+                                            data-placement="right">
+                                            <i class="fa fa-user"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endblock %}                
             </div>
-            <div class="col-md-12 p-0">
-                <hr class="mb-3 mt-0">
+            <div class="">
+                {% block maincontainer %}{% endblock %}
             </div>
         </div>
-    {% endblock %}
-    
-
-{% endif %}
-
-<div class="d-flex flex-row">
-    {% block vertical_navbar %}
-        <div class="float-left mr-4" style="border-right: 1px solid #efefef;">
-            <nav class="navbar bg-light h-100 px-2">
-                <ul class="navbar-nav primary-text-color">
-                    <li class="nav-item mb-3">
-                        <a href="{% url 'dashboard' %}" class="primary-text-color" data-toggle="tooltip" title="Dashboard"
-                            data-placement="right">
-                            <i class="fa fa-home"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item my-3">
-                        <a class="primary-text-color" data-toggle="tooltip" title="View Reports"
-                            data-placement="right">
-                            <i class="fa fa-eye"></i>
-                        </a>
-                    </li>
-                    {% if request.user.userrole.user_role == 'Superuser' %}
-                    <li class="nav-item my-3">
-                        <a class="primary-text-color" data-toggle="tooltip" title="Manage Tickets"
-                            data-placement="right">
-                            <i class="fa fa-ticket"></i>
-                        </a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item my-3">
-                        <a class="primary-text-color" data-toggle="tooltip" title="Add Tickets"
-                            data-placement="right">
-                            <i class="fa fa-plus-circle"></i>
-                        </a>
-                    </li>
-                    {% if request.user.userrole.user_role == 'Superuser' %}
-                    <li class="nav-item my-3">
-                        <a href="{% url 'add_new_user' %}" class="primary-text-color" data-toggle="tooltip" title="Manage Users"
-                            data-placement="right">
-                            <i class="fa fa-user"></i>
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-    {% endblock %}
-    {% block maincontainer %}{% endblock %}
-</div>
+    </div>
 
 
 {% block modal %}
@@ -122,6 +134,7 @@
 
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'js/tether.min.js' %}"></script>
+<!-- <script src="{% static 'vendor/popper.min.js' %}"></script> -->
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
 
@@ -144,6 +157,12 @@
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
     });
+
+    $(function () {
+      $('.example-popover').popover({
+        container: 'body'
+      })
+    })
 
 </script>
 <script>

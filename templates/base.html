@@ -78,27 +78,20 @@
                                         </a>
                                     </li>
                                     <li class="nav-item my-3">
-                                        <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
-
-                                        <a class="primary-text-color" data-toggle="tooltip" title="View Reports"
-                                            data-placement="right">
+                                        <a class="primary-text-color example-popover" href="#" data-toggle="popover" title="View Reports" data-placement="right" data-content="<a href='{% url 'report' 1 %}'>Query Reports</a> <br/><a href='{% url 'report' 2 %}'>Complain Reports</a>">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <div class="dropdown-menu">
-                                            <a href="" class="dropdown-item">Query Reports</a>
-                                            <a href="" class="dropdown-item">Complain Reports</a>
-                                        </div>
                                     </li>
                                     {% if request.user.userrole.user_role == 'Superuser' %}
                                     <li class="nav-item my-3">
-                                        <a class="primary-text-color" data-toggle="tooltip" title="Manage Ticket Categories"
+                                        <a class="primary-text-color example-popover" href="#" data-toggle="popover" title="Manage Ticket Categories" data-content="<a href='{% url 'category_settings' 1 %}'>Query Categories</a><br/><a href='{% url 'category_settings' 2 %}'>Complain Categories</a>"
                                             data-placement="right">
                                             <i class="fa fa-ticket"></i>
                                         </a>
                                     </li>
                                     {% endif %}
                                     <li class="nav-item my-3">
-                                        <a class="primary-text-color" data-toggle="tooltip" title="Add Tickets"
+                                        <a class="primary-text-color example-popover" href="#" data-toggle="popover" title="Add Tickets" data-content="<a href='{% url 'new_ticket' 1 %}'>Query Tickets</a><br/><a href='{% url 'new_ticket' 2 %}'>Complain Tickets</a>"
                                             data-placement="right">
                                             <i class="fa fa-plus-circle"></i>
                                         </a>
@@ -159,9 +152,23 @@
     });
 
     $(function () {
-      $('.example-popover').popover({
-        container: 'body'
-      })
+        $('.example-popover').popover({
+            trigger: 'manual',
+            html: true,  
+        }).on('mouseenter', function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 300);
+        });
     })
 
 </script>

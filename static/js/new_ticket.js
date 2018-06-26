@@ -15,27 +15,29 @@ var app3 = new Vue({
                 <div class="row align-items-start">
                     <div class="col-md-3" v-for="c in categories">
                         <div class="card m-2 border-0">
-                        <div class="card-body px-2" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
-                            <div class="header parent-category">
-                                <p class="my-2" @click="categoryForm(c)">
-                                    {{ c.name }}
-                                    <span class="float-right" v-show="c.branch.length > 0">^</span>
-                                    
-                                </p>
-                            </div>
-                            <div class="sub-category" v-bind:class="[active, ]" v-for="c1 , index1 in c.branch" 
-                                v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
-                                <p class="ml-3">
-                                    <a @click="categoryForm(c1)" class="py-2">
-                                        {{ c1.name }}
-                                    </a>
-                                </p>
-                                <p class="ml-5" v-show="c1.branch.length>0" v-for="c2, index in c1.branch">
-                                    <a @click="categoryForm(c2)" class="submenu-item">{{ c2.name }}</a>
-                                </p>
+                            <div class="card-body px-2" v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                                <div class="header parent-category">
+                                    <p class="my-2" @click="categoryForm(c)">
+                                        {{ c.name }}
+                                        <span class="float-right" v-show="c.branch.length > 0">^</span>
+                                        
+                                    </p>
+                                </div>
+                                <div class="sub-category" v-bind:class="[active, ]" v-for="c1 , index1 in c.branch" 
+                                    v-on:mouseover="mouseOver" @mouseleave=mouseLeave>
+                                    <p class="ml-3">
+                                        <a @click="categoryForm(c1)" class="py-2">
+                                            {{ c1.name }}
+                                        </a>
+                                    </p>
+                                    <p class="ml-5" v-show="c1.branch.length>0" v-for="c2, index in c1.branch">
+                                        <a @click="categoryForm(c2)" class="submenu-item">{{ c2.name }}</a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        </div>
+
+
                     </div>
                 </div>
             </div>

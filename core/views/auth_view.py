@@ -20,6 +20,17 @@ from core.mixins import SuperuserOnlyMixin
 class LoginView(LoginView):
     template_name = 'login.html'
 
+    def form_valid(self, form):
+        _username = form.cleaned_data['login']
+        try:
+            _user = User.objects.get(username=_username)
+            if not _user.is_active:
+                form._errors['login'] = ["Access Denied. Contact Supervisor"]
+                return super().form_invalid(form)
+        except User.DoesNotExist:
+            pass
+        return super().form_valid(form)
+
 
 class UserDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'csr/dashboard.html'

@@ -158,7 +158,8 @@ ACCOUNT_LOGOUT_ON_GET = 'True'
 LOGIN_URL = 'login_page'
 LOGIN_REDIRECT_URL = 'dashboard'
 
-ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
+ACCOUNT_ADAPTER = 'core.user_adapter.MyAccountAdapter'
+# ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
 
 
 SITE_ID = 1

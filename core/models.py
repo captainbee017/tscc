@@ -68,9 +68,9 @@ class CallDetail(models.Model):
     district = models.ForeignKey(District, related_name="calls", on_delete=models.SET_NULL, blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS_CHOICE, default='Pending')
     types = models.ForeignKey(TypeOption, related_name="call_detail", on_delete=models.SET_NULL, null=True, blank=True)
-    call_time = models.DateTimeField(auto_now=True)
+    call_time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(null=True, blank=True)
-    modified_time = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+    modified_time = models.DateTimeField(blank=True, null=True, auto_now=True)
 
     def __str__(self):
         return "{} {}".format(self.category, self.phone_number)

@@ -208,8 +208,8 @@ let app3 = new Vue({
                               <tr v-for="t , index in tickets">
                                   <td>{{t.phone_number}}</td>
                                   <td>{{t.csr_display}}</td>
-                                  <td >{{t.date_display}}</td>
-                                  <td  v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
+                                  <td>{{t.date_display}}</td>
+                                  <td v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
                                   <td v-for="(v,k) in t.other_properties">{{v}}</td>
                                   <td>{{t.status}}</td>
                                   <td>{{t.comment}}</td>

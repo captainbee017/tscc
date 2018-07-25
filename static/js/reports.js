@@ -210,7 +210,7 @@ let app3 = new Vue({
                                   <td>{{t.csr_display}}</td>
                                   <td>{{t.date_display}}</td>
                                   <td v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
-                                  <td v-for="(v,k) in t.other_properties">{{v}}</td>
+                                  <td v-for="(v,k) in searchCategory.other_properties">{{t.other_properties | get_value(k)}}</td>
                                   <td>{{t.status}}</td>
                                   <td>{{t.comment}}</td>
                                   <td>
@@ -284,7 +284,15 @@ let app3 = new Vue({
   </div>
 
   `,
-
+    filters:{
+      get_value: function(data,key){
+        let val = "";
+        Object.entries(data).forEach(
+            ([k, value]) => {if(key==k ){val=value;}}
+        );
+        return val
+      }
+    },
     data: {
         search_key:"",
         tickets: [],

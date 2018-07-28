@@ -194,6 +194,7 @@ let app3 = new Vue({
                     <table class="table table-borderless">
                           <thead>
                               <tr>
+                                  <th scope="col">SN</th>
                                   <th scope="col">Phone</th>
                                   <th scope="col">CSR</th>
                                   <th scope="col">Date</th>
@@ -207,6 +208,7 @@ let app3 = new Vue({
                           </thead>
                           <tbody>
                               <tr v-for="t , index in tickets">
+                                  <td>{{index+1}}</td>
                                   <td>{{t.phone_number}}</td>
                                   <td>{{t.csr_display}}</td>
                                   <td>{{t.date_display}}</td>
@@ -229,6 +231,15 @@ let app3 = new Vue({
                               </tr>
                           </tbody>
                       </table>
+                      <nav aria-label="Page navigation example">
+                      <ul class="pagination">
+                        <li class="page-item" v-for="currentlink in middle_pages">
+                        <a v-on:click="paginationData(currentlink.url)" class="page-link" href="#"
+                          v-text="currentlink.index" :class="{ 'page-link-active ': currentlink.index == current }">1
+                          </a>
+                          </li>
+                      </ul>
+                    </nav>
                   </div>
                 </div>  
             </div>

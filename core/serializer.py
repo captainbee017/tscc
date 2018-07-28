@@ -31,7 +31,7 @@ class MainCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id','name', 'other_properties', 'branch')
+        fields = ('id','name', 'other_properties', 'branch','has_district', 'has_type','types')
 
     def get_branch(self, obj):
         qs =  obj.sub_categories.all()

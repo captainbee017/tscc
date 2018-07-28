@@ -198,6 +198,7 @@ let app3 = new Vue({
                                   <th scope="col">CSR</th>
                                   <th scope="col">Date</th>
                                   <th scope="col" v-show="searchCategory && searchCategory.has_district">District</th>
+                                  <th scope="col" v-show="searchCategory && searchCategory.has_type">Type</th>
                                   <th scope="col" v-for="(v,k) in searchCategory.other_properties">{{k}}</th>
                                   <th scope="col">Status</th>
                                   <th scope="col">Comment</th>
@@ -210,6 +211,7 @@ let app3 = new Vue({
                                   <td>{{t.csr_display}}</td>
                                   <td>{{t.date_display}}</td>
                                   <td v-show="searchCategory && searchCategory.has_district">{{t.district_display}}</td>
+                                  <td v-show="searchCategory && searchCategory.has_type">{{t.type_display}}</td>
                                   <td v-for="(v,k) in searchCategory.other_properties">{{t.other_properties | get_value(k)}}</td>
                                   <td>{{t.status}}</td>
                                   <td>{{t.comment}}</td>
@@ -286,7 +288,7 @@ let app3 = new Vue({
   `,
     filters:{
       get_value: function(data,key){
-        let val = "";
+        let hval = "";
         Object.entries(data).forEach(
             ([k, value]) => {if(key==k ){val=value;}}
         );

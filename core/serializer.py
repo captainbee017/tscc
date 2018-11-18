@@ -78,7 +78,12 @@ class TickerSerializer(serializers.ModelSerializer):
         return obj.types.name if obj.types else ""
 
     def get_date_display(self, obj):
-        return obj.call_time.strftime('%Y-%m-%d %H:%M')
+        import pytz
+        from datetime import timezone
+        nepal_tz = pytz.timezone("Asia/Kathmandu")
+        # timezone.activate(nepal_tz)
+        nepal = obj.call_time.astimezone(nepal_tz)
+        return nepal.strftime('%Y-%m-%d %H:%M')
 
     def get_csr_display(self, obj):
         return obj.user.username

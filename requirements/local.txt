@@ -1,7 +1,11 @@
--r base.txt
+django==2.2
+djangorestframework==3.9.1
+psycopg2-binary==2.8.3
+celery==5.0.1
+Pillow
+django-allauth
+django-bootstrap4
 django-debug-toolbar
-ipdb
 ipython
-djangorestframework
 markdown
 django-filter
